@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qualified Leads - Lab Dashboard - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #f5b800;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .lab-name {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        /* Dashboard Container */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left h1 {
+            color: #2c4e8a;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .smart-routing-badge {
+            background: linear-gradient(135deg, #2c4e8a, #3d68b0);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #f5b800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-trend {
+            font-size: 0.8rem;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+        
+        /* Leads Section */
+        .leads-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: #2c4e8a;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .filter-tab.active {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .filter-tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .filter-tab.active:hover {
+            background: #1e3460;
+        }
+        
+        /* Lead Cards */
+        .leads-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .lead-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .lead-card:hover {
+            border-color: #f5b800;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        .lead-card.new {
+            border-color: #28a745;
+            background: linear-gradient(to right, #fff 98%, #28a745 2%);
+        }
+        
+        .lead-card.priority {
+            border-color: #f5b800;
+            background: linear-gradient(to right, #fff 98%, #f5b800 2%);
+        }
+        
+        .lead-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lead-title {
+            color: #2c4e8a;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lead-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .status-new {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-priority {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-standard {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .lead-summary {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lead-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-section h4 {
+            color: #2c4e8a;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .detail-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .detail-list li {
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .match-score {
+            background: #e8f4fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .match-score h4 {
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .score-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .score-details {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .lead-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .lead-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .lead-tag {
+            background: #f0f0f0;
+            color: #555;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn-respond {
+            background: #28a745;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-respond:hover {
+            background: #218838;
+        }
+        
+        .btn-view {
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-view:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="lab-dashboard.html">Dashboard</a>
+                <a href="lab-leads.html" class="active">Qualified Leads</a>
+                <a href="#">Analytics</a>
+                <a href="collaborate.html">Collaborations</a>
+                <a href="#">Settings</a>
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">🏛️</div>
+                <div>
+                    <div class="lab-name">Stanford Proteomics Core</div>
+                    <div style="font-size: 0.8rem; color: #666;">Lab Administrator</div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="dashboard-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Qualified Leads</h1>
+                    <p class="header-subtitle">Smart Lead Routing System matches you with relevant project opportunities</p>
+                </div>
+                <div class="smart-routing-badge">
+                    <span>🎯</span>
+                    <span>Smart Matching Active</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">23</div>
+                <div class="stat-label">New Leads This Month</div>
+                <div class="stat-trend">📈 +15% vs last month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89%</div>
+                <div class="stat-label">Match Accuracy</div>
+                <div class="stat-trend">🎯 Highly relevant leads</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Pending Responses</div>
+                <div class="stat-trend">⏰ Avg response: 18h</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$47K</div>
+                <div class="stat-label">Pipeline Value</div>
+                <div class="stat-trend">💰 From qualified leads</div>
+            </div>
+        </div>
+        
+        <!-- Leads Section -->
+        <div class="leads-section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Qualified Leads</h2>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterLeads('all')">All Leads (23)</button>
+                    <button class="filter-tab" onclick="filterLeads('new')">New (8)</button>
+                    <button class="filter-tab" onclick="filterLeads('priority')">Priority (5)</button>
+                    <button class="filter-tab" onclick="filterLeads('responded')">Responded (10)</button>
+                </div>
+            </div>
+            
+            <div class="leads-grid">
+                <!-- New High Priority Lead -->
+                <div class="lead-card new">
+                    <div class="lead-header">
+                        <div>
+                            <div class="lead-title">Alzheimer's Biomarker Validation Study</div>
+                            <div class="lead-meta">
+                                <div class="meta-item">🏥 <span>Harvard Medical School</span></div>
+                                <div class="meta-item">📧 <span>dr.smith@harvard.edu</span></div>
+                                <div class="meta-item">⏰ <span>Received 2 hours ago</span></div>
+                            </div>
+                        </div>
+                        <span class="status-badge status-new">🆕 NEW</span>
+                    </div>
+                    
+                    <p class="lead-summary">
+                        Large-scale validation study for plasma p-tau217 and NfL biomarkers in Alzheimer's disease progression. Seeking Argo HT platform expertise for 500+ patient samples over 18-month timeline.
+                    </p>
+                    
+                    <div class="match-score">
+                        <h4>🎯 Match Score: 94%</h4>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: 94%;"></div>
+                        </div>
+                        <div class="score-details">
+                            <span>✅ Platform match: Argo HT</span>
+                            <span>✅ Expertise: Neurology</span>
+                            <span>✅ Sample volume: 500+</span>
+                            <span>✅ Budget range: $50K-$100K</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-details">
+                        <div class="detail-section">
+                            <h4>Project Requirements</h4>
+                            <ul class="detail-list">
+                                <li>🎯 <span>Targets: p-Tau217, NfL, GFAP</span></li>
+                                <li>🧬 <span>Sample: Plasma (500 samples)</span></li>
+                                <li>⏱️ <span>Timeline: 18 months</span></li>
+                                <li>🔬 <span>Platform: Argo HT preferred</span></li>
+                            </ul>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Budget & Timeline</h4>
+                            <ul class="detail-list">
+                                <li>💰 <span>Budget: $75,000 - $100,000</span></li>
+                                <li>📅 <span>Start: Within 4 weeks</span></li>
+                                <li>🏥 <span>Regulatory: FDA submission planned</span></li>
+                                <li>📊 <span>Data sharing: Required via NAS</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-actions">
+                        <div class="lead-tags">
+                            <span class="lead-tag">High Value</span>
+                            <span class="lead-tag">Perfect Match</span>
+                            <span class="lead-tag">Urgent Response</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-respond">Respond with Quote</button>
+                            <a href="#" class="btn-view">View Full RFQ</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Priority Lead -->
+                <div class="lead-card priority">
+                    <div class="lead-header">
+                        <div>
+                            <div class="lead-title">Multi-Site Cancer Immunotherapy Study</div>
+                            <div class="lead-meta">
+                                <div class="meta-item">🏥 <span>Memorial Sloan Kettering</span></div>
+                                <div class="meta-item">📧 <span>research@mskcc.org</span></div>
+                                <div class="meta-item">⏰ <span>Received 6 hours ago</span></div>
+                            </div>
+                        </div>
+                        <span class="status-badge status-priority">⭐ PRIORITY</span>
+                    </div>
+                    
+                    <p class="lead-summary">
+                        Multi-site collaboration for checkpoint inhibitor biomarker discovery. Looking for labs with Argo HT capabilities to analyze immune markers in cancer patient plasma samples.
+                    </p>
+                    
+                    <div class="match-score">
+                        <h4>🎯 Match Score: 87%</h4>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: 87%;"></div>
+                        </div>
+                        <div class="score-details">
+                            <span>✅ Platform match: Argo HT</span>
+                            <span>✅ Expertise: Oncology</span>
+                            <span>⚠️ Sample volume: 300 (medium)</span>
+                            <span>✅ Budget range: $50K+</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-details">
+                        <div class="detail-section">
+                            <h4>Project Requirements</h4>
+                            <ul class="detail-list">
+                                <li>🎯 <span>Targets: PD-1, PD-L1, CTLA-4, TIM-3</span></li>
+                                <li>🧬 <span>Sample: Plasma (300 samples)</span></li>
+                                <li>⏱️ <span>Timeline: 12 months</span></li>
+                                <li>🤝 <span>Multi-site collaboration</span></li>
+                            </ul>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Budget & Timeline</h4>
+                            <ul class="detail-list">
+                                <li>💰 <span>Budget: $60,000 - $80,000</span></li>
+                                <li>📅 <span>Start: Within 6 weeks</span></li>
+                                <li>📊 <span>Data sharing: Multi-site</span></li>
+                                <li>📝 <span>Publication: Co-authorship</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-actions">
+                        <div class="lead-tags">
+                            <span class="lead-tag">Collaboration</span>
+                            <span class="lead-tag">Co-Authorship</span>
+                            <span class="lead-tag">Multi-Site</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-respond">Respond with Quote</button>
+                            <a href="#" class="btn-view">View Full RFQ</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Standard Lead -->
+                <div class="lead-card">
+                    <div class="lead-header">
+                        <div>
+                            <div class="lead-title">Inflammation Biomarker Panel Development</div>
+                            <div class="lead-meta">
+                                <div class="meta-item">🏢 <span>Biotech Startup</span></div>
+                                <div class="meta-item">📧 <span>cso@inflammabio.com</span></div>
+                                <div class="meta-item">⏰ <span>Received 1 day ago</span></div>
+                            </div>
+                        </div>
+                        <span class="status-badge status-standard">📋 STANDARD</span>
+                    </div>
+                    
+                    <p class="lead-summary">
+                        Developing a custom inflammation panel for drug development. Looking for lab partners to help validate biomarkers using multiple platforms including Argo HT.
+                    </p>
+                    
+                    <div class="match-score">
+                        <h4>🎯 Match Score: 76%</h4>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: 76%;"></div>
+                        </div>
+                        <div class="score-details">
+                            <span>✅ Platform match: Multiple</span>
+                            <span>⚠️ Expertise: General (not specialized)</span>
+                            <span>✅ Sample volume: 150</span>
+                            <span>⚠️ Budget range: $25K-$40K</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-details">
+                        <div class="detail-section">
+                            <h4>Project Requirements</h4>
+                            <ul class="detail-list">
+                                <li>🎯 <span>Targets: IL-6, TNF-α, CRP, custom panel</span></li>
+                                <li>🧬 <span>Sample: Serum (150 samples)</span></li>
+                                <li>⏱️ <span>Timeline: 6 months</span></li>
+                                <li>🔬 <span>Platform: Flexible, Argo HT preferred</span></li>
+                            </ul>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Budget & Timeline</h4>
+                            <ul class="detail-list">
+                                <li>💰 <span>Budget: $25,000 - $40,000</span></li>
+                                <li>📅 <span>Start: Flexible (within 8 weeks)</span></li>
+                                <li>💡 <span>Custom panel development</span></li>
+                                <li>📈 <span>Potential for future work</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="lead-actions">
+                        <div class="lead-tags">
+                            <span class="lead-tag">Custom Development</span>
+                            <span class="lead-tag">Future Potential</span>
+                            <span class="lead-tag">Flexible Timeline</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-respond">Respond with Quote</button>
+                            <a href="#" class="btn-view">View Full RFQ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterLeads(category) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Filter logic would go here
+            console.log('Filtering leads by:', category);
+        }
+    </script>
+</body>
+</html>

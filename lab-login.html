@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Partner Login - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        /* Login Container */
+        .login-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px;
+            margin-top: 80px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-title {
+            font-size: 1.8rem;
+            color: #2c4e8a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .platform-badge {
+            background: linear-gradient(135deg, #2c4e8a, #3d68b0);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Form Styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        
+        .form-input:focus {
+            border-color: #f5b800;
+        }
+        
+        .form-input::placeholder {
+            color: #999;
+        }
+        
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+        
+        .forgot-password {
+            color: #2c4e8a;
+            text-decoration: none;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        
+        .divider::before {
+            margin-right: 1rem;
+        }
+        
+        .divider::after {
+            margin-left: 1rem;
+        }
+        
+        .sso-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .sso-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .sso-btn:hover {
+            border-color: #f5b800;
+            background: #fafafa;
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .signup-link a {
+            color: #2c4e8a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .partner-info {
+            background: #e8f4fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #2c4e8a;
+        }
+        
+        .partner-info strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">← Back to Home</a>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <div class="platform-badge">Lab Partner Portal</div>
+            <h1 class="login-title">Welcome Back</h1>
+            <p class="login-subtitle">Sign in to manage your test listings and collaborations</p>
+        </div>
+        
+        <div class="partner-info">
+            <strong>🔬 Lab Partner Benefits:</strong>
+            • List and manage your proteomics services<br>
+            • Access collaboration opportunities<br>
+            • Integrated NAS data delivery<br>
+            • Performance analytics dashboard
+        </div>
+        
+        <form class="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label">Institution Email</label>
+                <input type="email" class="form-input" placeholder="labadmin@institution.edu" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="login-options">
+                <label class="remember-me">
+                    <input type="checkbox" style="margin-right: 0.5rem;">
+                    Remember me
+                </label>
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="login-btn">Sign In to Lab Portal</button>
+        </form>
+        
+        <div class="divider">or continue with</div>
+        
+        <div class="sso-options">
+            <a href="#" class="sso-btn">
+                <span>🏛️</span>
+                <span>University SSO</span>
+            </a>
+            <a href="#" class="sso-btn">
+                <span>🔗</span>
+                <span>ORCID</span>
+            </a>
+            <a href="#" class="sso-btn">
+                <span>🔐</span>
+                <span>Azure AD</span>
+            </a>
+        </div>
+        
+        <div class="signup-link">
+            New lab partner? <a href="#">Apply for access →</a><br>
+            <span style="font-size: 0.8rem; color: #999;">Existing Alamar customers get priority access</span>
+        </div>
+    </div>
+    
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            // Simulate login process
+            document.querySelector('.login-btn').innerHTML = 'Signing in...';
+            document.querySelector('.login-btn').disabled = true;
+            
+            setTimeout(() => {
+                // Redirect to lab dashboard
+                window.location.href = 'lab-dashboard.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

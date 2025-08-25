@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborate - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .collab-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #f5b800;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Filter Tabs */
+        .filter-tabs {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #666;
+        }
+        
+        .tab-button.active {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .tab-button:hover {
+            background: #e0e0e0;
+        }
+        
+        .tab-button.active:hover {
+            background: #1e3460;
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            border: 2px solid #e0e0e0;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #f5b800;
+        }
+        
+        .filter-dropdown {
+            border: 2px solid #e0e0e0;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-dropdown:hover {
+            border-color: #f5b800;
+        }
+        
+        .search-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            background: #e0a600;
+        }
+        
+        /* Study Cards */
+        .studies-grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .study-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 4px solid #f5b800;
+            transition: all 0.3s;
+        }
+        
+        .study-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .study-card.featured {
+            border-left-color: #2c4e8a;
+            background: linear-gradient(to right, #fff 98%, #f5b800 2%);
+        }
+        
+        .study-card.recruiting {
+            border-left-color: #28a745;
+        }
+        
+        .study-card.launching {
+            border-left-color: #17a2b8;
+        }
+        
+        .study-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .study-title {
+            color: #2c4e8a;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            flex: 1;
+        }
+        
+        .study-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .status-recruiting {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-active {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-launching {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-planning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .study-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .study-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-section h4 {
+            color: #2c4e8a;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .detail-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .detail-list li {
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .platform-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        
+        .platform-tag {
+            background: linear-gradient(135deg, #2c4e8a, #3d68b0);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .participating-labs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .lab-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .more-labs {
+            background: #f0f0f0;
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        .study-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .study-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .study-tag {
+            background: #f0f0f0;
+            color: #555;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn-join {
+            background: #28a745;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-join:hover {
+            background: #218838;
+        }
+        
+        .btn-learn {
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-learn:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .btn-contact {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-contact:hover {
+            background: #e0a600;
+        }
+        
+        /* Create Study CTA */
+        .create-study-cta {
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn-create {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-create:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Benefits Section */
+        .benefits-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .benefits-title {
+            color: #2c4e8a;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .benefit-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-title {
+            color: #2c4e8a;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .benefit-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Featured Study Indicator */
+        .featured-indicator {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="search-results.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html" class="active">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1 class="page-title">Collaborate on Research</h1>
+        <p class="page-subtitle">Join multi-site studies, share data, and accelerate biomarker discovery through collaboration</p>
+        
+        <div class="collab-stats">
+            <div class="stat">
+                <div class="stat-number">42</div>
+                <div class="stat-label">Active Collaborations</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">156</div>
+                <div class="stat-label">Participating Labs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">12.5K</div>
+                <div class="stat-label">Shared Samples</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">89</div>
+                <div class="stat-label">Publications</div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="main-container">
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="filterStudies('all')">All Studies (42)</button>
+                <button class="tab-button" onclick="filterStudies('recruiting')">Recruiting (18)</button>
+                <button class="tab-button" onclick="filterStudies('active')">Active (15)</button>
+                <button class="tab-button" onclick="filterStudies('launching')">Launching Soon (9)</button>
+            </div>
+            
+            <div class="search-row">
+                <input type="text" class="search-input" placeholder="Search studies by disease area, biomarker, or keyword...">
+                <select class="filter-dropdown">
+                    <option>All Clinical Areas</option>
+                    <option>Neurology</option>
+                    <option>Oncology</option>
+                    <option>Immunology</option>
+                    <option>Cardiovascular</option>
+                    <option>Infectious Disease</option>
+                </select>
+                <select class="filter-dropdown">
+                    <option>All Study Types</option>
+                    <option>Multi-site Validation</option>
+                    <option>Biomarker Discovery</option>
+                    <option>Method Development</option>
+                    <option>Clinical Trial Support</option>
+                </select>
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+        
+        <!-- Create Study CTA -->
+        <div class="create-study-cta">
+            <h2 class="cta-title">Lead a Multi-Site Study</h2>
+            <p class="cta-subtitle">Propose a collaborative research project and connect with laboratories worldwide</p>
+            <a href="#" class="btn-create">Propose New Study</a>
+        </div>
+        
+        <!-- Studies Grid -->
+        <div class="studies-grid">
+            <!-- Featured Study -->
+            <div class="study-card featured" style="position: relative;">
+                <div class="featured-indicator">⭐ FEATURED</div>
+                <div class="study-header">
+                    <div>
+                        <h3 class="study-title">Global Alzheimer's Biomarker Validation Consortium</h3>
+                        <div class="study-meta">
+                            <div class="meta-item">🏥 <span>12 participating sites</span></div>
+                            <div class="meta-item">🌍 <span>Multi-continental</span></div>
+                            <div class="meta-item">📅 <span>Started January 2024</span></div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-recruiting">🟢 Recruiting</span>
+                </div>
+                
+                <p class="study-description">
+                    Large-scale validation of novel Alzheimer's disease biomarkers across diverse populations. This consortium aims to validate plasma p-tau217, MTBR-tau243, and GFAP markers across 12 international sites using standardized Argo HT protocols. The study will include 5,000 participants across the AD continuum.
+                </p>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Study Focus</h4>
+                        <ul class="detail-list">
+                            <li>✓ Plasma biomarker validation</li>
+                            <li>✓ Cross-population analysis</li>
+                            <li>✓ Standardized protocols</li>
+                            <li>✓ Regulatory submission support</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Requirements</h4>
+                        <ul class="detail-list">
+                            <li>🔬 Argo HT platform access</li>
+                            <li>📊 Clinical data collection</li>
+                            <li>👥 50+ participants per site</li>
+                            <li>⏱️ 18-month commitment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Platforms Used</h4>
+                        <div class="platform-tags">
+                            <span class="platform-tag">Argo HT / NULISA</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Participating Labs</h4>
+                        <div class="participating-labs">
+                            <div class="lab-avatar" title="Stanford Proteomics Core">🏛️</div>
+                            <div class="lab-avatar" title="University of Gothenburg">🎓</div>
+                            <div class="lab-avatar" title="UCSF Memory Center">🏥</div>
+                            <div class="lab-avatar" title="Karolinska Institute">🧪</div>
+                            <div class="lab-avatar more-labs">+8</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-actions">
+                    <div class="study-tags">
+                        <span class="study-tag">Multi-site</span>
+                        <span class="study-tag">Validation</span>
+                        <span class="study-tag">Alzheimer's</span>
+                        <span class="study-tag">Plasma</span>
+                        <span class="study-tag">Regulatory</span>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-join">Join Study</a>
+                        <a href="#" class="btn-learn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active Study -->
+            <div class="study-card active">
+                <div class="study-header">
+                    <div>
+                        <h3 class="study-title">COVID-19 Long Haulers Biomarker Discovery</h3>
+                        <div class="study-meta">
+                            <div class="meta-item">🏥 <span>8 participating sites</span></div>
+                            <div class="meta-item">🇺🇸 <span>North America</span></div>
+                            <div class="meta-item">📅 <span>Started March 2024</span></div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-active">🔵 Active</span>
+                </div>
+                
+                <p class="study-description">
+                    Discovery and validation of biomarkers associated with long COVID symptoms. Multi-platform approach combining proteomics, metabolomics, and clinical data to identify diagnostic and prognostic markers for persistent COVID-19 symptoms.
+                </p>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Study Focus</h4>
+                        <ul class="detail-list">
+                            <li>✓ Long COVID biomarkers</li>
+                            <li>✓ Symptom correlation</li>
+                            <li>✓ Longitudinal tracking</li>
+                            <li>✓ Multi-omics approach</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Status & Timeline</h4>
+                        <ul class="detail-list">
+                            <li>📊 1,200+ samples collected</li>
+                            <li>⚗️ Analysis in progress</li>
+                            <li>📝 First results: Q3 2024</li>
+                            <li>📖 Publication: Q1 2025</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Platforms Used</h4>
+                        <div class="platform-tags">
+                            <span class="platform-tag">Argo HT / NULISA</span>
+                            <span style="background: #6c757d;" class="platform-tag">Simoa</span>
+                            <span style="background: #17a2b8;" class="platform-tag">LC-MS</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Participating Labs</h4>
+                        <div class="participating-labs">
+                            <div class="lab-avatar" title="Mayo Clinic Labs">🏢</div>
+                            <div class="lab-avatar" title="Stanford Proteomics Core">🏛️</div>
+                            <div class="lab-avatar" title="Johns Hopkins">🎓</div>
+                            <div class="lab-avatar more-labs">+5</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-actions">
+                    <div class="study-tags">
+                        <span class="study-tag">Discovery</span>
+                        <span class="study-tag">COVID-19</span>
+                        <span class="study-tag">Longitudinal</span>
+                        <span class="study-tag">Multi-omics</span>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-contact">Contact PI</a>
+                        <a href="#" class="btn-learn">View Results</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recruiting Study -->
+            <div class="study-card recruiting">
+                <div class="study-header">
+                    <div>
+                        <h3 class="study-title">Immuno-Oncology Biomarker Consortium</h3>
+                        <div class="study-meta">
+                            <div class="meta-item">🏥 <span>15 participating sites</span></div>
+                            <div class="meta-item">🌍 <span>International</span></div>
+                            <div class="meta-item">📅 <span>Launching June 2024</span></div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-recruiting">🟢 Recruiting</span>
+                </div>
+                
+                <p class="study-description">
+                    Comprehensive analysis of immune checkpoint biomarkers across different cancer types and treatment responses. This study aims to identify predictive biomarkers for immunotherapy response and resistance mechanisms.
+                </p>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Study Focus</h4>
+                        <ul class="detail-list">
+                            <li>✓ Checkpoint inhibitor response</li>
+                            <li>✓ Resistance mechanisms</li>
+                            <li>✓ Pan-cancer analysis</li>
+                            <li>✓ Predictive modeling</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Requirements</h4>
+                        <ul class="detail-list">
+                            <li>🔬 Luminex or MSD platform</li>
+                            <li>🏥 Cancer center affiliation</li>
+                            <li>👥 100+ patients per site</li>
+                            <li>⏱️ 24-month commitment</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Platforms Used</h4>
+                        <div class="platform-tags">
+                            <span style="background: #6c757d;" class="platform-tag">Luminex</span>
+                            <span style="background: #17a2b8;" class="platform-tag">MSD</span>
+                            <span class="platform-tag">Argo HT / NULISA</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Lead Institution</h4>
+                        <div class="participating-labs">
+                            <div class="lab-avatar" title="University College London">🔬</div>
+                            <div class="lab-avatar" title="Memorial Sloan Kettering">🏥</div>
+                            <div class="lab-avatar more-labs">+13</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-actions">
+                    <div class="study-tags">
+                        <span class="study-tag">Immunotherapy</span>
+                        <span class="study-tag">Cancer</span>
+                        <span class="study-tag">Predictive</span>
+                        <span class="study-tag">Multi-platform</span>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-join">Join Study</a>
+                        <a href="#" class="btn-learn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Launching Soon Study -->
+            <div class="study-card launching">
+                <div class="study-header">
+                    <div>
+                        <h3 class="study-title">Pediatric Inflammatory Biomarker Network</h3>
+                        <div class="study-meta">
+                            <div class="meta-item">🏥 <span>6 children's hospitals</span></div>
+                            <div class="meta-item">🇺🇸 <span>United States</span></div>
+                            <div class="meta-item">📅 <span>Launching August 2024</span></div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-launching">🔵 Launching Soon</span>
+                </div>
+                
+                <p class="study-description">
+                    First comprehensive study of inflammatory biomarkers in pediatric populations. Focus on establishing age-specific reference ranges and identifying biomarkers for early detection of inflammatory conditions in children.
+                </p>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Study Focus</h4>
+                        <ul class="detail-list">
+                            <li>✓ Pediatric reference ranges</li>
+                            <li>✓ Age-specific biomarkers</li>
+                            <li>✓ Early detection methods</li>
+                            <li>✓ Safety validation</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Requirements</h4>
+                        <ul class="detail-list">
+                            <li>🏥 Pediatric facility</li>
+                            <li>🔬 Argo HT or Simoa access</li>
+                            <li>👶 Pediatric expertise</li>
+                            <li>📋 IRB approval ready</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Platforms Used</h4>
+                        <div class="platform-tags">
+                            <span class="platform-tag">Argo HT / NULISA</span>
+                            <span style="background: #6c757d;" class="platform-tag">Simoa</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Lead Institution</h4>
+                        <div class="participating-labs">
+                            <div class="lab-avatar" title="Boston Children's Hospital">🏥</div>
+                            <div class="lab-avatar" title="CHOP">👶</div>
+                            <div class="lab-avatar more-labs">+4</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-actions">
+                    <div class="study-tags">
+                        <span class="study-tag">Pediatric</span>
+                        <span class="study-tag">Reference Ranges</span>
+                        <span class="study-tag">Inflammation</span>
+                        <span class="study-tag">Safety</span>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-join">Express Interest</a>
+                        <a href="#" class="btn-learn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Planning Study -->
+            <div class="study-card">
+                <div class="study-header">
+                    <div>
+                        <h3 class="study-title">Neurodevelopmental Disorders Biomarker Study</h3>
+                        <div class="study-meta">
+                            <div class="meta-item">🏥 <span>Seeking 10 sites</span></div>
+                            <div class="meta-item">🌍 <span>Global</span></div>
+                            <div class="meta-item">📅 <span>Planning phase</span></div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-planning">🟡 Planning</span>
+                </div>
+                
+                <p class="study-description">
+                    Novel biomarker discovery for autism spectrum disorders and ADHD using ultra-sensitive proteomics. This study will investigate early biomarkers detectable in blood that could aid in early diagnosis and intervention planning.
+                </p>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Proposed Focus</h4>
+                        <ul class="detail-list">
+                            <li>✓ Early biomarker discovery</li>
+                            <li>✓ ASD and ADHD focus</li>
+                            <li>✓ Non-invasive testing</li>
+                            <li>✓ Intervention guidance</li>
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Seeking Partners</h4>
+                        <ul class="detail-list">
+                            <li>🏥 Pediatric neurology centers</li>
+                            <li>🔬 Argo HT capability</li>
+                            <li>👥 Research coordinator</li>
+                            <li>💰 Partial funding available</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="study-details">
+                    <div class="detail-section">
+                        <h4>Proposed Platforms</h4>
+                        <div class="platform-tags">
+                            <span class="platform-tag">Argo HT / NULISA</span>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Lead Investigator</h4>
+                        <div class="participating-labs">
+                            <div class="lab-avatar" title="Principal Investigator">👨‍⚕️</div>
+                            <div class="lab-avatar more-labs">Seeking sites</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="study-actions">
+                    <div class="study-tags">
+                        <span class="study-tag">Neurodevelopmental</span>
+                        <span class="study-tag">Discovery</span>
+                        <span class="study-tag">Pediatric</span>
+                        <span class="study-tag">Early Detection</span>
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-contact">Contact PI</a>
+                        <a href="#" class="btn-learn">Express Interest</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Benefits Section -->
+        <div class="benefits-section">
+            <h2 class="benefits-title">Why Collaborate on Labatar?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🤝</div>
+                    <h3 class="benefit-title">Shared Resources</h3>
+                    <p class="benefit-description">Pool resources, expertise, and samples across multiple sites to increase statistical power and accelerate discovery.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📊</div>
+                    <h3 class="benefit-title">Data Integration</h3>
+                    <p class="benefit-description">Standardized protocols and integrated data management through the NAS platform for seamless collaboration.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🏆</div>
+                    <h3 class="benefit-title">Co-Authorship</h3>
+                    <p class="benefit-description">Fair attribution and co-authorship opportunities for all contributing sites based on participation level.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterStudies(category) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Filter logic would go here
+            console.log('Filtering studies by:', category);
+        }
+    </script>
+</body>
+</html>

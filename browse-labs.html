@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Labs - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            max-width: 800px;
+            margin: -2rem auto 3rem;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-input {
+            flex: 1;
+            border: 2px solid #e0e0e0;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #f5b800;
+        }
+        
+        .filter-dropdown {
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-dropdown:hover {
+            border-color: #f5b800;
+        }
+        
+        .search-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            background: #e0a600;
+        }
+        
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+        
+        /* Filters Sidebar */
+        .filters-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+        
+        .filter-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .filter-option input {
+            margin-right: 0.75rem;
+        }
+        
+        .filter-option label {
+            font-size: 0.95rem;
+            color: #555;
+            cursor: pointer;
+        }
+        
+        .filter-count {
+            color: #999;
+            font-size: 0.85rem;
+            margin-left: auto;
+        }
+        
+        /* Results Container */
+        .results-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .results-info {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .sort-dropdown {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        /* Lab Cards Grid */
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .lab-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .lab-card:hover {
+            border-color: #f5b800;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .lab-card.featured {
+            border-color: #f5b800;
+            background: linear-gradient(to right, #fff 98%, #f5b800 2%);
+        }
+        
+        .lab-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lab-avatar {
+            width: 60px;
+            height: 60px;
+            background: #e8f4fd;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .lab-info h3 {
+            color: #2c4e8a;
+            font-size: 1.3rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .lab-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lab-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .rating-stars {
+            color: #f5b800;
+        }
+        
+        .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .lab-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lab-specialties {
+            margin-bottom: 1.5rem;
+        }
+        
+        .specialty-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .specialty-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .specialty-tag {
+            background: #e8f4fd;
+            color: #2c4e8a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .lab-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f5b800;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .lab-platforms {
+            margin-bottom: 1.5rem;
+        }
+        
+        .platform-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .platform-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .platform-badge {
+            background: linear-gradient(135deg, #2c4e8a, #3d68b0);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .platform-other {
+            background: #6c757d;
+        }
+        
+        .lab-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn-view {
+            flex: 1;
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-view:hover {
+            background: #1e3460;
+        }
+        
+        .btn-contact {
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-contact:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .featured-badge {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        
+        /* Map View Toggle */
+        .view-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .view-toggle {
+            display: flex;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .view-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            color: #666;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover,
+        .page-btn.active {
+            background: #2c4e8a;
+            color: white;
+            border-color: #2c4e8a;
+        }
+        
+        /* Verification Badges */
+        .verification-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .verification-badge {
+            background: #d4edda;
+            color: #155724;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .clia-badge {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .cap-badge {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="search-results.html">Browse Tests</a>
+                <a href="browse-labs.html" class="active">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1 class="page-title">Browse Laboratory Partners</h1>
+        <p class="page-subtitle">Connect with certified proteomics laboratories worldwide</p>
+    </section>
+    
+    <!-- Search Container -->
+    <div class="search-container">
+        <div class="search-row">
+            <input type="text" class="search-input" placeholder="Search by lab name, location, or expertise...">
+            <select class="filter-dropdown">
+                <option>All Regions</option>
+                <option>North America</option>
+                <option>Europe</option>
+                <option>Asia</option>
+                <option>Australia</option>
+            </select>
+            <select class="filter-dropdown">
+                <option>All Certifications</option>
+                <option>CLIA Certified</option>
+                <option>CAP Accredited</option>
+                <option>ISO 15189</option>
+                <option>GLP/GCP</option>
+            </select>
+            <button class="search-btn">Search</button>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar">
+            <div class="filter-section">
+                <h3 class="filter-title">Region</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="na">
+                    <label for="na">North America</label>
+                    <span class="filter-count">(78)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="europe">
+                    <label for="europe">Europe</label>
+                    <span class="filter-count">(45)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="asia">
+                    <label for="asia">Asia</label>
+                    <span class="filter-count">(23)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="australia">
+                    <label for="australia">Australia</label>
+                    <span class="filter-count">(10)</span>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Lab Type</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="academic">
+                    <label for="academic">Academic</label>
+                    <span class="filter-count">(89)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="commercial">
+                    <label for="commercial">Commercial</label>
+                    <span class="filter-count">(34)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="hospital">
+                    <label for="hospital">Hospital/Clinical</label>
+                    <span class="filter-count">(23)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="core">
+                    <label for="core">Core Facility</label>
+                    <span class="filter-count">(67)</span>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Platforms</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="argo-filter">
+                    <label for="argo-filter">Argo HT / NULISA</label>
+                    <span class="filter-count">(45)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="simoa-filter">
+                    <label for="simoa-filter">Quanterix Simoa</label>
+                    <span class="filter-count">(67)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="msd-filter">
+                    <label for="msd-filter">MSD</label>
+                    <span class="filter-count">(89)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="luminex-filter">
+                    <label for="luminex-filter">Luminex</label>
+                    <span class="filter-count">(78)</span>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Certifications</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="clia">
+                    <label for="clia">CLIA Certified</label>
+                    <span class="filter-count">(56)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cap">
+                    <label for="cap">CAP Accredited</label>
+                    <span class="filter-count">(45)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="iso">
+                    <label for="iso">ISO 15189</label>
+                    <span class="filter-count">(34)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="glp">
+                    <label for="glp">GLP/GCP</label>
+                    <span class="filter-count">(29)</span>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Partnership</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="alamar">
+                    <label for="alamar">Alamar Partners</label>
+                    <span class="filter-count">(89)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="featured">
+                    <label for="featured">Featured Labs</label>
+                    <span class="filter-count">(23)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="verified">
+                    <label for="verified">Verified Labs</label>
+                    <span class="filter-count">(156)</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Results Container -->
+        <div class="results-container">
+            <div class="results-header">
+                <div class="results-info">Showing 156 laboratory partners</div>
+                <div class="view-controls">
+                    <select class="sort-dropdown">
+                        <option>Sort by: Featured</option>
+                        <option>Sort by: Partnership Level</option>
+                        <option>Sort by: Number of Tests</option>
+                        <option>Sort by: Location</option>
+                        <option>Sort by: Recently Joined</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active">Grid</button>
+                        <button class="view-btn">Map</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="labs-grid">
+                <!-- Featured Lab Card -->
+                <div class="lab-card featured" style="position: relative;">
+                    <div class="featured-badge">⭐ FEATURED</div>
+                    <div class="lab-header">
+                        <div class="lab-avatar">🏛️</div>
+                        <div class="lab-info">
+                            <h3>Stanford Proteomics Core</h3>
+                            <div class="lab-location">📍 Stanford, CA, USA</div>
+                            <div class="lab-rating">
+                                <span class="verification-text">Alamar Partner Lab</span>
+                            </div>
+                            <div class="verification-badges">
+                                <span class="verification-badge">✓ Verified</span>
+                                <span class="verification-badge clia-badge">CLIA</span>
+                                <span class="verification-badge cap-badge">CAP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lab-description">Leading expertise in neurodegeneration and cancer biomarkers with cutting-edge Argo HT platform capabilities. Specializing in ultra-sensitive protein detection for clinical research.</p>
+                    
+                    <div class="lab-specialties">
+                        <div class="specialty-title">Specialties:</div>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Neurodegeneration</span>
+                            <span class="specialty-tag">Cancer Biomarkers</span>
+                            <span class="specialty-tag">Inflammation</span>
+                            <span class="specialty-tag">Drug Discovery</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">47</div>
+                            <div class="stat-label">Tests Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1.2K</div>
+                            <div class="stat-label">Samples Processed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3-5</div>
+                            <div class="stat-label">Days TAT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-platforms">
+                        <div class="platform-title">Platforms:</div>
+                        <div class="platform-list">
+                            <span class="platform-badge">Argo HT</span>
+                            <span class="platform-badge platform-other">Simoa</span>
+                            <span class="platform-badge platform-other">MSD</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-actions">
+                        <a href="#" class="btn-view">View Lab Profile</a>
+                        <a href="#" class="btn-contact">Contact Lab</a>
+                    </div>
+                </div>
+                
+                <!-- Lab Card 2 -->
+                <div class="lab-card">
+                    <div class="lab-header">
+                        <div class="lab-avatar">🎓</div>
+                        <div class="lab-info">
+                            <h3>University of Gothenburg</h3>
+                            <div class="lab-location">📍 Gothenburg, Sweden</div>
+                            <div class="lab-rating">
+                                <span class="verification-text">Alamar Partner Lab</span>
+                            </div>
+                            <div class="verification-badges">
+                                <span class="verification-badge">✓ Verified</span>
+                                <span class="verification-badge">ISO 15189</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lab-description">World-renowned Alzheimer's biomarker research center with decades of experience in CSF and plasma biomarker validation. Leading multiple international collaborations.</p>
+                    
+                    <div class="lab-specialties">
+                        <div class="specialty-title">Specialties:</div>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Alzheimer's Disease</span>
+                            <span class="specialty-tag">CSF Biomarkers</span>
+                            <span class="specialty-tag">Clinical Trials</span>
+                            <span class="specialty-tag">Validation Studies</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">32</div>
+                            <div class="stat-label">Tests Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">850</div>
+                            <div class="stat-label">Samples Processed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2-4</div>
+                            <div class="stat-label">Days TAT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-platforms">
+                        <div class="platform-title">Platforms:</div>
+                        <div class="platform-list">
+                            <span class="platform-badge">Argo HT</span>
+                            <span class="platform-badge platform-other">Simoa</span>
+                            <span class="platform-badge platform-other">ELISA</span>
+                            <span class="platform-badge platform-other">Luminex</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-actions">
+                        <a href="#" class="btn-view">View Lab Profile</a>
+                        <a href="#" class="btn-contact">Contact Lab</a>
+                    </div>
+                </div>
+                
+                <!-- Lab Card 3 -->
+                <div class="lab-card">
+                    <div class="lab-header">
+                        <div class="lab-avatar">🔬</div>
+                        <div class="lab-info">
+                            <h3>University College London</h3>
+                            <div class="lab-location">📍 London, UK</div>
+                            <div class="lab-rating">
+                                <span class="verification-text">Alamar Partner Lab</span>
+                            </div>
+                            <div class="verification-badges">
+                                <span class="verification-badge">✓ Verified</span>
+                                <span class="verification-badge">GLP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lab-description">Specialized in immuno-oncology and inflammation panels with extensive experience in cancer immunotherapy biomarker discovery and validation.</p>
+                    
+                    <div class="lab-specialties">
+                        <div class="specialty-title">Specialties:</div>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Immuno-Oncology</span>
+                            <span class="specialty-tag">Inflammation</span>
+                            <span class="specialty-tag">Checkpoint Inhibitors</span>
+                            <span class="specialty-tag">Cytokines</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">28</div>
+                            <div class="stat-label">Tests Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">967</div>
+                            <div class="stat-label">Samples Processed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1-3</div>
+                            <div class="stat-label">Days TAT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-platforms">
+                        <div class="platform-title">Platforms:</div>
+                        <div class="platform-list">
+                            <span class="platform-badge platform-other">Luminex</span>
+                            <span class="platform-badge platform-other">MSD</span>
+                            <span class="platform-badge platform-other">ELISA</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-actions">
+                        <a href="#" class="btn-view">View Lab Profile</a>
+                        <a href="#" class="btn-contact">Contact Lab</a>
+                    </div>
+                </div>
+                
+                <!-- Lab Card 4 -->
+                <div class="lab-card">
+                    <div class="lab-header">
+                        <div class="lab-avatar">🏥</div>
+                        <div class="lab-info">
+                            <h3>UCSF Memory Center</h3>
+                            <div class="lab-location">📍 San Francisco, CA, USA</div>
+                            <div class="lab-rating">
+                                <span class="verification-text">Alamar Partner Lab</span>
+                            </div>
+                            <div class="verification-badges">
+                                <span class="verification-badge">✓ Verified</span>
+                                <span class="verification-badge clia-badge">CLIA</span>
+                                <span class="verification-badge cap-badge">CAP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lab-description">Clinical research focus on neurodegenerative diseases with direct patient care integration. Leading clinical trials and longitudinal cohort studies.</p>
+                    
+                    <div class="lab-specialties">
+                        <div class="specialty-title">Specialties:</div>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Clinical Trials</span>
+                            <span class="specialty-tag">Longitudinal Studies</span>
+                            <span class="specialty-tag">Patient Care</span>
+                            <span class="specialty-tag">Regulatory Studies</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">19</div>
+                            <div class="stat-label">Tests Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">456</div>
+                            <div class="stat-label">Samples Processed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1-2</div>
+                            <div class="stat-label">Days TAT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-platforms">
+                        <div class="platform-title">Platforms:</div>
+                        <div class="platform-list">
+                            <span class="platform-badge">Argo HT</span>
+                            <span class="platform-badge platform-other">Simoa</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-actions">
+                        <a href="#" class="btn-view">View Lab Profile</a>
+                        <a href="#" class="btn-contact">Contact Lab</a>
+                    </div>
+                </div>
+                
+                <!-- Lab Card 5 -->
+                <div class="lab-card">
+                    <div class="lab-header">
+                        <div class="lab-avatar">🏢</div>
+                        <div class="lab-info">
+                            <h3>Mayo Clinic Laboratories</h3>
+                            <div class="lab-location">📍 Rochester, MN, USA</div>
+                            <div class="lab-rating">
+                                <span class="verification-text">Alamar Partner Lab</span>
+                            </div>
+                            <div class="verification-badges">
+                                <span class="verification-badge">✓ Verified</span>
+                                <span class="verification-badge clia-badge">CLIA</span>
+                                <span class="verification-badge cap-badge">CAP</span>
+                                <span class="verification-badge">GLP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lab-description">World-class clinical laboratory with comprehensive proteomics capabilities. Serving both clinical diagnostics and research applications with highest quality standards.</p>
+                    
+                    <div class="lab-specialties">
+                        <div class="specialty-title">Specialties:</div>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Clinical Diagnostics</span>
+                            <span class="specialty-tag">Cardiovascular</span>
+                            <span class="specialty-tag">Metabolomics</span>
+                            <span class="specialty-tag">High-Throughput</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">65</div>
+                            <div class="stat-label">Tests Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2.3K</div>
+                            <div class="stat-label">Samples Processed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1-2</div>
+                            <div class="stat-label">Days TAT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-platforms">
+                        <div class="platform-title">Platforms:</div>
+                        <div class="platform-list">
+                            <span class="platform-badge platform-other">MSD</span>
+                            <span class="platform-badge platform-other">Luminex</span>
+                            <span class="platform-badge platform-other">ELISA</span>
+                            <span class="platform-badge platform-other">LC-MS</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-actions">
+                        <a href="#" class="btn-view">View Lab Profile</a>
+                        <a href="#" class="btn-contact">Contact Lab</a>
+                    </div>
+                </div>
+                
+                <!-- Lab Card 6 -->
+                <div class="lab-card">
+                    <div class="lab-header">
+                        <div class="lab-avatar">🧪</div>
+                        <div class="lab-info">
+                            <h3>Karolinska Institute</h3>
+                            <div class="lab-location">📍 Stockholm, Sweden</div>
+                            <div class="lab-rating">
+                                <span class="verification-text">Alamar Partner Lab</span>
+                            </div>
+                            <div class="verification-badges">
+                                <span class="verification-badge">✓ Verified</span>
+                                <span class="verification-badge">ISO 15189</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="lab-description">Premier medical university with advanced proteomics research capabilities. Leading European center for biomarker discovery and validation in multiple disease areas.</p>
+                    
+                    <div class="lab-specialties">
+                        <div class="specialty-title">Specialties:</div>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Biomarker Discovery</span>
+                            <span class="specialty-tag">Multi-Omics</span>
+                            <span class="specialty-tag">Population Studies</span>
+                            <span class="specialty-tag">Epidemiology</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">41</div>
+                            <div class="stat-label">Tests Available</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1.5K</div>
+                            <div class="stat-label">Samples Processed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2-5</div>
+                            <div class="stat-label">Days TAT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-platforms">
+                        <div class="platform-title">Platforms:</div>
+                        <div class="platform-list">
+                            <span class="platform-badge">Argo HT</span>
+                            <span class="platform-badge platform-other">Simoa</span>
+                            <span class="platform-badge platform-other">MSD</span>
+                            <span class="platform-badge platform-other">LC-MS</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lab-actions">
+                        <a href="#" class="btn-view">View Lab Profile</a>
+                        <a href="#" class="btn-contact">Contact Lab</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-btn">← Previous</a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">4</a>
+                <a href="#" class="page-btn">Next →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labatar - Proteomics Services Marketplace by Alamar Biosciences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            color: white;
+            padding: 4rem 2rem 6rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .value-props {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .value-prop {
+            text-align: center;
+            max-width: 200px;
+        }
+        
+        .value-prop-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .value-prop h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .value-prop p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin: -4rem auto 4rem;
+            max-width: 1200px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        
+        .search-title {
+            text-align: center;
+            color: #2c4e8a;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        
+        .search-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .search-tab {
+            padding: 1rem 0;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .search-tab.active {
+            color: #2c4e8a;
+            border-bottom-color: #f5b800;
+        }
+        
+        .search-tab:hover {
+            color: #2c4e8a;
+        }
+        
+        .search-content {
+            display: none;
+        }
+        
+        .search-content.active {
+            display: block;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: end;
+        }
+        
+        .search-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .search-label {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .search-input {
+            padding: 1rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: #f5b800;
+        }
+        
+        .search-select {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        
+        .search-select:hover {
+            border-color: #f5b800;
+        }
+        
+        .search-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            height: fit-content;
+        }
+        
+        .search-btn:hover {
+            background: #e0a600;
+            transform: scale(1.05);
+        }
+        
+        .popular-searches {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .popular-title {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .popular-tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .popular-tag {
+            background: #f8f9fa;
+            color: #2c4e8a;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .popular-tag:hover {
+            background: #e8f4fd;
+            border-color: #f5b800;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .stats-title {
+            color: #2c4e8a;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 6rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 600;
+            color: #f5b800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .stat-description {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+        
+        /* Featured Labs Preview */
+        .featured-labs-preview {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: #2c4e8a;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+        
+        .labs-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+        
+        .lab-preview-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .lab-preview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #f5b800;
+        }
+        
+        .lab-preview-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .lab-preview-name {
+            color: #2c4e8a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .lab-preview-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .lab-preview-stats {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        
+        .view-all-labs-btn {
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: fit-content;
+        }
+        
+        .view-all-labs-btn:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 4rem 2rem;
+            background: white;
+        }
+        
+        .how-it-works-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #f5b800;
+            color: #2c4e8a;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .step-title {
+            color: #2c4e8a;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .cta-btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        .cta-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn-secondary:hover {
+            background: white;
+            color: #2c4e8a;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c4e8a;
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #f5b800;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #3d68b0;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: #ccc;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .value-props {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .labs-preview-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            
+            .how-it-works-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="browse-tests.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Find the Right Proteomics Test for Your Research</h1>
+        <p class="subtitle">Connect with certified labs offering validated assays on Argo HT and other leading platforms</p>
+    </section>
+    
+    <!-- Search Section -->
+    <section class="search-section">
+        <h2 class="search-title">Find Your Perfect Proteomics Test</h2>
+        
+        <div class="search-tabs">
+            <div class="search-tab active" onclick="switchSearchTab('target')">Search by Target</div>
+            <div class="search-tab" onclick="switchSearchTab('disease')">Search by Disease</div>
+            <div class="search-tab" onclick="switchSearchTab('panel')">Search by Panel</div>
+        </div>
+        
+        <!-- Search by Target -->
+        <div id="target-search" class="search-content active">
+            <form class="search-form" onsubmit="handleSearch(event)">
+                <div class="search-group">
+                    <label class="search-label">Target/Biomarker</label>
+                    <input type="text" class="search-input" placeholder="e.g., IL-6, TNF-α, VEGF, p-Tau217..." name="target">
+                </div>
+                <div class="search-group">
+                    <label class="search-label">Sample Type</label>
+                    <select class="search-select" name="sample">
+                        <option>All Sample Types</option>
+                        <option>Plasma</option>
+                        <option>Serum</option>
+                        <option>CSF</option>
+                        <option>Urine</option>
+                        <option>Tissue</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <label class="search-label">Platform</label>
+                    <select class="search-select" name="platform">
+                        <option>All Platforms</option>
+                        <option>Argo HT / NULISA</option>
+                        <option>Quanterix Simoa</option>
+                        <option>MSD</option>
+                        <option>Luminex</option>
+                        <option>ELISA</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search Tests</button>
+            </form>
+        </div>
+        
+        <!-- Search by Disease -->
+        <div id="disease-search" class="search-content">
+            <form class="search-form" onsubmit="handleSearch(event)">
+                <div class="search-group">
+                    <label class="search-label">Disease/Condition</label>
+                    <input type="text" class="search-input" placeholder="e.g., Alzheimer's, Cancer, COVID-19, Inflammation..." name="disease">
+                </div>
+                <div class="search-group">
+                    <label class="search-label">Sample Type</label>
+                    <select class="search-select" name="sample">
+                        <option>All Sample Types</option>
+                        <option>Plasma</option>
+                        <option>Serum</option>
+                        <option>CSF</option>
+                        <option>Urine</option>
+                        <option>Tissue</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <label class="search-label">Clinical Area</label>
+                    <select class="search-select" name="clinical">
+                        <option>All Areas</option>
+                        <option>Neurology</option>
+                        <option>Oncology</option>
+                        <option>Immunology</option>
+                        <option>Cardiovascular</option>
+                        <option>Endocrinology</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search Tests</button>
+            </form>
+        </div>
+        
+        <!-- Search by Panel -->
+        <div id="panel-search" class="search-content">
+            <form class="search-form" onsubmit="handleSearch(event)">
+                <div class="search-group">
+                    <label class="search-label">Panel Name</label>
+                    <input type="text" class="search-input" placeholder="e.g., Neurodegeneration Panel, Cytokine Panel..." name="panel">
+                </div>
+                <div class="search-group">
+                    <label class="search-label">Multiplexing Level</label>
+                    <select class="search-select" name="multiplex">
+                        <option>Any Level</option>
+                        <option>Single-plex</option>
+                        <option>2-10 plex</option>
+                        <option>11-50 plex</option>
+                        <option>50+ plex</option>
+                        <option>100+ plex</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <label class="search-label">Platform</label>
+                    <select class="search-select" name="platform">
+                        <option>All Platforms</option>
+                        <option>Argo HT / NULISA</option>
+                        <option>Quanterix Simoa</option>
+                        <option>MSD</option>
+                        <option>Luminex</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search Tests</button>
+            </form>
+        </div>
+        
+        <div class="popular-searches">
+            <div class="popular-title">Popular Searches:</div>
+            <div class="popular-tags">
+                <a href="#" class="popular-tag">Alzheimer's Biomarkers</a>
+                <a href="#" class="popular-tag">IL-6</a>
+                <a href="#" class="popular-tag">p-Tau217</a>
+                <a href="#" class="popular-tag">Cytokine Panels</a>
+                <a href="#" class="popular-tag">GFAP</a>
+                <a href="#" class="popular-tag">Neurofilament Light</a>
+                <a href="#" class="popular-tag">Cancer Biomarkers</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <h2 class="stats-title">Trusted by Researchers Worldwide</h2>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">1,247</div>
+                <div class="stat-label">Available Tests</div>
+                <div class="stat-description">Validated assays across platforms</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">156</div>
+                <div class="stat-label">Certified Labs</div>
+                <div class="stat-description">Global network of experts</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">42</div>
+                <div class="stat-label">Active Collaborations</div>
+                <div class="stat-description">Multi-site research projects</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">25K+</div>
+                <div class="stat-label">Samples Analyzed</div>
+                <div class="stat-description">Supporting breakthrough research</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Labs Preview -->
+    <section class="featured-labs-preview">
+        <h2 class="section-title">Featured Laboratory Partners</h2>
+        
+        <div class="labs-preview-grid">
+            <div class="lab-preview-card">
+                <div class="lab-preview-icon">🏛️</div>
+                <div class="lab-preview-name">Stanford Proteomics Core</div>
+                <div class="lab-preview-location">Stanford, CA</div>
+                <div class="lab-preview-stats">
+                    <span>47 Tests</span>
+                    <span>Argo HT</span>
+                </div>
+            </div>
+            <div class="lab-preview-card">
+                <div class="lab-preview-icon">🎓</div>
+                <div class="lab-preview-name">University of Gothenburg</div>
+                <div class="lab-preview-location">Gothenburg, Sweden</div>
+                <div class="lab-preview-stats">
+                    <span>32 Tests</span>
+                    <span>Multiple Platforms</span>
+                </div>
+            </div>
+            <div class="lab-preview-card">
+                <div class="lab-preview-icon">🔬</div>
+                <div class="lab-preview-name">University College London</div>
+                <div class="lab-preview-location">London, UK</div>
+                <div class="lab-preview-stats">
+                    <span>28 Tests</span>
+                    <span>Luminex & MSD</span>
+                </div>
+            </div>
+            <div class="lab-preview-card">
+                <div class="lab-preview-icon">🏥</div>
+                <div class="lab-preview-name">UCSF Memory Center</div>
+                <div class="lab-preview-location">San Francisco, CA</div>
+                <div class="lab-preview-stats">
+                    <span>19 Tests</span>
+                    <span>Argo HT</span>
+                </div>
+            </div>
+        </div>
+        
+        <a href="browse-labs.html" class="view-all-labs-btn">Browse All 156 Labs →</a>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="section-title">How Labatar Works</h2>
+        
+        <div class="how-it-works-grid">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Search & Discover</h3>
+                <p class="step-description">Search our comprehensive database of validated proteomics tests by target, disease, or panel. Compare standardized performance metrics, pricing ranges, and capabilities from Alamar-verified laboratories worldwide.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Connect & Request Quotes</h3>
+                <p class="step-description">Submit project requirements to multiple labs with one click using our Smart Lead Routing System. Receive qualified quotes directly from laboratories that match your specific needs and budget.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Collaborate & Access Results</h3>
+                <p class="step-description">Work directly with your selected laboratory for sample submission and project management. For Argo HT tests, access your results seamlessly through NAS, with optional data sharing for multi-site collaborations.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2 class="cta-title">Ready to Accelerate Your Research?</h2>
+        <p class="cta-subtitle">Join thousands of researchers already using Labatar to access world-class proteomics services</p>
+        
+        <div class="cta-buttons">
+            <a href="browse-tests.html" class="cta-btn-primary">Browse Tests</a>
+            <a href="collaborate.html" class="cta-btn-secondary">Join Collaborations</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Labatar</h4>
+                <p>The leading marketplace for proteomics services, powered by Alamar Biosciences. Connecting researchers with certified laboratories worldwide.</p>
+                <p>© 2024 Alamar Biosciences. All rights reserved.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="browse-tests.html">Browse Tests</a></li>
+                    <li><a href="browse-labs.html">Browse Labs</a></li>
+                    <li><a href="collaborate.html">Collaborate</a></li>
+                    <li><a href="lab-login.html">List Your Test</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Technical Support</a></li>
+                    <li><a href="#">Training Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Alamar</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Labatar is a trademark of Alamar Biosciences, Inc.</p>
+        </div>
+    </footer>
+    
+    <script>
+        function switchSearchTab(tabName) {
+            // Hide all search content
+            document.querySelectorAll('.search-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.search-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tabName + '-search').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        function handleSearch(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const searchParams = new URLSearchParams();
+            
+            // Add form data to search parameters
+            for (let [key, value] of formData.entries()) {
+                if (value) {
+                    searchParams.append(key, value);
+                }
+            }
+            
+            // Navigate to search results page
+            const searchUrl = 'search-results.html' + (searchParams.toString() ? '?' + searchParams.toString() : '');
+            window.location.href = searchUrl;
+        }
+        
+        // Popular tag clicks
+        document.querySelectorAll('.popular-tag').forEach(tag => {
+            tag.addEventListener('click', function(e) {
+                e.preventDefault();
+                const searchTerm = this.textContent;
+                window.location.href = `search-results.html?q=${encodeURIComponent(searchTerm)}`;
+            });
+        });
+    </script>
+</body>
+</html>

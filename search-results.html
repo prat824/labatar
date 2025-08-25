@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labatar - Proteomics Services Marketplace by Alamar Biosciences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            color: white;
+            padding: 3rem 2rem 4rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        
+        /* Advanced Search Container */
+        .advanced-search-container {
+            max-width: 1100px;
+            margin: -3rem auto 3rem;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        
+        .search-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .search-tab {
+            padding: 0.75rem 0;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+        
+        .search-tab.active {
+            color: #2c4e8a;
+            border-bottom-color: #f5b800;
+        }
+        
+        .search-tab:hover {
+            color: #2c4e8a;
+        }
+        
+        .search-fields {
+            display: grid;
+            grid-template-columns: 1fr 200px 200px auto;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-input-main {
+            border: 2px solid #e0e0e0;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input-main:focus {
+            border-color: #f5b800;
+        }
+        
+        .search-dropdown {
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .search-dropdown:hover {
+            border-color: #f5b800;
+        }
+        
+        .search-btn-main {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .search-btn-main:hover {
+            background: #e0a600;
+            transform: scale(1.05);
+        }
+        
+        /* Quick Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            padding: 2rem;
+            background: white;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #f5b800;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Featured Labs Section */
+        .featured-labs {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: #2c4e8a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .lab-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .lab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #f5b800;
+        }
+        
+        .lab-logo {
+            height: 40px;
+            margin-bottom: 1rem;
+            color: #2c4e8a;
+            font-weight: 600;
+        }
+        
+        .lab-name {
+            font-size: 1.2rem;
+            color: #2c4e8a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lab-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .view-all-labs {
+            text-align: center;
+        }
+        
+        .btn-outline {
+            display: inline-block;
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+        
+        /* Filters Sidebar */
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+        
+        .filter-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .filter-option input {
+            margin-right: 0.75rem;
+        }
+        
+        .filter-option label {
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        /* Test Listings */
+        .listings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .results-count {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        .sort-dropdown {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .listings {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .test-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .test-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-color: #f5b800;
+        }
+        
+        .test-badge {
+            background: #e8f4fd;
+            color: #2c4e8a;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            height: fit-content;
+        }
+        
+        .test-info {
+            flex: 1;
+        }
+        
+        .test-title {
+            font-size: 1.3rem;
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .test-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .test-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .meta-label {
+            font-weight: 600;
+        }
+        
+        .test-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        
+        .test-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        
+        .lab-link {
+            font-size: 0.9rem;
+            color: #2c4e8a;
+            text-align: right;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .lab-link:hover {
+            text-decoration: underline;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .btn-view {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn-view:hover {
+            background: #1e3460;
+        }
+        
+        /* Featured Badge */
+        .featured-badge {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Platform Badge */
+        .platform-badge {
+            background: linear-gradient(135deg, #2c4e8a, #3d68b0);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Tab content sections */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="search-results.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Find the Right Proteomics Test for Your Research</h1>
+        <p class="subtitle">Connect with certified labs offering validated assays on Argo HT and other leading platforms</p>
+    </section>
+    
+    <!-- Advanced Search Container -->
+    <div class="advanced-search-container">
+        <div class="search-tabs">
+            <div class="search-tab active" onclick="switchTab('target')">Search by Target</div>
+            <div class="search-tab" onclick="switchTab('disease')">Search by Disease</div>
+            <div class="search-tab" onclick="switchTab('panel')">Search by Panel</div>
+            <div class="search-tab" onclick="switchTab('advanced')">Advanced Search</div>
+        </div>
+        
+        <!-- Search by Target Tab -->
+        <div id="target-tab" class="tab-content active">
+            <div class="search-fields">
+                <input type="text" class="search-input-main" placeholder="e.g., IL-6, TNF-α, VEGF, CD163...">
+                <select class="search-dropdown">
+                    <option>All Sample Types</option>
+                    <option>Plasma</option>
+                    <option>Serum</option>
+                    <option>CSF</option>
+                    <option>Urine</option>
+                    <option>Tissue</option>
+                </select>
+                <select class="search-dropdown">
+                    <option>All Platforms</option>
+                    <option>Argo HT / NULISA</option>
+                    <option>Quanterix Simoa</option>
+                    <option>MSD</option>
+                    <option>Luminex</option>
+                    <option>ELISA</option>
+                    <option>LC-MS</option>
+                </select>
+                <button class="search-btn-main">Search Tests</button>
+            </div>
+        </div>
+        
+        <!-- Search by Disease Tab -->
+        <div id="disease-tab" class="tab-content">
+            <div class="search-fields">
+                <input type="text" class="search-input-main" placeholder="e.g., Alzheimer's, Cancer, COVID-19, Inflammation...">
+                <select class="search-dropdown">
+                    <option>All Sample Types</option>
+                    <option>Plasma</option>
+                    <option>Serum</option>
+                    <option>CSF</option>
+                    <option>Urine</option>
+                    <option>Tissue</option>
+                </select>
+                <select class="search-dropdown">
+                    <option>All Platforms</option>
+                    <option>Argo HT / NULISA</option>
+                    <option>Quanterix Simoa</option>
+                    <option>MSD</option>
+                    <option>Luminex</option>
+                    <option>ELISA</option>
+                    <option>LC-MS</option>
+                </select>
+                <button class="search-btn-main">Search Tests</button>
+            </div>
+        </div>
+        
+        <!-- Search by Panel Tab -->
+        <div id="panel-tab" class="tab-content">
+            <div class="search-fields">
+                <input type="text" class="search-input-main" placeholder="e.g., Neurodegeneration Panel, Cytokine Panel...">
+                <select class="search-dropdown">
+                    <option>All Sample Types</option>
+                    <option>Plasma</option>
+                    <option>Serum</option>
+                    <option>CSF</option>
+                    <option>Urine</option>
+                    <option>Tissue</option>
+                </select>
+                <select class="search-dropdown">
+                    <option>All Platforms</option>
+                    <option>Argo HT / NULISA</option>
+                    <option>Quanterix Simoa</option>
+                    <option>MSD</option>
+                    <option>Luminex</option>
+                    <option>ELISA</option>
+                    <option>LC-MS</option>
+                </select>
+                <button class="search-btn-main">Search Tests</button>
+            </div>
+        </div>
+        
+        <!-- Advanced Search Tab -->
+        <div id="advanced-tab" class="tab-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <input type="text" class="search-input-main" placeholder="Keywords...">
+                <input type="text" class="search-input-main" placeholder="Lab/Institution name...">
+                <select class="search-dropdown">
+                    <option>All Sample Types</option>
+                    <option>Plasma</option>
+                    <option>Serum</option>
+                    <option>CSF</option>
+                    <option>Urine</option>
+                </select>
+                <select class="search-dropdown">
+                    <option>All Platforms</option>
+                    <option>Argo HT / NULISA</option>
+                    <option>Quanterix Simoa</option>
+                    <option>MSD</option>
+                    <option>Luminex</option>
+                </select>
+                <select class="search-dropdown">
+                    <option>All Test Types</option>
+                    <option>Single-plex</option>
+                    <option>Multiplex Panel</option>
+                    <option>Reflex Test</option>
+                </select>
+                <select class="search-dropdown">
+                    <option>All Clinical Areas</option>
+                    <option>Neurology</option>
+                    <option>Oncology</option>
+                    <option>Inflammation</option>
+                    <option>Cardiovascular</option>
+                </select>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="search-btn-main" style="padding: 1rem 3rem;">Advanced Search</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">1,247</div>
+            <div class="stat-label">Available Tests</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">156</div>
+            <div class="stat-label">Certified Labs</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">8</div>
+            <div class="stat-label">Platform Types</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">42</div>
+            <div class="stat-label">Active Collaborations</div>
+        </div>
+    </div>
+    
+    <!-- Featured Labs Section -->
+    <section class="featured-labs">
+        <h2 class="section-title">Featured Laboratory Partners</h2>
+        <div class="labs-grid">
+            <div class="lab-card">
+                <div class="lab-logo">🏛️</div>
+                <div class="lab-name">Stanford Proteomics Core</div>
+                <p style="color: #666; font-size: 0.9rem; margin: 0.5rem 0;">Leading expertise in neurodegeneration and cancer biomarkers</p>
+                <div class="lab-stats">
+                    <span>47 Tests</span>
+                    <span>Argo HT</span>
+                    <span>⭐ 4.9</span>
+                </div>
+            </div>
+            <div class="lab-card">
+                <div class="lab-logo">🎓</div>
+                <div class="lab-name">University of Gothenburg</div>
+                <p style="color: #666; font-size: 0.9rem; margin: 0.5rem 0;">World-renowned Alzheimer's biomarker research center</p>
+                <div class="lab-stats">
+                    <span>32 Tests</span>
+                    <span>Multiple Platforms</span>
+                    <span>⭐ 4.8</span>
+                </div>
+            </div>
+            <div class="lab-card">
+                <div class="lab-logo">🔬</div>
+                <div class="lab-name">University College London</div>
+                <p style="color: #666; font-size: 0.9rem; margin: 0.5rem 0;">Specialized in immuno-oncology and inflammation panels</p>
+                <div class="lab-stats">
+                    <span>28 Tests</span>
+                    <span>Luminex & MSD</span>
+                    <span>⭐ 4.7</span>
+                </div>
+            </div>
+            <div class="lab-card">
+                <div class="lab-logo">🏥</div>
+                <div class="lab-name">UCSF Memory Center</div>
+                <p style="color: #666; font-size: 0.9rem; margin: 0.5rem 0;">Clinical research focus on neurodegenerative diseases</p>
+                <div class="lab-stats">
+                    <span>19 Tests</span>
+                    <span>Argo HT</span>
+                    <span>⭐ 5.0</span>
+                </div>
+            </div>
+        </div>
+        <div class="view-all-labs">
+            <a href="#" class="btn-outline">Browse All 156 Labs →</a>
+        </div>
+    </section>
+    
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Filters Sidebar -->
+        <aside class="filters">
+            <div class="filter-section">
+                <h3 class="filter-title">Platform</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="argo" checked>
+                    <label for="argo">Argo HT / NULISA</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="quanterix">
+                    <label for="quanterix">Quanterix Simoa</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="msd">
+                    <label for="msd">MSD</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="luminex">
+                    <label for="luminex">Luminex</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="elisa">
+                    <label for="elisa">ELISA</label>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Test Type</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="multiplex">
+                    <label for="multiplex">Multiplex Panel</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="singleplex">
+                    <label for="singleplex">Single-plex</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="reflex">
+                    <label for="reflex">Reflex Test</label>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Sample Type</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="plasma">
+                    <label for="plasma">Plasma</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="serum">
+                    <label for="serum">Serum</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="csf">
+                    <label for="csf">CSF</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="urine">
+                    <label for="urine">Urine</label>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Intended Use</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="ruo">
+                    <label for="ruo">Research Use Only</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="ldt">
+                    <label for="ldt">LDT</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="clinical">
+                    <label for="clinical">Clinical Diagnostic</label>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Test Listings -->
+        <div>
+            <div class="listings-header">
+                <div class="results-count">Showing 247 results</div>
+                <select class="sort-dropdown">
+                    <option>Sort by: Relevance</option>
+                    <option>Sort by: Price (Low to High)</option>
+                    <option>Sort by: Price (High to Low)</option>
+                    <option>Sort by: Turnaround Time</option>
+                    <option>Sort by: Platform</option>
+                </select>
+            </div>
+            
+            <div class="listings">
+                <!-- Featured Test Card -->
+                <div class="test-card">
+                    <div class="test-badge">
+                        <div>Multiplex</div>
+                        <div style="font-size: 0.8rem; margin-top: 0.25rem;">250-plex</div>
+                    </div>
+                    <div class="test-info">
+                        <span class="featured-badge">⭐ FEATURED</span>
+                        <h3 class="test-title">Comprehensive Neurodegeneration Panel v3.2</h3>
+                        <p class="test-description">High-sensitivity detection of 250 key biomarkers for Alzheimer's, Parkinson's, and other neurodegenerative diseases. Validated on CSF and plasma samples with sub-femtomolar sensitivity.</p>
+                        <div class="test-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Platform:</span>
+                                <span class="platform-badge">Argo HT</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Sample:</span>
+                                <span>10μL plasma/CSF</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">TAT:</span>
+                                <span>3-5 days</span>
+                            </div>
+                        </div>
+                        <div class="test-tags">
+                            <span class="tag">Tau</span>
+                            <span class="tag">Aβ42</span>
+                            <span class="tag">α-synuclein</span>
+                            <span class="tag">NfL</span>
+                            <span class="tag">GFAP</span>
+                            <span class="tag">+245 more</span>
+                        </div>
+                    </div>
+                    <div class="test-actions">
+                        <a href="#" class="lab-link">Stanford Proteomics Core →</a>
+                        <div class="price">$1,250/sample</div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="test-details.html" class="btn-view">View Details</a>
+                            <a href="request-lab-quote.html" class="btn-view" style="background: #f5b800; color: #2c4e8a;">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Regular Test Card -->
+                <div class="test-card">
+                    <div class="test-badge">
+                        <div>Single-plex</div>
+                    </div>
+                    <div class="test-info">
+                        <h3 class="test-title">Ultra-Sensitive IL-6 Quantification</h3>
+                        <p class="test-description">Gold-standard IL-6 detection with 100fg/mL sensitivity. Ideal for inflammation studies and cytokine storm monitoring.</p>
+                        <div class="test-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Platform:</span>
+                                <span class="platform-badge">Argo HT</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Sample:</span>
+                                <span>5μL serum/plasma</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">TAT:</span>
+                                <span>24 hours</span>
+                            </div>
+                        </div>
+                        <div class="test-tags">
+                            <span class="tag">IL-6</span>
+                            <span class="tag">Inflammation</span>
+                            <span class="tag">COVID-19</span>
+                            <span class="tag">Sepsis</span>
+                        </div>
+                    </div>
+                    <div class="test-actions">
+                        <a href="#" class="lab-link">University of Gothenburg →</a>
+                        <div class="price">$125/sample</div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="#" class="btn-view">View Details</a>
+                            <a href="request-lab-quote.html" class="btn-view" style="background: #f5b800; color: #2c4e8a;">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Another Test Card -->
+                <div class="test-card">
+                    <div class="test-badge">
+                        <div>Multiplex</div>
+                        <div style="font-size: 0.8rem; margin-top: 0.25rem;">48-plex</div>
+                    </div>
+                    <div class="test-info">
+                        <h3 class="test-title">Immuno-Oncology Checkpoint Panel</h3>
+                        <p class="test-description">Comprehensive profiling of immune checkpoint proteins and related cytokines for cancer immunotherapy research and patient stratification.</p>
+                        <div class="test-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Platform:</span>
+                                <span style="background: #6c757d; color: white; padding: 0.25rem 0.75rem; border-radius: 5px; font-size: 0.8rem;">Luminex</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Sample:</span>
+                                <span>25μL plasma</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">TAT:</span>
+                                <span>2-3 days</span>
+                            </div>
+                        </div>
+                        <div class="test-tags">
+                            <span class="tag">PD-1</span>
+                            <span class="tag">PD-L1</span>
+                            <span class="tag">CTLA-4</span>
+                            <span class="tag">TIM-3</span>
+                            <span class="tag">LAG-3</span>
+                        </div>
+                    </div>
+                    <div class="test-actions">
+                        <a href="#" class="lab-link">University College London →</a>
+                        <div class="price">$450/sample</div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="#" class="btn-view">View Details</a>
+                            <a href="request-lab-quote.html" class="btn-view" style="background: #f5b800; color: #2c4e8a;">Get Quote</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collaborative Project Card -->
+                <div class="test-card" style="background: linear-gradient(to right, #fff 98%, #f5b800 2%);">
+                    <div class="test-badge" style="background: #f5b800; color: #2c4e8a;">
+                        <div>Collaborative</div>
+                    </div>
+                    <div class="test-info">
+                        <h3 class="test-title">Multi-Site Alzheimer's Biomarker Validation Study</h3>
+                        <p class="test-description">Join a collaborative effort to validate novel AD biomarkers across multiple sites. Standardized protocols, shared data access, and co-authorship opportunities.</p>
+                        <div class="test-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Platform:</span>
+                                <span class="platform-badge">Argo HT</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Sites:</span>
+                                <span>12 participating labs</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status:</span>
+                                <span style="color: #28a745;">Open for enrollment</span>
+                            </div>
+                        </div>
+                        <div class="test-tags">
+                            <span class="tag">Collaboration</span>
+                            <span class="tag">Data Sharing</span>
+                            <span class="tag">Multi-site</span>
+                            <span class="tag">Validation</span>
+                        </div>
+                    </div>
+                    <div class="test-actions">
+                        <a href="#" class="lab-link">UCSF Memory Center →</a>
+                        <div class="price">Contact for details</div>
+                        <a href="#" class="btn-view" style="background: #f5b800; color: #2c4e8a;">Join Study</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.search-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        function performSearch() {
+            // This function can be enhanced to actually filter results
+            // For now, it just provides visual feedback
+            alert('Search performed! Results would be filtered based on your criteria.');
+        }
+    </script>
+</body>
+</html>

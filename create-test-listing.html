@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Test Listing - Lab Dashboard - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #2c4e8a;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Form Container */
+        .form-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .form-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .form-title {
+            color: #2c4e8a;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Form Steps */
+        .form-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border-radius: 25px;
+            margin: 0 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .step.active {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background: #f5b800;
+            color: #2c4e8a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .step.active .step-number {
+            background: white;
+            color: #2c4e8a;
+        }
+        
+        /* Form Content */
+        .form-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            color: #2c4e8a;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-label.required::after {
+            content: ' *';
+            color: #dc3545;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: #f5b800;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-help {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        /* Platform Selection */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .platform-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .platform-option:hover {
+            border-color: #f5b800;
+        }
+        
+        .platform-option.selected {
+            border-color: #2c4e8a;
+            background: #e8f4fd;
+        }
+        
+        .platform-option input {
+            display: none;
+        }
+        
+        .platform-name {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .platform-desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Biomarker Input */
+        .biomarker-input-container {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .biomarker-input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .biomarker-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        
+        .add-biomarker-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .biomarker-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .biomarker-tag {
+            background: #e8f4fd;
+            color: #2c4e8a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .remove-tag {
+            cursor: pointer;
+            color: #666;
+            font-weight: bold;
+        }
+        
+        /* Sample Requirements */
+        .sample-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        /* Pricing Section */
+        .pricing-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .pricing-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .pricing-option:hover {
+            border-color: #f5b800;
+        }
+        
+        .pricing-option.selected {
+            border-color: #2c4e8a;
+            background: #e8f4fd;
+        }
+        
+        .pricing-option input {
+            display: none;
+        }
+        
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #2c4e8a;
+            color: #2c4e8a;
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+        }
+        
+        .btn-outline:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        /* Validation */
+        .form-input.error,
+        .form-select.error,
+        .form-textarea.error {
+            border-color: #dc3545;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Success Message */
+        .success-banner {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="lab-dashboard.html">Dashboard</a>
+                <a href="#">Analytics</a>
+                <a href="collaborate.html">Collaborations</a>
+                <a href="#">Settings</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="lab-dashboard.html">Lab Dashboard</a> → 
+            <a href="#">Test Listings</a> → 
+            <span>Create New Test</span>
+        </div>
+    </div>
+    
+    <div class="form-container">
+        <!-- Form Header -->
+        <div class="form-header">
+            <h1 class="form-title">Create New Test Listing</h1>
+            <p class="form-subtitle">Add a new proteomics test to the Labatar marketplace</p>
+        </div>
+        
+        <!-- Form Steps -->
+        <div class="form-steps">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <span>Basic Information</span>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <span>Technical Details</span>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Pricing & Logistics</span>
+            </div>
+        </div>
+        
+        <!-- Form Content -->
+        <form class="form-content" onsubmit="handleFormSubmit(event)">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2 class="section-title">Basic Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Test Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., Advanced Cytokine Panel" required>
+                        <div class="form-help">Choose a clear, descriptive name for your test</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Test Type</label>
+                        <select class="form-select" required>
+                            <option value="">Select test type</option>
+                            <option value="single">Single-plex</option>
+                            <option value="multiplex">Multiplex Panel</option>
+                            <option value="reflex">Reflex Test</option>
+                            <option value="custom">Custom Assay</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label class="form-label required">Test Description</label>
+                        <textarea class="form-textarea" placeholder="Provide a detailed description of your test, including its applications, advantages, and target audience..." required></textarea>
+                        <div class="form-help">Include key benefits, applications, and what makes this test unique</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Clinical Area</label>
+                        <select class="form-select" required>
+                            <option value="">Select primary clinical area</option>
+                            <option value="neurology">Neurology</option>
+                            <option value="oncology">Oncology</option>
+                            <option value="immunology">Immunology & Inflammation</option>
+                            <option value="cardiovascular">Cardiovascular</option>
+                            <option value="endocrinology">Endocrinology</option>
+                            <option value="infectious">Infectious Disease</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Intended Use</label>
+                        <select class="form-select" required>
+                            <option value="">Select intended use</option>
+                            <option value="ruo">Research Use Only (RUO)</option>
+                            <option value="ldt">Laboratory Developed Test (LDT)</option>
+                            <option value="clinical">Clinical Diagnostic</option>
+                            <option value="screening">Population Screening</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Technical Details Section -->
+            <div class="form-section">
+                <h2 class="section-title">Technical Details</h2>
+                
+                <div class="form-group">
+                    <label class="form-label required">Platform</label>
+                    <div class="platform-grid">
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="argo" required>
+                            <div class="platform-name">Argo HT / NULISA</div>
+                            <div class="platform-desc">Ultra-sensitive protein detection</div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="simoa" required>
+                            <div class="platform-name">Quanterix Simoa</div>
+                            <div class="platform-desc">Single molecule arrays</div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="msd" required>
+                            <div class="platform-name">MSD</div>
+                            <div class="platform-desc">Electrochemiluminescence</div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="luminex" required>
+                            <div class="platform-name">Luminex</div>
+                            <div class="platform-desc">Multiplex bead-based</div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="elisa" required>
+                            <div class="platform-name">ELISA</div>
+                            <div class="platform-desc">Enzyme-linked immunoassay</div>
+                        </label>
+                        <label class="platform-option">
+                            <input type="radio" name="platform" value="lcms" required>
+                            <div class="platform-name">LC-MS/MS</div>
+                            <div class="platform-desc">Mass spectrometry</div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Biomarkers/Targets</label>
+                    <div class="biomarker-input-container">
+                        <div class="biomarker-input-row">
+                            <input type="text" class="biomarker-input" placeholder="Enter biomarker name (e.g., IL-6, TNF-α)">
+                            <button type="button" class="add-biomarker-btn" onclick="addBiomarker()">Add</button>
+                        </div>
+                        <div class="form-help">Add biomarkers one at a time. You can include protein names, abbreviations, or Uniprot IDs.</div>
+                        <div class="biomarker-tags" id="biomarker-tags">
+                            <!-- Biomarker tags will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Multiplexing Level</label>
+                        <input type="number" class="form-input" placeholder="e.g., 48" min="1" required>
+                        <div class="form-help">Number of targets measured simultaneously</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Assay Sensitivity</label>
+                        <input type="text" class="form-input" placeholder="e.g., 0.1 pg/mL">
+                        <div class="form-help">Lower limit of quantification (LLOQ)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sample Requirements Section -->
+            <div class="form-section">
+                <h2 class="section-title">Sample Requirements</h2>
+                
+                <div class="sample-grid">
+                    <div class="form-group">
+                        <label class="form-label required">Sample Types</label>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="sampleTypes" value="plasma">
+                                <span>Plasma</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="sampleTypes" value="serum">
+                                <span>Serum</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="sampleTypes" value="csf">
+                                <span>CSF</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="sampleTypes" value="urine">
+                                <span>Urine</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="sampleTypes" value="tissue">
+                                <span>Tissue Lysate</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Sample Volume Required</label>
+                        <input type="text" class="form-input" placeholder="e.g., 10 μL" required>
+                        <div class="form-help">Minimum volume needed per test</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Storage Requirements</label>
+                        <select class="form-select">
+                            <option value="">Select storage condition</option>
+                            <option value="-80">-80°C (long-term)</option>
+                            <option value="-20">-20°C (short-term)</option>
+                            <option value="4">4°C (fresh samples)</option>
+                            <option value="rt">Room temperature</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Turnaround Time</label>
+                        <input type="text" class="form-input" placeholder="e.g., 3-5 business days">
+                        <div class="form-help">Expected time from sample receipt to results delivery</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pricing Section -->
+            <div class="form-section">
+                <h2 class="section-title">Pricing & Logistics</h2>
+                
+                <div class="form-group">
+                    <label class="form-label required">Pricing Model</label>
+                    <div class="pricing-options">
+                        <label class="pricing-option">
+                            <input type="radio" name="pricingModel" value="per-sample" required>
+                            <div>
+                                <div class="platform-name">Per Sample</div>
+                                <div class="platform-desc">Fixed price per individual sample</div>
+                            </div>
+                        </label>
+                        <label class="pricing-option">
+                            <input type="radio" name="pricingModel" value="tiered" required>
+                            <div>
+                                <div class="platform-name">Volume Tiered</div>
+                                <div class="platform-desc">Decreasing price with volume</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">Base Price</label>
+                        <input type="number" class="form-input" placeholder="1250" step="0.01" required>
+                        <div class="form-help">Price in USD per sample</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Minimum Order</label>
+                        <input type="number" class="form-input" placeholder="1" min="1">
+                        <div class="form-help">Minimum number of samples per order</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Rush Service</label>
+                        <select class="form-select">
+                            <option value="">No rush service</option>
+                            <option value="24h">24-hour rush (+50%)</option>
+                            <option value="48h">48-hour rush (+25%)</option>
+                            <option value="custom">Custom pricing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Data Delivery</label>
+                        <select class="form-select">
+                            <option value="nas">Alamar NAS Platform</option>
+                            <option value="email">Email Report</option>
+                            <option value="portal">Secure Web Portal</option>
+                            <option value="api">API Integration</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Information -->
+            <div class="form-section">
+                <h2 class="section-title">Additional Information</h2>
+                
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label class="form-label">Special Instructions</label>
+                        <textarea class="form-textarea" placeholder="Any special handling instructions, quality control notes, or additional services..."></textarea>
+                        <div class="form-help">Optional: Include any special requirements or additional services</div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Publications/References</label>
+                        <textarea class="form-textarea" placeholder="List relevant publications, validation studies, or reference materials..."></textarea>
+                        <div class="form-help">Help customers understand the scientific basis for your test</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Keywords/Tags</label>
+                        <input type="text" class="form-input" placeholder="e.g., inflammation, biomarker, discovery">
+                        <div class="form-help">Comma-separated keywords to improve searchability</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <div>
+                    <button type="button" class="btn btn-secondary" onclick="saveDraft()">Save as Draft</button>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="lab-dashboard.html" class="btn btn-outline">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Create Test Listing</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        let biomarkers = [];
+        
+        // Platform selection
+        document.querySelectorAll('.platform-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.platform-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input').checked = true;
+            });
+        });
+        
+        // Pricing model selection
+        document.querySelectorAll('.pricing-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.pricing-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input').checked = true;
+            });
+        });
+        
+        // Add biomarker function
+        function addBiomarker() {
+            const input = document.querySelector('.biomarker-input');
+            const biomarker = input.value.trim();
+            
+            if (biomarker && !biomarkers.includes(biomarker)) {
+                biomarkers.push(biomarker);
+                updateBiomarkerTags();
+                input.value = '';
+            }
+        }
+        
+        // Update biomarker tags display
+        function updateBiomarkerTags() {
+            const container = document.getElementById('biomarker-tags');
+            container.innerHTML = '';
+            
+            biomarkers.forEach((biomarker, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'biomarker-tag';
+                tag.innerHTML = `
+                    <span>${biomarker}</span>
+                    <span class="remove-tag" onclick="removeBiomarker(${index})">×</span>
+                `;
+                container.appendChild(tag);
+            });
+        }
+        
+        // Remove biomarker function
+        function removeBiomarker(index) {
+            biomarkers.splice(index, 1);
+            updateBiomarkerTags();
+        }
+        
+        // Allow Enter key to add biomarkers
+        document.querySelector('.biomarker-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addBiomarker();
+            }
+        });
+        
+        // Save draft function
+        function saveDraft() {
+            alert('Draft saved successfully! You can continue editing later from your dashboard.');
+        }
+        
+        // Form submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            // Show success message
+            const formContent = document.querySelector('.form-content');
+            const successBanner = document.createElement('div');
+            successBanner.className = 'success-banner';
+            successBanner.innerHTML = `
+                <strong>✅ Test listing created successfully!</strong><br>
+                Your test has been submitted for review. It will appear in the marketplace within 24 hours after approval.
+            `;
+            
+            formContent.insertBefore(successBanner, formContent.firstChild);
+            
+            // Simulate redirect after delay
+            setTimeout(() => {
+                window.location.href = 'lab-dashboard.html';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

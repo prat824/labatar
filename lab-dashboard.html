@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stanford Proteomics Core - Lab Dashboard - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e8f4fd;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .lab-name {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        /* Dashboard Container */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Dashboard Header */
+        .dashboard-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lab-info h1 {
+            color: #2c4e8a;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lab-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #f5b800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Main Content Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        /* Test Listings Section */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            color: #2c4e8a;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-tab.active {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .filter-tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .filter-tab.active:hover {
+            background: #1e3460;
+        }
+        
+        /* Test Listing Cards */
+        .test-listing {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .test-listing:hover {
+            border-color: #f5b800;
+        }
+        
+        .test-listing.featured {
+            border-color: #f5b800;
+            background: linear-gradient(to right, #fff 98%, #f5b800 2%);
+        }
+        
+        .test-listing.draft {
+            border-color: #ffc107;
+            background: #fff9e6;
+        }
+        
+        .test-listing.inactive {
+            border-color: #6c757d;
+            background: #f8f9fa;
+            opacity: 0.7;
+        }
+        
+        .listing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .listing-title {
+            color: #2c4e8a;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .listing-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-featured {
+            background: #f5b800;
+            color: #2c4e8a;
+        }
+        
+        .status-draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .listing-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            padding: 0.25rem 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background: white;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            border-color: #f5b800;
+            color: #2c4e8a;
+        }
+        
+        .listing-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        /* Sidebar Content */
+        .quick-actions {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-actions h3 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-action-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #666;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-action-item:hover {
+            background: #f8f9fa;
+            color: #2c4e8a;
+        }
+        
+        .recent-activity {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .recent-activity h3 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+        }
+        
+        .activity-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            color: #999;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Public Marketplace</a>
+                <a href="#">Analytics</a>
+                <a href="collaborate.html">Collaborations</a>
+                <a href="#">Settings</a>
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">🏛️</div>
+                <div>
+                    <div class="lab-name">Stanford Proteomics Core</div>
+                    <div style="font-size: 0.8rem; color: #666;">Lab Administrator</div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="header-top">
+                <div class="lab-info">
+                    <h1>Welcome back, Stanford Proteomics Core</h1>
+                    <p class="lab-subtitle">Manage your test listings and track performance</p>
+                </div>
+                <div class="action-buttons">
+                    <a href="create-test-listing.html" class="btn-primary">+ Create New Test</a>
+                    <a href="#" class="btn-secondary">View Public Profile</a>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">47</div>
+                    <div class="stat-label">Active Tests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1,247</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4.9</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$127K</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Main Content -->
+            <div>
+                <!-- Test Listings Section -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Your Test Listings</h2>
+                        <a href="create-test-listing.html" class="btn-primary">+ Add New Test</a>
+                    </div>
+                    
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" onclick="filterTests('all')">All Tests (47)</button>
+                        <button class="filter-tab" onclick="filterTests('active')">Active (42)</button>
+                        <button class="filter-tab" onclick="filterTests('draft')">Drafts (3)</button>
+                        <button class="filter-tab" onclick="filterTests('inactive')">Inactive (2)</button>
+                    </div>
+                    
+                    <!-- Featured Test -->
+                    <div class="test-listing featured">
+                        <div class="listing-header">
+                            <div>
+                                <div class="listing-title">Comprehensive Neurodegeneration Panel v3.2</div>
+                                <div class="listing-meta">
+                                    <span>250-plex • Argo HT • $1,250/sample</span>
+                                </div>
+                                <span class="status-badge status-featured">⭐ FEATURED</span>
+                            </div>
+                            <div class="listing-actions">
+                                <a href="#" class="action-btn">Edit</a>
+                                <a href="#" class="action-btn">View</a>
+                                <a href="#" class="action-btn">Duplicate</a>
+                            </div>
+                        </div>
+                        <p style="color: #666; margin-bottom: 1rem;">High-sensitivity detection of 250 key biomarkers for Alzheimer's, Parkinson's, and other neurodegenerative diseases.</p>
+                        <div class="listing-stats">
+                            <div class="stat-item">👁️ 2,847 views</div>
+                            <div class="stat-item">📋 47 inquiries</div>
+                            <div class="stat-item">🧪 23 orders this month</div>
+                            <div class="stat-item">⭐ 4.9 rating</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Test -->
+                    <div class="test-listing">
+                        <div class="listing-header">
+                            <div>
+                                <div class="listing-title">Ultra-Sensitive IL-6 Quantification</div>
+                                <div class="listing-meta">
+                                    <span>Single-plex • Argo HT • $125/sample</span>
+                                </div>
+                                <span class="status-badge status-active">ACTIVE</span>
+                            </div>
+                            <div class="listing-actions">
+                                <a href="#" class="action-btn">Edit</a>
+                                <a href="#" class="action-btn">View</a>
+                                <a href="#" class="action-btn">Duplicate</a>
+                            </div>
+                        </div>
+                        <p style="color: #666; margin-bottom: 1rem;">Gold-standard IL-6 detection with 100fg/mL sensitivity for inflammation studies.</p>
+                        <div class="listing-stats">
+                            <div class="stat-item">👁️ 1,523 views</div>
+                            <div class="stat-item">📋 28 inquiries</div>
+                            <div class="stat-item">🧪 18 orders this month</div>
+                            <div class="stat-item">⭐ 4.8 rating</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Draft Test -->
+                    <div class="test-listing draft">
+                        <div class="listing-header">
+                            <div>
+                                <div class="listing-title">COVID-19 Immune Response Panel</div>
+                                <div class="listing-meta">
+                                    <span>36-plex • Argo HT • Pricing TBD</span>
+                                </div>
+                                <span class="status-badge status-draft">DRAFT</span>
+                            </div>
+                            <div class="listing-actions">
+                                <a href="#" class="action-btn">Edit</a>
+                                <a href="#" class="action-btn">Preview</a>
+                                <a href="#" class="action-btn">Publish</a>
+                            </div>
+                        </div>
+                        <p style="color: #666; margin-bottom: 1rem;">Comprehensive immune profiling for COVID-19 research and vaccine response studies.</p>
+                        <div class="listing-stats">
+                            <div class="stat-item">📝 Draft saved 2 days ago</div>
+                            <div class="stat-item">⚠️ Missing pricing information</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Inactive Test -->
+                    <div class="test-listing inactive">
+                        <div class="listing-header">
+                            <div>
+                                <div class="listing-title">Legacy Cytokine Panel v1.0</div>
+                                <div class="listing-meta">
+                                    <span>24-plex • Luminex • $350/sample</span>
+                                </div>
+                                <span class="status-badge status-inactive">INACTIVE</span>
+                            </div>
+                            <div class="listing-actions">
+                                <a href="#" class="action-btn">Reactivate</a>
+                                <a href="#" class="action-btn">Archive</a>
+                            </div>
+                        </div>
+                        <p style="color: #666; margin-bottom: 1rem;">Superseded by newer Argo HT version. Maintained for historical comparison.</p>
+                        <div class="listing-stats">
+                            <div class="stat-item">⏸️ Deactivated 3 months ago</div>
+                            <div class="stat-item">📊 Historical data available</div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="#" style="color: #2c4e8a; text-decoration: none;">View All 47 Tests →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div>
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <a href="create-test-listing.html" class="quick-action-item">
+                        <span>➕</span>
+                        <span>Create New Test Listing</span>
+                    </a>
+                    <a href="#" class="quick-action-item">
+                        <span>📊</span>
+                        <span>View Analytics Dashboard</span>
+                    </a>
+                    <a href="#" class="quick-action-item">
+                        <span>🤝</span>
+                        <span>Browse Collaborations</span>
+                    </a>
+                    <a href="#" class="quick-action-item">
+                        <span>📋</span>
+                        <span>Manage Orders</span>
+                    </a>
+                    <a href="#" class="quick-action-item">
+                        <span>💬</span>
+                        <span>Customer Messages</span>
+                    </a>
+                    <a href="#" class="quick-action-item">
+                        <span>⚙️</span>
+                        <span>Lab Profile Settings</span>
+                    </a>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-item">
+                        <div>New order for Neurodegeneration Panel</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div>Customer inquiry about IL-6 assay</div>
+                        <div class="activity-time">4 hours ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div>Featured listing status approved</div>
+                        <div class="activity-time">1 day ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div>COVID-19 panel saved as draft</div>
+                        <div class="activity-time">2 days ago</div>
+                    </div>
+                    <div class="activity-item">
+                        <div>New collaboration request received</div>
+                        <div class="activity-time">3 days ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterTests(category) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Here you would typically filter the test listings
+            console.log('Filtering tests by:', category);
+        }
+    </script>
+</body>
+</html>

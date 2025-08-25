@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Neurodegeneration Panel v3.2 - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .breadcrumb a {
+            color: #2c4e8a;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        /* Test Details */
+        .test-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .featured-badge {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .test-title {
+            font-size: 2.2rem;
+            color: #2c4e8a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .key-specs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .spec-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .spec-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .spec-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .platform-badge {
+            background: linear-gradient(135deg, #2c4e8a, #3d68b0);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        /* Tabs */
+        .detail-tabs {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .tab-nav {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-button.active {
+            color: #2c4e8a;
+            background: white;
+            border-bottom-color: #f5b800;
+        }
+        
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Biomarker Grid */
+        .biomarker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .biomarker-tag {
+            background: #e8f4fd;
+            color: #2c4e8a;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .highlight-biomarkers {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .contact-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .lab-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lab-avatar {
+            width: 50px;
+            height: 50px;
+            background: #e8f4fd;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .lab-details h3 {
+            color: #2c4e8a;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .lab-rating {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .contact-btn {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-btn:hover {
+            background: #1e3460;
+        }
+        
+        .request-quote-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+        }
+        
+        .request-quote-btn:hover {
+            background: #e0a600;
+        }
+        
+        .price-display {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .price {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .price-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        /* Related Tests */
+        .related-tests {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .related-tests h3 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+        }
+        
+        .related-test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .related-test-item:hover {
+            border-color: #f5b800;
+            background: #fafafa;
+        }
+        
+        .related-test-info h4 {
+            color: #2c4e8a;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .related-test-meta {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .related-test-price {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        /* Performance Table */
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .performance-table th,
+        .performance-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .performance-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .performance-table tr:hover {
+            background: #fafafa;
+        }
+        
+        /* Sample Requirements */
+        .sample-requirements {
+            background: #e8f4fd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .sample-requirements h4 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+        }
+        
+        .requirement-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .requirement-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .requirement-label {
+            font-weight: 500;
+        }
+        
+        .view-all-btn {
+            background: #f8f9fa;
+            color: #2c4e8a;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .view-all-btn:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="search-results.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="index.html">Home</a> → 
+            <a href="#">Browse Tests</a> → 
+            <a href="#">Neurodegeneration</a> → 
+            <span>Comprehensive Neurodegeneration Panel v3.2</span>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <!-- Main Content -->
+        <div>
+            <!-- Test Header -->
+            <div class="test-header">
+                <span class="featured-badge">⭐ FEATURED</span>
+                <h1 class="test-title">Comprehensive Neurodegeneration Panel v3.2</h1>
+                <p class="test-subtitle">High-sensitivity detection of 250 key biomarkers for Alzheimer's, Parkinson's, and other neurodegenerative diseases</p>
+                
+                <div class="platform-badge">Argo HT / NULISA Platform</div>
+                
+                <div class="key-specs">
+                    <div class="spec-item">
+                        <div class="spec-value">250</div>
+                        <div class="spec-label">Biomarkers</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value">10μL</div>
+                        <div class="spec-label">Sample Volume</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value">3-5</div>
+                        <div class="spec-label">Days TAT</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value">Sub-fM</div>
+                        <div class="spec-label">Sensitivity</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Detailed Information Tabs -->
+            <div class="detail-tabs">
+                <div class="tab-nav">
+                    <button class="tab-button active" onclick="switchDetailTab('overview')">Overview</button>
+                    <button class="tab-button" onclick="switchDetailTab('biomarkers')">Biomarkers (250)</button>
+                    <button class="tab-button" onclick="switchDetailTab('performance')">Performance Data</button>
+                    <button class="tab-button" onclick="switchDetailTab('protocols')">Protocols & Requirements</button>
+                    <button class="tab-button" onclick="switchDetailTab('publications')">Publications</button>
+                </div>
+                
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content active">
+                    <h3 style="color: #2c4e8a; margin-bottom: 1rem;">Test Overview</h3>
+                    <p style="margin-bottom: 1.5rem;">This comprehensive panel leverages the ultra-sensitive Argo HT platform to simultaneously quantify 250 critical biomarkers associated with neurodegenerative diseases. Validated for both CSF and plasma samples, this assay provides researchers with unprecedented insight into disease mechanisms and progression.</p>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Key Applications:</h4>
+                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Alzheimer's disease biomarker discovery and validation</li>
+                        <li>Parkinson's disease progression monitoring</li>
+                        <li>ALS and FTD research applications</li>
+                        <li>Multi-target drug development studies</li>
+                        <li>Population health screening initiatives</li>
+                    </ul>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Clinical Relevance:</h4>
+                    <p style="margin-bottom: 1.5rem;">This panel includes FDA-breakthrough designated biomarkers (p-tau217, NfL) alongside emerging targets validated in recent clinical trials. The comprehensive coverage enables hypothesis-free discovery while ensuring coverage of established clinical markers.</p>
+                    
+                    <div class="sample-requirements">
+                        <h4>Sample Requirements</h4>
+                        <div class="requirement-grid">
+                            <div class="requirement-item">
+                                <span class="requirement-label">Sample Types:</span>
+                                <span>Plasma, Serum, CSF</span>
+                            </div>
+                            <div class="requirement-item">
+                                <span class="requirement-label">Volume Required:</span>
+                                <span>10μL minimum</span>
+                            </div>
+                            <div class="requirement-item">
+                                <span class="requirement-label">Storage:</span>
+                                <span>-80°C preferred</span>
+                            </div>
+                            <div class="requirement-item">
+                                <span class="requirement-label">Shipping:</span>
+                                <span>Dry ice required</span>
+                            </div>
+                            <div class="requirement-item">
+                                <span class="requirement-label">Freeze-Thaw:</span>
+                                <span>Max 3 cycles</span>
+                            </div>
+                            <div class="requirement-item">
+                                <span class="requirement-label">Collection Tubes:</span>
+                                <span>EDTA or Heparin</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Biomarkers Tab -->
+                <div id="biomarkers-tab" class="tab-content">
+                    <h3 style="color: #2c4e8a; margin-bottom: 1rem;">Complete Biomarker Panel (250 targets)</h3>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Highlight Biomarkers:</h4>
+                    <div class="biomarker-grid" style="margin-bottom: 2rem;">
+                        <div class="biomarker-tag highlight-biomarkers">Tau (Total)</div>
+                        <div class="biomarker-tag highlight-biomarkers">p-Tau 217</div>
+                        <div class="biomarker-tag highlight-biomarkers">p-Tau 181</div>
+                        <div class="biomarker-tag highlight-biomarkers">Aβ42</div>
+                        <div class="biomarker-tag highlight-biomarkers">Aβ40</div>
+                        <div class="biomarker-tag highlight-biomarkers">NfL</div>
+                        <div class="biomarker-tag highlight-biomarkers">GFAP</div>
+                        <div class="biomarker-tag highlight-biomarkers">α-synuclein</div>
+                        <div class="biomarker-tag highlight-biomarkers">UCHL1</div>
+                        <div class="biomarker-tag highlight-biomarkers">YKL-40</div>
+                    </div>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Inflammatory Markers:</h4>
+                    <div class="biomarker-grid" style="margin-bottom: 2rem;">
+                        <div class="biomarker-tag">IL-1β</div>
+                        <div class="biomarker-tag">IL-6</div>
+                        <div class="biomarker-tag">IL-8</div>
+                        <div class="biomarker-tag">IL-10</div>
+                        <div class="biomarker-tag">TNF-α</div>
+                        <div class="biomarker-tag">IFN-γ</div>
+                        <div class="biomarker-tag">MCP-1</div>
+                        <div class="biomarker-tag">RANTES</div>
+                        <div class="biomarker-tag">IP-10</div>
+                        <div class="biomarker-tag">MIP-1α</div>
+                        <div class="biomarker-tag">MIP-1β</div>
+                        <div class="biomarker-tag">Eotaxin</div>
+                        <div class="biomarker-tag">GM-CSF</div>
+                        <div class="biomarker-tag">G-CSF</div>
+                        <div class="biomarker-tag">PDGF-BB</div>
+                        <div class="biomarker-tag">VEGF</div>
+                        <div class="biomarker-tag">FGF-2</div>
+                        <div class="biomarker-tag">EGF</div>
+                    </div>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Synaptic & Neuronal Markers:</h4>
+                    <div class="biomarker-grid" style="margin-bottom: 2rem;">
+                        <div class="biomarker-tag">Neurogranin</div>
+                        <div class="biomarker-tag">SNAP-25</div>
+                        <div class="biomarker-tag">Synaptotagmin-1</div>
+                        <div class="biomarker-tag">PSD-95</div>
+                        <div class="biomarker-tag">Gap-43</div>
+                        <div class="biomarker-tag">VILIP-1</div>
+                        <div class="biomarker-tag">MARCKS</div>
+                        <div class="biomarker-tag">Calcineurin</div>
+                        <div class="biomarker-tag">CaMKII</div>
+                        <div class="biomarker-tag">PKCα</div>
+                    </div>
+                    
+                    <a href="#" class="view-all-btn">View Complete 250 Biomarker List →</a>
+                </div>
+                
+                <!-- Performance Tab -->
+                <div id="performance-tab" class="tab-content">
+                    <h3 style="color: #2c4e8a; margin-bottom: 1rem;">Analytical Performance</h3>
+                    
+                    <table class="performance-table">
+                        <thead>
+                            <tr>
+                                <th>Biomarker</th>
+                                <th>LLOQ (pg/mL)</th>
+                                <th>ULOQ (pg/mL)</th>
+                                <th>CV% (Intra)</th>
+                                <th>CV% (Inter)</th>
+                                <th>Recovery %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>p-Tau 217</strong></td>
+                                <td>0.05</td>
+                                <td>500</td>
+                                <td>4.2</td>
+                                <td>7.8</td>
+                                <td>96.3</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aβ42</strong></td>
+                                <td>0.1</td>
+                                <td>1000</td>
+                                <td>3.8</td>
+                                <td>6.5</td>
+                                <td>98.1</td>
+                            </tr>
+                            <tr>
+                                <td><strong>NfL</strong></td>
+                                <td>0.2</td>
+                                <td>2000</td>
+                                <td>5.1</td>
+                                <td>8.9</td>
+                                <td>94.7</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GFAP</strong></td>
+                                <td>1.5</td>
+                                <td>5000</td>
+                                <td>4.7</td>
+                                <td>9.2</td>
+                                <td>97.4</td>
+                            </tr>
+                            <tr>
+                                <td><strong>α-synuclein</strong></td>
+                                <td>0.8</td>
+                                <td>3000</td>
+                                <td>6.2</td>
+                                <td>11.3</td>
+                                <td>91.8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+                        Performance data shown for top 5 biomarkers. Complete validation data available for all 250 targets.
+                        All assays meet FDA bioanalytical method validation guidelines.
+                    </p>
+                </div>
+                
+                <!-- Protocols Tab -->
+                <div id="protocols-tab" class="tab-content">
+                    <h3 style="color: #2c4e8a; margin-bottom: 1rem;">Protocols & Standard Operating Procedures</h3>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Sample Collection Protocol:</h4>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Collect blood samples in EDTA or heparin tubes (preferred: EDTA)</li>
+                        <li>Process within 2 hours of collection for optimal results</li>
+                        <li>Centrifuge at 2000g for 10 minutes at 4°C</li>
+                        <li>Aliquot plasma into cryovials (minimum 50μL aliquots)</li>
+                        <li>Flash freeze and store at -80°C</li>
+                        <li>Ship on dry ice with temperature monitoring</li>
+                    </ol>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Quality Control:</h4>
+                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>All samples run in duplicate</li>
+                        <li>Calibration curve with each batch (8-point curve)</li>
+                        <li>High, medium, and low QC samples included</li>
+                        <li>Spike recovery validation for each batch</li>
+                        <li>Acceptance criteria: CV &lt; 15% for all QCs</li>
+                    </ul>
+                    
+                    <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Data Delivery:</h4>
+                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Results delivered via secure NAS portal</li>
+                        <li>Raw data (MFI values) included</li>
+                        <li>Calibration curves and QC data provided</li>
+                        <li>Statistical analysis summary report</li>
+                        <li>Certificate of analysis for each batch</li>
+                    </ul>
+                    
+                    <div style="background: #e8f4fd; padding: 1rem; border-radius: 8px; margin-top: 1.5rem;">
+                        <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">📋 Download Resources:</h4>
+                        <a href="#" style="color: #2c4e8a; text-decoration: none; display: block; margin-bottom: 0.25rem;">→ Sample Collection Kit Request Form</a>
+                        <a href="#" style="color: #2c4e8a; text-decoration: none; display: block; margin-bottom: 0.25rem;">→ Detailed Protocol PDF</a>
+                        <a href="#" style="color: #2c4e8a; text-decoration: none; display: block; margin-bottom: 0.25rem;">→ Shipping Instructions</a>
+                        <a href="#" style="color: #2c4e8a; text-decoration: none; display: block;">→ Data Analysis Guidelines</a>
+                    </div>
+                </div>
+                
+                <!-- Publications Tab -->
+                <div id="publications-tab" class="tab-content">
+                    <h3 style="color: #2c4e8a; margin-bottom: 1rem;">Related Publications & Validation Studies</h3>
+                    
+                    <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                        <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Validation of plasma p-tau217 as a biomarker of Alzheimer's disease</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">Nature Medicine (2023) | Stanford Proteomics Core</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Comprehensive validation of p-tau217 using the Argo HT platform across 2,400 clinical samples...</p>
+                        <a href="#" style="color: #2c4e8a; font-size: 0.9rem; text-decoration: none;">View Publication →</a>
+                    </div>
+                    
+                    <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                        <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Multi-biomarker approach to Parkinson's disease diagnosis</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">The Lancet Neurology (2023) | Multiple Centers</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Cross-sectional study utilizing this 250-plex panel for α-synuclein pathway analysis...</p>
+                        <a href="#" style="color: #2c4e8a; font-size: 0.9rem; text-decoration: none;">View Publication →</a>
+                    </div>
+                    
+                    <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                        <h4 style="color: #2c4e8a; margin-bottom: 0.5rem;">Inflammatory signatures in neurodegeneration</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">Brain (2022) | University of Gothenburg</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Identification of novel inflammatory biomarkers using comprehensive proteomics...</p>
+                        <a href="#" style="color: #2c4e8a; font-size: 0.9rem; text-decoration: none;">View Publication →</a>
+                    </div>
+                    
+                    <a href="#" class="view-all-btn">View All 23 Publications →</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Contact & Pricing -->
+            <div class="contact-card">
+                <div class="lab-info">
+                    <div class="lab-avatar">🏛️</div>
+                    <div class="lab-details">
+                        <h3>Stanford Proteomics Core</h3>
+                        <div class="lab-rating">⭐ 4.9 (127 reviews) • Verified</div>
+                    </div>
+                </div>
+                
+                <div class="price-display">
+                    <div class="price">$1,250</div>
+                    <div class="price-note">per sample • Volume discounts available</div>
+                </div>
+                
+                <a href="request-lab-quote.html" class="contact-btn request-quote-btn" style="text-decoration: none; display: block; text-align: center;">Request Quote</a>
+                <button class="contact-btn">Contact Lab</button>
+                <button class="contact-btn">Schedule Consultation</button>
+                
+                <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                    ✓ Results delivered to NAS<br>
+                    ✓ 30-day data access<br>
+                    ✓ Technical support included
+                </div>
+            </div>
+            
+            <!-- Related Tests -->
+            <div class="related-tests">
+                <h3>Related Tests from Stanford</h3>
+                
+                <div class="related-test-item" onclick="window.location.href='#'">
+                    <div class="related-test-info">
+                        <h4>Alzheimer's Core Panel (4-plex)</h4>
+                        <div class="related-test-meta">Tau, p-Tau, Aβ42, Aβ40 • Plasma/CSF</div>
+                    </div>
+                    <div class="related-test-price">$325</div>
+                </div>
+                
+                <div class="related-test-item" onclick="window.location.href='#'">
+                    <div class="related-test-info">
+                        <h4>Parkinson's Biomarker Panel (12-plex)</h4>
+                        <div class="related-test-meta">α-synuclein pathway • Plasma</div>
+                    </div>
+                    <div class="related-test-price">$485</div>
+                </div>
+                
+                <div class="related-test-item" onclick="window.location.href='#'">
+                    <div class="related-test-info">
+                        <h4>Neuroinflammation Panel (48-plex)</h4>
+                        <div class="related-test-meta">Cytokines & chemokines • Multiple matrices</div>
+                    </div>
+                    <div class="related-test-price">$650</div>
+                </div>
+                
+                <a href="#" class="view-all-btn">View All Stanford Tests (47) →</a>
+            </div>
+            
+            <!-- Similar Tests from Other Labs -->
+            <div class="related-tests">
+                <h3>Similar Tests from Other Labs</h3>
+                
+                <div class="related-test-item" onclick="window.location.href='#'">
+                    <div class="related-test-info">
+                        <h4>Neurodegenerative Panel v2.0</h4>
+                        <div class="related-test-meta">University of Gothenburg • 180-plex</div>
+                    </div>
+                    <div class="related-test-price">$980</div>
+                </div>
+                
+                <div class="related-test-item" onclick="window.location.href='#'">
+                    <div class="related-test-info">
+                        <h4>Brain Health Biomarker Suite</h4>
+                        <div class="related-test-meta">UCL Neuroscience • 95-plex</div>
+                    </div>
+                    <div class="related-test-price">$750</div>
+                </div>
+                
+                <a href="#" class="view-all-btn">Compare All Similar Tests →</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function switchDetailTab(tabName) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
