@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propose New Study - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Page Container */
+        .page-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 2rem;
+        }
+        
+        .breadcrumb a {
+            color: #2c4e8a;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            color: #2c4e8a;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h3 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        
+        .required {
+            color: #ef4444;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2c4e8a;
+            box-shadow: 0 0 0 3px rgba(44, 78, 138, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .help-text {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .study-type-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .study-type-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .study-type-card:hover {
+            border-color: #2c4e8a;
+        }
+        
+        .study-type-card.selected {
+            border-color: #2c4e8a;
+            background: #eff6ff;
+        }
+        
+        .study-type-card input[type="radio"] {
+            display: none;
+        }
+        
+        .study-type-card h4 {
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .study-type-card p {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        .btn-submit {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background: #1e3a5f;
+        }
+        
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .page-container {
+                padding: 0 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .study-type-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="browse-tests.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> → <a href="collaborate.html">Collaborate</a> → <strong>Propose New Study</strong>
+        </div>
+
+        <div class="page-header">
+            <h1>Propose New Collaborative Study</h1>
+            <p>Submit your multi-site research proposal and connect with qualified laboratories worldwide</p>
+        </div>
+
+        <form class="form-container" onsubmit="submitProposal(event)">
+            <!-- Principal Investigator Information -->
+            <div class="form-section">
+                <h3>👤 Principal Investigator Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="piName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="piName" name="piName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="piTitle">Title/Position <span class="required">*</span></label>
+                        <input type="text" id="piTitle" name="piTitle" placeholder="e.g., Professor, Senior Scientist" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="institution">Institution <span class="required">*</span></label>
+                        <input type="text" id="institution" name="institution" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Information -->
+            <div class="form-section">
+                <h3>🔬 Study Information</h3>
+                
+                <div class="form-group">
+                    <label for="studyTitle">Study Title <span class="required">*</span></label>
+                    <input type="text" id="studyTitle" name="studyTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Study Type <span class="required">*</span></label>
+                    <div class="study-type-cards">
+                        <div class="study-type-card" onclick="selectStudyType('biomarker')">
+                            <input type="radio" name="studyType" value="biomarker" required>
+                            <h4>Biomarker Discovery</h4>
+                            <p>Discover and validate novel protein biomarkers</p>
+                        </div>
+                        <div class="study-type-card" onclick="selectStudyType('clinical')">
+                            <input type="radio" name="studyType" value="clinical" required>
+                            <h4>Clinical Validation</h4>
+                            <p>Validate biomarkers in clinical populations</p>
+                        </div>
+                        <div class="study-type-card" onclick="selectStudyType('population')">
+                            <input type="radio" name="studyType" value="population" required>
+                            <h4>Population Study</h4>
+                            <p>Study protein patterns across populations</p>
+                        </div>
+                        <div class="study-type-card" onclick="selectStudyType('method')">
+                            <input type="radio" name="studyType" value="method" required>
+                            <h4>Method Development</h4>
+                            <p>Develop and standardize new methods</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studyObjectives">Study Objectives <span class="required">*</span></label>
+                    <textarea id="studyObjectives" name="studyObjectives" placeholder="Describe the main objectives and goals of your study..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studyBackground">Background & Rationale <span class="required">*</span></label>
+                    <textarea id="studyBackground" name="studyBackground" placeholder="Provide scientific background and rationale for the study..." required></textarea>
+                </div>
+            </div>
+
+            <!-- Study Design -->
+            <div class="form-section">
+                <h3>📋 Study Design</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="participantCount">Target Participants <span class="required">*</span></label>
+                        <select id="participantCount" name="participantCount" required>
+                            <option value="">Select participant count</option>
+                            <option value="100-500">100-500 participants</option>
+                            <option value="500-1000">500-1,000 participants</option>
+                            <option value="1000-2500">1,000-2,500 participants</option>
+                            <option value="2500+">2,500+ participants</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="studyDuration">Study Duration <span class="required">*</span></label>
+                        <select id="studyDuration" name="studyDuration" required>
+                            <option value="">Select duration</option>
+                            <option value="6-12">6-12 months</option>
+                            <option value="12-24">12-24 months</option>
+                            <option value="24-36">24-36 months</option>
+                            <option value="36+">36+ months</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="siteCount">Number of Sites Needed</label>
+                        <select id="siteCount" name="siteCount">
+                            <option value="">Select site count</option>
+                            <option value="2-5">2-5 sites</option>
+                            <option value="5-10">5-10 sites</option>
+                            <option value="10-20">10-20 sites</option>
+                            <option value="20+">20+ sites</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sampleType">Primary Sample Type <span class="required">*</span></label>
+                        <select id="sampleType" name="sampleType" required>
+                            <option value="">Select sample type</option>
+                            <option value="plasma">Plasma</option>
+                            <option value="serum">Serum</option>
+                            <option value="csf">CSF</option>
+                            <option value="urine">Urine</option>
+                            <option value="tissue">Tissue</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Target Biomarkers -->
+            <div class="form-section">
+                <h3>🧬 Target Biomarkers & Platforms</h3>
+                
+                <div class="form-group">
+                    <label for="targetBiomarkers">Target Biomarkers/Proteins <span class="required">*</span></label>
+                    <textarea id="targetBiomarkers" name="targetBiomarkers" placeholder="List the specific biomarkers, proteins, or panels you want to measure..." required></textarea>
+                    <div class="help-text">Include known protein names, pathways, or discovery targets</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Preferred Platform(s)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="argo" name="platforms" value="argo">
+                            <label for="argo">Alamar Argo HT</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="luminex" name="platforms" value="luminex">
+                            <label for="luminex">Luminex</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="elisa" name="platforms" value="elisa">
+                            <label for="elisa">ELISA</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="msd" name="platforms" value="msd">
+                            <label for="msd">MSD Platform</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="other-platform" name="platforms" value="other">
+                            <label for="other-platform">Other/Flexible</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funding & Timeline -->
+            <div class="form-section">
+                <h3>💰 Funding & Timeline</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fundingStatus">Funding Status <span class="required">*</span></label>
+                        <select id="fundingStatus" name="fundingStatus" required>
+                            <option value="">Select funding status</option>
+                            <option value="funded">Fully Funded</option>
+                            <option value="partial">Partially Funded</option>
+                            <option value="pending">Funding Pending</option>
+                            <option value="seeking">Seeking Funding</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Preferred Start Date</label>
+                        <input type="date" id="startDate" name="startDate">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="estimatedBudget">Estimated Total Budget</label>
+                    <select id="estimatedBudget" name="estimatedBudget">
+                        <option value="">Prefer not to specify</option>
+                        <option value="under-100k">Under $100,000</option>
+                        <option value="100k-250k">$100,000 - $250,000</option>
+                        <option value="250k-500k">$250,000 - $500,000</option>
+                        <option value="500k-1m">$500,000 - $1,000,000</option>
+                        <option value="over-1m">Over $1,000,000</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="form-section">
+                <h3>📝 Additional Information</h3>
+                
+                <div class="form-group">
+                    <label for="additionalDetails">Additional Details</label>
+                    <textarea id="additionalDetails" name="additionalDetails" placeholder="Any additional information about your study, special requirements, or questions..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Geographic Preferences</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="north-america" name="geography" value="north-america">
+                            <label for="north-america">North America</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="europe" name="geography" value="europe">
+                            <label for="europe">Europe</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="asia-pacific" name="geography" value="asia-pacific">
+                            <label for="asia-pacific">Asia-Pacific</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="global" name="geography" value="global">
+                            <label for="global">Global</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
+                <button type="submit" class="btn btn-submit">Submit Proposal</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">✓</div>
+            <h3 style="margin-bottom: 1rem; color: #1e293b;">Study Proposal Submitted!</h3>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Your collaborative study proposal has been submitted successfully. Our team will review it and connect you with potential laboratory partners within 3-5 business days.</p>
+            <p style="color: #64748b; margin-bottom: 1.5rem; font-size: 0.9rem;">You will receive a confirmation email shortly with your proposal details and next steps.</p>
+            <button class="btn btn-submit" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        function selectStudyType(type) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.study-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            event.currentTarget.classList.add('selected');
+            
+            // Check the radio button
+            event.currentTarget.querySelector('input[type="radio"]').checked = true;
+        }
+        
+        function submitProposal(event) {
+            event.preventDefault();
+            
+            // Show success modal
+            document.getElementById('successModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            // Redirect back to collaborate page
+            window.location.href = 'collaborate.html';
+        }
+    </script>
+</body>
+</html>

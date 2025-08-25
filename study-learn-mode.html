@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Mode: Alzheimer's Biomarker Study - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .learn-mode-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Page Container */
+        .page-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 2rem;
+        }
+        
+        .breadcrumb a {
+            color: #2c4e8a;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .study-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .study-title {
+            color: #2c4e8a;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .study-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+        
+        .study-description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+        
+        .learn-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .learn-tab {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .learn-tab.active {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .learn-tab:hover:not(.active) {
+            background: #f8f9fa;
+            color: #2c4e8a;
+        }
+        
+        .learn-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .learn-content.active {
+            display: block;
+        }
+        
+        .content-section {
+            margin-bottom: 2rem;
+        }
+        
+        .content-section h3 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .content-section h4 {
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .highlight-box {
+            background: #f0f9ff;
+            border-left: 4px solid #2c4e8a;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .biomarker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .biomarker-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .biomarker-card h5 {
+            color: #2c4e8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .protocol-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+        
+        .protocol-steps li {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+        
+        .protocol-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #2c4e8a;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .timeline-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .timeline-item.current {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .timeline-phase {
+            color: #2c4e8a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .site-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .site-name {
+            color: #2c4e8a;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .site-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .data-viz {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1e3a5f;
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #2c4e8a;
+            border: 2px solid #2c4e8a;
+        }
+        
+        .btn-secondary:hover {
+            background: #2c4e8a;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .page-container {
+                padding: 0 1rem;
+            }
+            
+            .learn-tabs {
+                flex-direction: column;
+            }
+            
+            .study-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="browse-tests.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <div class="learn-mode-badge">
+                    📚 Learn Mode
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> → <a href="collaborate.html">Collaborate</a> → <strong>Learn Mode</strong>
+        </div>
+
+        <div class="study-header">
+            <h1 class="study-title">Global Alzheimer's Biomarker Validation Consortium</h1>
+            <div class="study-meta">
+                <div class="meta-item">🏥 <span>12 participating sites</span></div>
+                <div class="meta-item">🌍 <span>Multi-continental</span></div>
+                <div class="meta-item">📅 <span>Started January 2024</span></div>
+                <div class="meta-item">👥 <span>5,000 participants</span></div>
+                <div class="meta-item">🟢 <span>Currently recruiting</span></div>
+            </div>
+            <p class="study-description">
+                Explore this comprehensive multi-site study validating novel Alzheimer's disease biomarkers across diverse populations. Learn about the scientific methodology, biomarker targets, and collaborative protocols being used to advance AD diagnostics.
+            </p>
+        </div>
+
+        <div class="learn-tabs">
+            <button class="learn-tab active" onclick="switchTab('overview')">📋 Study Overview</button>
+            <button class="learn-tab" onclick="switchTab('biomarkers')">🧬 Biomarkers</button>
+            <button class="learn-tab" onclick="switchTab('protocols')">⚗️ Protocols</button>
+            <button class="learn-tab" onclick="switchTab('sites')">🌍 Participating Sites</button>
+            <button class="learn-tab" onclick="switchTab('timeline')">📅 Timeline</button>
+        </div>
+
+        <div id="overview" class="learn-content active">
+            <div class="content-section">
+                <h3>Study Objectives</h3>
+                <div class="highlight-box">
+                    <p><strong>Primary Goal:</strong> Validate plasma-based biomarkers for Alzheimer's disease across diverse global populations to improve early diagnosis and monitoring.</p>
+                </div>
+                <ul>
+                    <li>Validate p-tau217, MTBR-tau243, and GFAP as plasma biomarkers</li>
+                    <li>Assess biomarker performance across different ethnicities and populations</li>
+                    <li>Establish standardized protocols for multi-site implementation</li>
+                    <li>Generate regulatory-quality data for clinical use</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h3>Study Design</h3>
+                <h4>Participant Population</h4>
+                <p>5,000 participants across the Alzheimer's disease continuum:</p>
+                <ul>
+                    <li><strong>Cognitively Normal (CN):</strong> 1,500 participants</li>
+                    <li><strong>Mild Cognitive Impairment (MCI):</strong> 2,000 participants</li>
+                    <li><strong>Alzheimer's Disease Dementia:</strong> 1,500 participants</li>
+                </ul>
+
+                <h4>Study Duration</h4>
+                <p>36 months total: 24 months recruitment + 12 months follow-up</p>
+            </div>
+
+            <div class="content-section">
+                <h3>Expected Outcomes</h3>
+                <ul>
+                    <li>Validated cutoff values for plasma biomarkers across populations</li>
+                    <li>Harmonized protocols for multi-site biomarker testing</li>
+                    <li>Regulatory submission package for clinical implementation</li>
+                    <li>Published guidelines for AD biomarker testing</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="biomarkers" class="learn-content">
+            <div class="content-section">
+                <h3>Target Biomarkers</h3>
+                <p>This study focuses on three key plasma biomarkers that have shown promise in Alzheimer's disease research:</p>
+                
+                <div class="biomarker-grid">
+                    <div class="biomarker-card">
+                        <h5>p-tau217</h5>
+                        <p><strong>Function:</strong> Phosphorylated tau protein at threonine 217</p>
+                        <p><strong>Significance:</strong> Early indicator of tau pathology, correlates with amyloid PET</p>
+                        <p><strong>Expected Performance:</strong> >90% accuracy for AD vs controls</p>
+                    </div>
+                    
+                    <div class="biomarker-card">
+                        <h5>MTBR-tau243</h5>
+                        <p><strong>Function:</strong> Microtubule-binding region tau fragment</p>
+                        <p><strong>Significance:</strong> Reflects tau aggregation and neuronal damage</p>
+                        <p><strong>Expected Performance:</strong> 85-90% accuracy for disease staging</p>
+                    </div>
+                    
+                    <div class="biomarker-card">
+                        <h5>GFAP</h5>
+                        <p><strong>Function:</strong> Glial fibrillary acidic protein</p>
+                        <p><strong>Significance:</strong> Marker of astrocyte activation and neuroinflammation</p>
+                        <p><strong>Expected Performance:</strong> 80-85% accuracy as supportive marker</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Why These Biomarkers?</h3>
+                <div class="highlight-box">
+                    <p>These biomarkers were selected based on extensive preliminary studies showing high correlation with brain pathology and clinical symptoms of Alzheimer's disease.</p>
+                </div>
+                
+                <h4>Scientific Rationale</h4>
+                <ul>
+                    <li><strong>p-tau217:</strong> Shows earliest changes in AD pathology, detectable 15+ years before symptoms</li>
+                    <li><strong>MTBR-tau243:</strong> Provides information about active neurodegeneration</li>
+                    <li><strong>GFAP:</strong> Indicates inflammatory processes associated with AD progression</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="protocols" class="learn-content">
+            <div class="content-section">
+                <h3>Standardized Protocols</h3>
+                <p>All participating sites follow identical protocols to ensure data comparability and reproducibility.</p>
+            </div>
+
+            <div class="content-section">
+                <h3>Sample Collection Protocol</h3>
+                <ol class="protocol-steps">
+                    <li><strong>Pre-collection:</strong> 12-hour fasting, medication review, clinical assessment</li>
+                    <li><strong>Blood Draw:</strong> 20mL blood collected in EDTA tubes using standardized procedure</li>
+                    <li><strong>Processing:</strong> Samples processed within 2 hours, plasma separated by centrifugation</li>
+                    <li><strong>Storage:</strong> Plasma aliquoted and stored at -80°C within 4 hours</li>
+                    <li><strong>Shipping:</strong> Samples shipped on dry ice to central laboratory quarterly</li>
+                </ol>
+            </div>
+
+            <div class="content-section">
+                <h3>Analytical Protocol</h3>
+                <h4>Platform: Alamar Biosciences Argo HT</h4>
+                <ul>
+                    <li>Ultra-sensitive digital immunoassay technology</li>
+                    <li>Single-molecule detection capabilities</li>
+                    <li>Automated sample processing</li>
+                    <li>Built-in quality controls</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>Quality Assurance:</strong> Every batch includes positive controls, negative controls, and reference standards. Inter-laboratory comparison samples are analyzed monthly.</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Data Management</h3>
+                <ul>
+                    <li>Centralized database with role-based access</li>
+                    <li>Real-time data monitoring and quality checks</li>
+                    <li>Automated statistical analysis pipelines</li>
+                    <li>HIPAA-compliant data storage and transmission</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="sites" class="learn-content">
+            <div class="content-section">
+                <h3>Participating Research Sites</h3>
+                <p>12 world-class research institutions across 4 continents ensure diverse population representation:</p>
+                
+                <div class="sites-grid">
+                    <div class="site-card">
+                        <div class="site-name">🇺🇸 Mayo Clinic (Rochester, MN)</div>
+                        <div class="site-details">
+                            Lead site • 500 participants<br>
+                            Focus: Caucasian population<br>
+                            PI: Dr. Ronald Petersen
+                        </div>
+                    </div>
+                    
+                    <div class="site-card">
+                        <div class="site-name">🇺🇸 UCSF Memory Center (San Francisco, CA)</div>
+                        <div class="site-details">
+                            400 participants<br>
+                            Focus: Hispanic/Latino population<br>
+                            PI: Dr. Gil Rabinovici
+                        </div>
+                    </div>
+                    
+                    <div class="site-card">
+                        <div class="site-name">🇸🇪 Karolinska Institute (Stockholm)</div>
+                        <div class="site-details">
+                            450 participants<br>
+                            Focus: Nordic population<br>
+                            PI: Dr. Henrik Zetterberg
+                        </div>
+                    </div>
+                    
+                    <div class="site-card">
+                        <div class="site-name">🇯🇵 University of Tokyo</div>
+                        <div class="site-details">
+                            400 participants<br>
+                            Focus: East Asian population<br>
+                            PI: Dr. Takeshi Iwatsubo
+                        </div>
+                    </div>
+                    
+                    <div class="site-card">
+                        <div class="site-name">🇰🇷 Samsung Medical Center (Seoul)</div>
+                        <div class="site-details">
+                            350 participants<br>
+                            Focus: Korean population<br>
+                            PI: Dr. Duk L. Na
+                        </div>
+                    </div>
+                    
+                    <div class="site-card">
+                        <div class="site-name">🇦🇺 University of Melbourne</div>
+                        <div class="site-details">
+                            400 participants<br>
+                            Focus: Australian population<br>
+                            PI: Dr. Colin Masters
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Site Selection Criteria</h3>
+                <ul>
+                    <li>Established memory disorder clinics with research infrastructure</li>
+                    <li>Access to diverse patient populations</li>
+                    <li>Experience with biomarker studies</li>
+                    <li>Commitment to standardized protocols</li>
+                    <li>IRB/Ethics committee approval</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="timeline" class="learn-content">
+            <div class="content-section">
+                <h3>Study Timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 1: Setup</div>
+                        <div>Jan - Mar 2024</div>
+                        <div>✅ Completed</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 2: Pilot</div>
+                        <div>Apr - Jun 2024</div>
+                        <div>✅ Completed</div>
+                    </div>
+                    
+                    <div class="timeline-item current">
+                        <div class="timeline-phase">Phase 3: Recruitment</div>
+                        <div>Jul 2024 - Jun 2026</div>
+                        <div>🟢 In Progress</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 4: Follow-up</div>
+                        <div>Jul 2026 - Jun 2027</div>
+                        <div>⏳ Upcoming</div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 5: Analysis</div>
+                        <div>Jul - Dec 2027</div>
+                        <div>⏳ Upcoming</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Current Status</h3>
+                <div class="data-viz">
+                    <h4>Recruitment Progress</h4>
+                    <div style="font-size: 2rem; color: #2c4e8a; margin: 1rem 0;">
+                        1,847 / 5,000 participants enrolled (37%)
+                    </div>
+                    <div style="background: #e2e8f0; height: 20px; border-radius: 10px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); height: 100%; width: 37%; transition: width 0.3s;"></div>
+                    </div>
+                    <p style="margin-top: 1rem; color: #666;">On track to meet recruitment goals</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3>Key Milestones</h3>
+                <ul>
+                    <li>✅ <strong>All sites activated:</strong> Completed June 2024</li>
+                    <li>✅ <strong>First 1,000 participants:</strong> Completed November 2024</li>
+                    <li>🟡 <strong>Mid-study analysis:</strong> Planned for January 2025</li>
+                    <li>⏳ <strong>Complete recruitment:</strong> Target June 2026</li>
+                    <li>⏳ <strong>Final results:</strong> Expected December 2027</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="collaborate.html" class="btn btn-secondary">← Back to Collaborate</a>
+            <button class="btn btn-primary" onclick="alert('This would open the full study participation form')">Join This Study</button>
+            <button class="btn btn-secondary" onclick="alert('This would download the study protocol document')">Download Protocol</button>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all content
+            const contents = document.querySelectorAll('.learn-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.learn-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

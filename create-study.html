@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Study - Labatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4e8a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #f5b800;
+        }
+        
+        .btn-primary {
+            background: #f5b800;
+            color: #2c4e8a;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: #e0a600;
+            transform: translateY(-2px);
+        }
+        
+        /* Page Container */
+        .page-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 2rem;
+        }
+        
+        .breadcrumb a {
+            color: #2c4e8a;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            color: #2c4e8a;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .study-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .study-type-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .study-type-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            border-color: #f5b800;
+        }
+        
+        .study-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2c4e8a 0%, #3d68b0 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .study-type-card h3 {
+            color: #2c4e8a;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .study-type-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .study-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .study-features li {
+            color: #059669;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .study-features li::before {
+            content: "✓";
+            color: #059669;
+            font-weight: bold;
+        }
+        
+        .cta-button {
+            width: 100%;
+            background: #2c4e8a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: #1e3a5f;
+            transform: translateY(-2px);
+        }
+        
+        .help-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .help-section h2 {
+            color: #2c4e8a;
+            margin-bottom: 1rem;
+        }
+        
+        .help-section p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .help-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .help-link {
+            background: #f8f9fa;
+            color: #2c4e8a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .help-link:hover {
+            background: #f5b800;
+            color: #2c4e8a;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .page-container {
+                padding: 0 1rem;
+            }
+            
+            .study-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .help-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo-section" onclick="window.location.href='index.html'">
+                <img class="logo" 
+                src="https://alamarbio.com/wp-content/uploads/2020/10/AlamarDropLogo_4c.png" 
+                alt="Alamar Biosciences Logo" />
+                <div class="platform-name">Labatar</div>
+            </div>
+            <div class="nav-links">
+                <a href="browse-tests.html">Browse Tests</a>
+                <a href="browse-labs.html">Browse Labs</a>
+                <a href="collaborate.html">Collaborate</a>
+                <a href="request-quote.html">Request Quotes</a>
+                <a href="lab-login.html" class="btn-primary">List Your Test</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> → <a href="collaborate.html">Collaborate</a> → <strong>Create New Study</strong>
+        </div>
+
+        <div class="page-header">
+            <h1>Create New Collaborative Study</h1>
+            <p>Launch multi-site research projects and connect with laboratories worldwide to accelerate your proteomics research</p>
+        </div>
+
+        <div class="study-types">
+            <div class="study-type-card">
+                <div class="study-icon">🔬</div>
+                <h3>Biomarker Discovery Study</h3>
+                <p>Discover and validate novel protein biomarkers across multiple patient cohorts with participating laboratories.</p>
+                <ul class="study-features">
+                    <li>Multi-site patient recruitment</li>
+                    <li>Standardized sample collection</li>
+                    <li>Harmonized analytical protocols</li>
+                    <li>Integrated data analysis</li>
+                    <li>Publication support</li>
+                </ul>
+                <button class="cta-button" onclick="startStudyCreation('biomarker')">Start Biomarker Study</button>
+            </div>
+
+            <div class="study-type-card">
+                <div class="study-icon">🧬</div>
+                <h3>Clinical Validation Study</h3>
+                <p>Validate promising biomarkers in diverse clinical populations through coordinated multi-center trials.</p>
+                <ul class="study-features">
+                    <li>Clinical site coordination</li>
+                    <li>Regulatory compliance support</li>
+                    <li>Quality control standards</li>
+                    <li>Statistical analysis plan</li>
+                    <li>Regulatory submission prep</li>
+                </ul>
+                <button class="cta-button" onclick="startStudyCreation('clinical')">Start Clinical Study</button>
+            </div>
+
+            <div class="study-type-card">
+                <div class="study-icon">🌍</div>
+                <h3>Global Population Study</h3>
+                <p>Study protein expression patterns across diverse global populations with international laboratory partners.</p>
+                <ul class="study-features">
+                    <li>International site network</li>
+                    <li>Population diversity focus</li>
+                    <li>Cross-cultural protocols</li>
+                    <li>Comparative genomics</li>
+                    <li>Global health insights</li>
+                </ul>
+                <button class="cta-button" onclick="startStudyCreation('population')">Start Population Study</button>
+            </div>
+
+            <div class="study-type-card">
+                <div class="study-icon">⚡</div>
+                <h3>Method Development Study</h3>
+                <p>Develop and standardize new proteomics methods across multiple laboratories for reproducible results.</p>
+                <ul class="study-features">
+                    <li>Method standardization</li>
+                    <li>Inter-lab validation</li>
+                    <li>Protocol optimization</li>
+                    <li>Quality metrics</li>
+                    <li>Best practice guidelines</li>
+                </ul>
+                <button class="cta-button" onclick="startStudyCreation('method')">Start Method Study</button>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2>Need Help Getting Started?</h2>
+            <p>Our team of collaboration specialists can help you design, launch, and manage your multi-site proteomics study.</p>
+            <div class="help-links">
+                <a href="#" class="help-link">📞 Schedule Consultation</a>
+                <a href="#" class="help-link">📚 Study Design Guide</a>
+                <a href="#" class="help-link">🤝 Find Collaborators</a>
+                <a href="#" class="help-link">📋 Template Library</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startStudyCreation(studyType) {
+            // Simulate study creation flow
+            alert(`Starting ${studyType} study creation wizard...\n\nThis would normally launch the study setup process with:\n• Study parameters\n• Site selection\n• Protocol design\n• Timeline planning\n• Budget estimation`);
+            
+            // In a real implementation, this would navigate to a study creation wizard
+            // window.location.href = `create-study-wizard.html?type=${studyType}`;
+        }
+    </script>
+</body>
+</html>
