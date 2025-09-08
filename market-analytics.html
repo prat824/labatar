@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alamar Admin - Market Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #2c4e8a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-branding {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alamar-logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .admin-badge {
+            background: #dc3545;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-tab.active {
+            color: #2c4e8a;
+            border-bottom-color: #f5b800;
+        }
+
+        .content-container {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #2c4e8a;
+            font-weight: 600;
+        }
+
+        .data-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-input {
+            padding: 0.5rem;
+            border: 1px solid #e0e6ed;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .export-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .data-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1a3564;
+        }
+
+        .data-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .revenue-value {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+
+        .trend-positive {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .trend-negative {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .platform-argo {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .platform-simoa {
+            background: #6c757d;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .platform-msd {
+            background: #17a2b8;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .platform-mixed {
+            background: #ffc107;
+            color: #212529;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .risk-high {
+            background: #f8d7da;
+            font-weight: 600;
+        }
+
+        .risk-medium {
+            background: #fff3cd;
+        }
+
+        .opportunity-high {
+            background: #d4edda;
+            font-weight: 600;
+        }
+
+        .timestamp {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .lab-contact {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .data-controls {
+                flex-wrap: wrap;
+            }
+            
+            .content-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-branding">
+            <div class="alamar-logo">ALAMAR</div>
+            <div class="admin-badge">ADMIN</div>
+            <div>
+                <div style="font-weight: 600; font-size: 1.1rem;">Market Analytics Portal</div>
+                <div style="font-size: 0.8rem; opacity: 0.8;">Transaction Data Mining & Revenue Intelligence</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="export-btn" onclick="exportAllTransactions()">📊 Export All Transaction Data</button>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <a href="market-analytics.html" class="nav-tab active">Transaction Analytics</a>
+        <a href="biomarker-intelligence.html" class="nav-tab">Biomarker Intelligence</a>
+        <a href="alamar-admin-dashboard.html" class="nav-tab">Market Overview</a>
+    </nav>
+
+    <div class="content-container">
+        <div class="page-header">
+            <div class="data-controls">
+                <input type="text" class="filter-input" placeholder="Search labs, biomarkers, transaction IDs..." id="transactionFilter">
+                <select class="filter-input" id="timeRange">
+                    <option value="1d">Last 24 hours</option>
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d" selected>Last 30 days</option>
+                    <option value="90d">Last 90 days</option>
+                    <option value="1y">Last year</option>
+                </select>
+                <select class="filter-input" id="platformFilter">
+                    <option value="all">All Platforms</option>
+                    <option value="argo">Argo HT Only</option>
+                    <option value="simoa">Simoa Only</option>
+                    <option value="msd">MSD Only</option>
+                    <option value="mixed">Multi-platform</option>
+                </select>
+                <input type="number" class="filter-input" placeholder="Min Value ($)" id="minValue">
+                <button class="export-btn" onclick="exportFiltered()">Export Filtered</button>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">💰 Complete Transaction Log & Revenue Analysis</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="export-btn">CSV</button>
+                    <button class="export-btn">Excel</button>
+                    <button class="export-btn">SQL Export</button>
+                </div>
+            </div>
+            <table class="data-table" id="transactionTable">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Timestamp</th>
+                        <th>Laboratory</th>
+                        <th>Contact Person</th>
+                        <th>Biomarker Panel</th>
+                        <th>Sample Count</th>
+                        <th>Platform(s)</th>
+                        <th>Quote Value</th>
+                        <th>Platform Fees</th>
+                        <th>Net Revenue</th>
+                        <th>Status</th>
+                        <th>Customer Type</th>
+                        <th>Region</th>
+                        <th>Lead Source</th>
+                        <th>Conversion Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="metric-value">TXN-2024-0001547</td>
+                        <td class="timestamp">2024-01-15 14:23:41 UTC</td>
+                        <td><strong>Precision Diagnostics</strong></td>
+                        <td class="lab-contact">Dr. Sarah Chen<br>sarah.chen@precisiondiag.com</td>
+                        <td>Neurodegeneration 8-plex<br><small>GFAP, NfL, p-tau181, CXCL13, S100B, YKL-40, CCL2, IL-6</small></td>
+                        <td class="metric-value">2,500</td>
+                        <td><span class="platform-argo">Argo HT</span></td>
+                        <td class="revenue-value">$127,500</td>
+                        <td class="metric-value">$6,375</td>
+                        <td class="revenue-value">$121,125</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Academic Research</td>
+                        <td>Boston, MA</td>
+                        <td>Direct Search</td>
+                        <td>3.2 days</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-value">TXN-2024-0001546</td>
+                        <td class="timestamp">2024-01-15 09:45:12 UTC</td>
+                        <td><strong>Boston Biomarker Labs</strong></td>
+                        <td class="lab-contact">Dr. Michael Rodriguez<br>m.rodriguez@bostonbio.com</td>
+                        <td>Multi-platform Oncology<br><small>CEA, CA 19-9, PSA, VEGF-A, IL-6, TNF-α</small></td>
+                        <td class="metric-value">1,800</td>
+                        <td><span class="platform-mixed">Mixed</span></td>
+                        <td class="revenue-value">$89,640</td>
+                        <td class="metric-value">$4,482</td>
+                        <td class="revenue-value">$85,158</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Clinical Trial</td>
+                        <td>Cambridge, MA</td>
+                        <td>Partner Referral</td>
+                        <td>1.8 days</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-value">TXN-2024-0001545</td>
+                        <td class="timestamp">2024-01-14 16:12:33 UTC</td>
+                        <td><strong>Clinical Research Institute</strong></td>
+                        <td class="lab-contact">Dr. Jennifer Liu<br>j.liu@clinresearch.org</td>
+                        <td>Inflammation 12-plex<br><small>IL-6, TNF-α, IL-1β, CRP, IFN-γ, IL-10, IL-12, IL-17A, CCL2, CXCL13, YKL-40, S100B</small></td>
+                        <td class="metric-value">3,200</td>
+                        <td><span class="platform-argo">Argo HT</span></td>
+                        <td class="revenue-value">$76,800</td>
+                        <td class="metric-value">$3,840</td>
+                        <td class="revenue-value">$72,960</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Pharma CRO</td>
+                        <td>San Francisco, CA</td>
+                        <td>Google Ads</td>
+                        <td>5.7 days</td>
+                    </tr>
+                    <tr class="risk-medium">
+                        <td class="metric-value">TXN-2024-0001544</td>
+                        <td class="timestamp">2024-01-14 11:28:07 UTC</td>
+                        <td><strong>MedTech Analytics</strong></td>
+                        <td class="lab-contact">Dr. David Park<br>d.park@medtechanalytics.com</td>
+                        <td>Custom Biomarker Panel<br><small>Proprietary 15-plex neuroinflammation panel</small></td>
+                        <td class="metric-value">1,100</td>
+                        <td><span class="platform-argo">Argo HT</span></td>
+                        <td class="revenue-value">$67,320</td>
+                        <td class="metric-value">$3,366</td>
+                        <td class="revenue-value">$63,954</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Biotech</td>
+                        <td>Seattle, WA</td>
+                        <td>Conference Lead</td>
+                        <td>12.3 days</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-value">TXN-2024-0001543</td>
+                        <td class="timestamp">2024-01-13 15:47:22 UTC</td>
+                        <td><strong>West Coast Proteomics</strong></td>
+                        <td class="lab-contact">Dr. Lisa Thompson<br>l.thompson@wcproteomics.com</td>
+                        <td>Cardiovascular 6-plex<br><small>VEGF-A, IL-6, TNF-α, CRP, BNP, Troponin I</small></td>
+                        <td class="metric-value">950</td>
+                        <td><span class="platform-argo">Argo HT</span></td>
+                        <td class="revenue-value">$52,250</td>
+                        <td class="metric-value">$2,613</td>
+                        <td class="revenue-value">$49,637</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Hospital System</td>
+                        <td>Los Angeles, CA</td>
+                        <td>Direct Search</td>
+                        <td>2.1 days</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-value">TXN-2024-0001542</td>
+                        <td class="timestamp">2024-01-13 10:22:15 UTC</td>
+                        <td><strong>Midwest Molecular</strong></td>
+                        <td class="lab-contact">Dr. Robert Kim<br>r.kim@midwestmol.com</td>
+                        <td>Alzheimer's Research Panel<br><small>p-tau181, p-tau217, Aβ42, Aβ40, NfL, GFAP</small></td>
+                        <td class="metric-value">1,650</td>
+                        <td><span class="platform-simoa">Simoa</span></td>
+                        <td class="revenue-value">$48,950</td>
+                        <td class="metric-value">$2,448</td>
+                        <td class="revenue-value">$46,502</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Academic Research</td>
+                        <td>Chicago, IL</td>
+                        <td>Partner Referral</td>
+                        <td>8.4 days</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td class="metric-value">TXN-2024-0001541</td>
+                        <td class="timestamp">2024-01-12 16:33:28 UTC</td>
+                        <td><strong>Texas Proteome Center</strong></td>
+                        <td class="lab-contact">Dr. Maria Gonzalez<br>m.gonzalez@txproteome.edu</td>
+                        <td>Sports Medicine TBI Panel<br><small>GFAP, S100B, UCH-L1, NfL, tau</small></td>
+                        <td class="metric-value">2,200</td>
+                        <td><span class="platform-argo">Argo HT</span></td>
+                        <td class="revenue-value">$134,200</td>
+                        <td class="metric-value">$6,710</td>
+                        <td class="revenue-value">$127,490</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Sports Medicine</td>
+                        <td>Houston, TX</td>
+                        <td>Direct Outreach</td>
+                        <td>1.9 days</td>
+                    </tr>
+                    <tr class="risk-high">
+                        <td class="metric-value">TXN-2024-0001540</td>
+                        <td class="timestamp">2024-01-12 08:15:44 UTC</td>
+                        <td><strong>Northeast Diagnostics</strong></td>
+                        <td class="lab-contact">Dr. John Watson<br>j.watson@nediag.com</td>
+                        <td>Long COVID Biomarker Study<br><small>IL-6, TNF-α, D-dimer, CRP, Ferritin, Procalcitonin</small></td>
+                        <td class="metric-value">3,500</td>
+                        <td><span class="platform-mixed">Mixed</span></td>
+                        <td class="revenue-value">$87,500</td>
+                        <td class="metric-value">$4,375</td>
+                        <td class="revenue-value">$83,125</td>
+                        <td><span class="status-pending">PENDING</span></td>
+                        <td>Government Grant</td>
+                        <td>Baltimore, MD</td>
+                        <td>RFP Response</td>
+                        <td>18.7 days</td>
+                    </tr>
+                    <tr>
+                        <td class="metric-value">TXN-2024-0001539</td>
+                        <td class="timestamp">2024-01-11 13:41:17 UTC</td>
+                        <td><strong>Pacific Coast Labs</strong></td>
+                        <td class="lab-contact">Dr. Amy Chang<br>a.chang@pclaabs.com</td>
+                        <td>Immunology Research<br><small>CXCL13, CCL2, IL-12, IL-17A, IFN-γ, IL-10</small></td>
+                        <td class="metric-value">890</td>
+                        <td><span class="platform-argo">Argo HT</span></td>
+                        <td class="revenue-value">$42,320</td>
+                        <td class="metric-value">$2,116</td>
+                        <td class="revenue-value">$40,204</td>
+                        <td><span class="status-completed">COMPLETED</span></td>
+                        <td>Academic Research</td>
+                        <td>San Diego, CA</td>
+                        <td>Conference Lead</td>
+                        <td>4.6 days</td>
+                    </tr>
+                    <tr class="risk-medium">
+                        <td class="metric-value">TXN-2024-0001538</td>
+                        <td class="timestamp">2024-01-11 09:27:33 UTC</td>
+                        <td><strong>Mountain View Diagnostics</strong></td>
+                        <td class="lab-contact">Dr. Steve Johnson<br>s.johnson@mvdiag.com</td>
+                        <td>Cancer Biomarker Validation<br><small>CEA, CA 125, CA 19-9, PSA, AFP, β-HCG</small></td>
+                        <td class="metric-value">1,320</td>
+                        <td><span class="platform-msd">MSD</span></td>
+                        <td class="revenue-value">$39,600</td>
+                        <td class="metric-value">$1,980</td>
+                        <td class="revenue-value">$37,620</td>
+                        <td><span class="status-failed">FAILED</span></td>
+                        <td>Clinical Trial</td>
+                        <td>Denver, CO</td>
+                        <td>Partner Referral</td>
+                        <td>N/A</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🏥 Laboratory Performance & Revenue Metrics</h3>
+                <button class="export-btn">Export Lab Analytics</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Laboratory</th>
+                        <th>Total Transactions (30d)</th>
+                        <th>Total Revenue</th>
+                        <th>Platform Fees Earned</th>
+                        <th>Avg Transaction Size</th>
+                        <th>Success Rate</th>
+                        <th>Avg Conversion Time</th>
+                        <th>Top Biomarker Categories</th>
+                        <th>Customer Segments</th>
+                        <th>Growth Rate</th>
+                        <th>Risk Assessment</th>
+                        <th>Partnership Health</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="opportunity-high">
+                        <td><strong>Precision Diagnostics</strong><br><small>Boston, MA</small></td>
+                        <td class="metric-value">47</td>
+                        <td class="revenue-value">$387,420</td>
+                        <td class="revenue-value">$19,371</td>
+                        <td class="revenue-value">$8,243</td>
+                        <td class="trend-positive">94.3%</td>
+                        <td>3.2 days</td>
+                        <td>Neurodegeneration (45%)<br>Inflammation (28%)<br>Oncology (27%)</td>
+                        <td>Academic (60%)<br>Pharma (25%)<br>Clinical (15%)</td>
+                        <td class="trend-positive">+34.2%</td>
+                        <td class="risk-medium">MEDIUM</td>
+                        <td>EXCELLENT</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Boston Biomarker Labs</strong><br><small>Cambridge, MA</small></td>
+                        <td class="metric-value">38</td>
+                        <td class="revenue-value">$298,750</td>
+                        <td class="revenue-value">$14,938</td>
+                        <td class="revenue-value">$7,862</td>
+                        <td class="trend-positive">91.7%</td>
+                        <td>2.8 days</td>
+                        <td>Oncology (52%)<br>Inflammation (31%)<br>Cardiovascular (17%)</td>
+                        <td>Clinical Trials (70%)<br>Pharma (20%)<br>Biotech (10%)</td>
+                        <td class="trend-positive">+28.7%</td>
+                        <td>LOW</td>
+                        <td>EXCELLENT</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clinical Research Institute</strong><br><small>San Francisco, CA</small></td>
+                        <td class="metric-value">34</td>
+                        <td class="revenue-value">$276,900</td>
+                        <td class="revenue-value">$13,845</td>
+                        <td class="revenue-value">$8,144</td>
+                        <td class="trend-positive">88.2%</td>
+                        <td>4.7 days</td>
+                        <td>Inflammation (48%)<br>Neurodegeneration (32%)<br>Immunology (20%)</td>
+                        <td>Pharma CRO (80%)<br>Academic (20%)</td>
+                        <td class="trend-positive">+19.4%</td>
+                        <td>LOW</td>
+                        <td>GOOD</td>
+                    </tr>
+                    <tr class="risk-high">
+                        <td><strong>MedTech Analytics</strong><br><small>Seattle, WA</small></td>
+                        <td class="metric-value">29</td>
+                        <td class="revenue-value">$189,430</td>
+                        <td class="revenue-value">$9,472</td>
+                        <td class="revenue-value">$6,532</td>
+                        <td class="trend-negative">73.1%</td>
+                        <td>8.4 days</td>
+                        <td>Custom Panels (45%)<br>Neurodegeneration (35%)<br>Biotech (20%)</td>
+                        <td>Biotech (85%)<br>Academic (15%)</td>
+                        <td class="trend-positive">+12.1%</td>
+                        <td class="risk-high">HIGH</td>
+                        <td>AT RISK</td>
+                    </tr>
+                    <tr>
+                        <td><strong>West Coast Proteomics</strong><br><small>Los Angeles, CA</small></td>
+                        <td class="metric-value">26</td>
+                        <td class="revenue-value">$167,820</td>
+                        <td class="revenue-value">$8,391</td>
+                        <td class="revenue-value">$6,455</td>
+                        <td class="trend-positive">96.2%</td>
+                        <td>2.3 days</td>
+                        <td>Cardiovascular (58%)<br>Oncology (24%)<br>Inflammation (18%)</td>
+                        <td>Hospital (65%)<br>Clinical (25%)<br>Academic (10%)</td>
+                        <td class="trend-positive">+41.8%</td>
+                        <td>LOW</td>
+                        <td>EXCELLENT</td>
+                    </tr>
+                    <tr class="risk-medium">
+                        <td><strong>Midwest Molecular</strong><br><small>Chicago, IL</small></td>
+                        <td class="metric-value">22</td>
+                        <td class="revenue-value">$145,680</td>
+                        <td class="revenue-value">$7,284</td>
+                        <td class="revenue-value">$6,622</td>
+                        <td class="trend-negative">68.9%</td>
+                        <td>9.7 days</td>
+                        <td>Neurodegeneration (67%)<br>Inflammation (23%)<br>Other (10%)</td>
+                        <td>Academic (90%)<br>Pharma (10%)</td>
+                        <td class="trend-negative">-3.2%</td>
+                        <td class="risk-high">CRITICAL</td>
+                        <td>NEEDS ATTENTION</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">📈 Revenue Trends & Platform Performance</h3>
+                <button class="export-btn">Export Revenue Data</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Transactions (30d)</th>
+                        <th>Total Revenue</th>
+                        <th>Market Share</th>
+                        <th>Avg Deal Size</th>
+                        <th>Growth Rate</th>
+                        <th>Customer Segments</th>
+                        <th>Top Biomarkers</th>
+                        <th>Conversion Rate</th>
+                        <th>Seasonal Trends</th>
+                        <th>Competitive Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="opportunity-high">
+                        <td><strong>Argo HT/NULISA</strong></td>
+                        <td class="metric-value">189</td>
+                        <td class="revenue-value">$1,607,320</td>
+                        <td class="metric-value">67.1%</td>
+                        <td class="revenue-value">$8,502</td>
+                        <td class="trend-positive">+31.4%</td>
+                        <td>Academic (45%), Pharma (30%), Clinical (25%)</td>
+                        <td>GFAP, NfL, CXCL13, IL-6, VEGF-A</td>
+                        <td class="trend-positive">89.7%</td>
+                        <td>Q4 peak (+23%)</td>
+                        <td>MARKET LEADER</td>
+                    </tr>
+                    <tr class="risk-medium">
+                        <td><strong>Simoa</strong></td>
+                        <td class="metric-value">67</td>
+                        <td class="revenue-value">$432,180</td>
+                        <td class="metric-value">18.1%</td>
+                        <td class="revenue-value">$6,450</td>
+                        <td class="trend-positive">+14.2%</td>
+                        <td>Academic (70%), Pharma (20%), Clinical (10%)</td>
+                        <td>p-tau181, Clusterin, NfL, Aβ42</td>
+                        <td class="trend-positive">76.4%</td>
+                        <td>Stable demand</td>
+                        <td>STRONG COMPETITOR</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MSD</strong></td>
+                        <td class="metric-value">43</td>
+                        <td class="revenue-value">$296,750</td>
+                        <td class="metric-value">12.4%</td>
+                        <td class="revenue-value">$6,902</td>
+                        <td class="trend-positive">+8.7%</td>
+                        <td>Pharma (55%), Clinical (30%), Academic (15%)</td>
+                        <td>IL-6, TNF-α, VEGF-A, CCL2</td>
+                        <td class="trend-positive">71.2%</td>
+                        <td>Pharma cycle dependent</td>
+                        <td>ESTABLISHED PLAYER</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Luminex</strong></td>
+                        <td class="metric-value">12</td>
+                        <td class="revenue-value">$58,940</td>
+                        <td class="metric-value">2.4%</td>
+                        <td class="revenue-value">$4,912</td>
+                        <td class="trend-negative">-7.3%</td>
+                        <td>Academic (80%), Other (20%)</td>
+                        <td>Basic cytokine panels</td>
+                        <td class="trend-negative">45.7%</td>
+                        <td>Declining</td>
+                        <td>LEGACY PLATFORM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🎯 Customer Intelligence & Lead Analysis</h3>
+                <button class="export-btn">Export Customer Data</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Customer Segment</th>
+                        <th>Total Customers</th>
+                        <th>Revenue Contribution</th>
+                        <th>Avg Deal Size</th>
+                        <th>Conversion Rate</th>
+                        <th>Lead Sources</th>
+                        <th>Preferred Platforms</th>
+                        <th>Top Biomarkers</th>
+                        <th>Seasonal Patterns</th>
+                        <th>Growth Opportunity</th>
+                        <th>Churn Risk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="opportunity-high">
+                        <td><strong>Academic Research</strong></td>
+                        <td class="metric-value">89</td>
+                        <td class="revenue-value">$1,087,450</td>
+                        <td class="revenue-value">$12,218</td>
+                        <td class="trend-positive">78.4%</td>
+                        <td>Direct search (45%), Conference (30%), Referral (25%)</td>
+                        <td>Argo HT (72%), Simoa (18%), MSD (10%)</td>
+                        <td>GFAP, NfL, p-tau181, CXCL13</td>
+                        <td>Q1/Q4 grant cycle peaks</td>
+                        <td class="opportunity-high">HIGH</td>
+                        <td>LOW</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pharmaceutical CROs</strong></td>
+                        <td class="metric-value">34</td>
+                        <td class="revenue-value">$743,290</td>
+                        <td class="revenue-value">$21,861</td>
+                        <td class="trend-positive">83.7%</td>
+                        <td>RFP response (60%), Direct outreach (25%), Referral (15%)</td>
+                        <td>Argo HT (58%), MSD (28%), Simoa (14%)</td>
+                        <td>IL-6, TNF-α, VEGF-A, Custom panels</td>
+                        <td>Phase II/III trial timing</td>
+                        <td class="opportunity-high">HIGH</td>
+                        <td class="risk-medium">MEDIUM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clinical Diagnostics</strong></td>
+                        <td class="metric-value">23</td>
+                        <td class="revenue-value">$398,670</td>
+                        <td class="revenue-value">$17,333</td>
+                        <td class="trend-positive">91.3%</td>
+                        <td>Partner referral (70%), Direct search (30%)</td>
+                        <td>Mixed platforms (45%), Argo HT (35%), MSD (20%)</td>
+                        <td>Standard panels, FDA-cleared assays</td>
+                        <td>Healthcare budget cycles</td>
+                        <td class="opportunity-high">HIGH</td>
+                        <td>LOW</td>
+                    </tr>
+                    <tr class="risk-medium">
+                        <td><strong>Biotech Companies</strong></td>
+                        <td class="metric-value">19</td>
+                        <td class="revenue-value">$234,560</td>
+                        <td class="revenue-value">$12,345</td>
+                        <td class="trend-negative">67.2%</td>
+                        <td>Conference leads (45%), Direct outreach (35%), Referral (20%)</td>
+                        <td>Custom platforms (40%), Argo HT (35%), Simoa (25%)</td>
+                        <td>Proprietary biomarker panels</td>
+                        <td>Funding round dependent</td>
+                        <td class="opportunity-medium">MODERATE</td>
+                        <td class="risk-high">HIGH</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hospital Systems</strong></td>
+                        <td class="metric-value">12</td>
+                        <td class="revenue-value">$167,820</td>
+                        <td class="revenue-value">$13,985</td>
+                        <td class="trend-positive">85.7%</td>
+                        <td>Direct search (60%), Partner referral (40%)</td>
+                        <td>Argo HT (80%), MSD (15%), Simoa (5%)</td>
+                        <td>Cardiovascular, Inflammation, Point-of-care</td>
+                        <td>Budget cycle dependent</td>
+                        <td class="opportunity-medium">MODERATE</td>
+                        <td>LOW</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function exportAllTransactions() {
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            alert(`Exporting comprehensive transaction dataset...\\n\\nFiles being generated:\\n• transaction-log-${timestamp}.csv\\n• revenue-analytics-${timestamp}.xlsx\\n• lab-performance-${timestamp}.json\\n• customer-intelligence-${timestamp}.sql\\n\\nTotal records: 1,247 transactions, $2.4M revenue, 89 laboratories\\n\\nSensitive financial data - secure download link will be provided.`);
+        }
+
+        function exportFiltered() {
+            const filter = document.getElementById('transactionFilter').value;
+            const timeRange = document.getElementById('timeRange').value;
+            const platform = document.getElementById('platformFilter').value;
+            const minValue = document.getElementById('minValue').value;
+            
+            alert(`Exporting filtered transaction data...\\n\\nFilters applied:\\n• Search: "${filter}"\\n• Time range: ${timeRange}\\n• Platform: ${platform}\\n• Min value: $${minValue}\\n\\nEstimated records: ${Math.floor(Math.random() * 200) + 50}\\n\\nExport will be available in secure folder.`);
+        }
+
+        function filterTransactions() {
+            const filter = document.getElementById('transactionFilter').value.toLowerCase();
+            const platform = document.getElementById('platformFilter').value;
+            const minValue = parseFloat(document.getElementById('minValue').value) || 0;
+            const table = document.getElementById('transactionTable');
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const revenueText = row.cells[7].textContent.replace(/[$,]/g, '');
+                const revenue = parseFloat(revenueText) || 0;
+                
+                const textMatch = filter === '' || text.includes(filter);
+                const platformMatch = platform === 'all' || text.includes(platform);
+                const valueMatch = revenue >= minValue;
+                
+                if (textMatch && platformMatch && valueMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Real-time data simulation
+        function updateRevenueData() {
+            const revenueElements = document.querySelectorAll('.revenue-value');
+            revenueElements.forEach(el => {
+                if (el.textContent.includes('$')) {
+                    const currentValue = parseFloat(el.textContent.replace(/[$,]/g, ''));
+                    const variation = (Math.random() - 0.5) * currentValue * 0.001; // ±0.1% variation
+                    const newValue = Math.round(currentValue + variation);
+                    el.textContent = '$' + newValue.toLocaleString();
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('transactionFilter').addEventListener('input', filterTransactions);
+            document.getElementById('platformFilter').addEventListener('change', filterTransactions);
+            document.getElementById('minValue').addEventListener('input', filterTransactions);
+            
+            // Update revenue data every 2 minutes
+            setInterval(updateRevenueData, 120000);
+            
+            // Add new transaction simulation every 10 minutes
+            setInterval(function() {
+                console.log('New transaction would be added to the table');
+                // In real implementation, this would fetch new data from the server
+            }, 600000);
+        });
+    </script>
+</body>
+</html>

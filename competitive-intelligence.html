@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alamar Admin - Competitive Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #2c4e8a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-branding {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alamar-logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .admin-badge {
+            background: #dc3545;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-tab.active {
+            color: #2c4e8a;
+            border-bottom-color: #f5b800;
+        }
+
+        .content-container {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #2c4e8a;
+            font-weight: 600;
+        }
+
+        .data-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-input {
+            padding: 0.5rem;
+            border: 1px solid #e0e6ed;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .export-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .data-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1a3564;
+        }
+
+        .data-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .threat-critical {
+            background: #f8d7da;
+            font-weight: 600;
+        }
+
+        .threat-high {
+            background: #f8d7da;
+        }
+
+        .threat-medium {
+            background: #fff3cd;
+        }
+
+        .threat-low {
+            background: #d4edda;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+
+        .revenue-value {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .threat-value {
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        .trend-positive {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .trend-negative {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .market-share {
+            font-weight: bold;
+            color: #2c4e8a;
+        }
+
+        .company-info {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .activity-timestamp {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .partnership-data {
+            font-size: 0.85rem;
+        }
+
+        .price-intelligence {
+            font-weight: 600;
+        }
+
+        .alert-new {
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .alert-updated {
+            background: #ffc107;
+            color: #212529;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .data-controls {
+                flex-wrap: wrap;
+            }
+            
+            .content-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-branding">
+            <div class="alamar-logo">ALAMAR</div>
+            <div class="admin-badge">ADMIN</div>
+            <div>
+                <div style="font-weight: 600; font-size: 1.1rem;">Competitive Intelligence Portal</div>
+                <div style="font-size: 0.8rem; opacity: 0.8;">Real-time Competitor Monitoring & Threat Analysis</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="export-btn" onclick="exportIntelligenceData()">🕵️ Export All Intelligence Data</button>
+            <button style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;" onclick="window.location.href='alamar-admin-dashboard.html'">← Back to Dashboard</button>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <a href="alamar-admin-dashboard.html" class="nav-tab">Market Overview</a>
+        <a href="biomarker-intelligence.html" class="nav-tab">Biomarker Intelligence</a>
+        <a href="market-analytics.html" class="nav-tab">Transaction Analytics</a>
+        <a href="competitive-intelligence.html" class="nav-tab active">Competitive Intel</a>
+        <button class="nav-tab">Real-time Monitoring</button>
+    </nav>
+
+    <div class="content-container">
+        <div class="page-header">
+            <h1 class="page-title">Competitive Intelligence & Threat Analysis</h1>
+            <div class="data-controls">
+                <input type="text" class="filter-input" placeholder="Search competitors, activities, threats..." id="competitorFilter">
+                <select class="filter-input" id="threatLevel">
+                    <option value="all">All Threat Levels</option>
+                    <option value="critical">Critical Only</option>
+                    <option value="high">High Only</option>
+                    <option value="medium">Medium Only</option>
+                    <option value="low">Low Only</option>
+                </select>
+                <select class="filter-input" id="timeRange">
+                    <option value="1d">Last 24 hours</option>
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d" selected>Last 30 days</option>
+                    <option value="90d">Last 90 days</option>
+                </select>
+                <button class="export-btn" onclick="exportFiltered()">Export Filtered</button>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🚨 Real-time Competitive Threat Monitoring</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="export-btn">CSV</button>
+                    <button class="export-btn">Intelligence Report</button>
+                    <button class="export-btn">Executive Summary</button>
+                </div>
+            </div>
+            <table class="data-table" id="threatTable">
+                <thead>
+                    <tr>
+                        <th>Competitor</th>
+                        <th>Activity Type</th>
+                        <th>Threat Level</th>
+                        <th>Description</th>
+                        <th>Market Impact</th>
+                        <th>Revenue at Risk</th>
+                        <th>Affected Markets</th>
+                        <th>Detection Source</th>
+                        <th>Timestamp</th>
+                        <th>Response Status</th>
+                        <th>Recommended Action</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="threat-critical">
+                        <td><strong>SomaLogic</strong><br><small class="company-info">Boulder, CO • SOMAscan Platform</small></td>
+                        <td>Partnership Announcement</td>
+                        <td><span class="alert-new">CRITICAL</span></td>
+                        <td>Exclusive deal with Mayo Clinic network for neurodegeneration research. 5-year agreement worth $15M+</td>
+                        <td class="threat-value">HIGH - Direct customer loss</td>
+                        <td class="threat-value">$2.1M annually</td>
+                        <td>Neurodegeneration, Academic Research, Midwest</td>
+                        <td>Press Release Monitor</td>
+                        <td class="activity-timestamp">2024-01-15 12:34:22 UTC</td>
+                        <td>URGENT - Requires immediate response</td>
+                        <td>Counter-offer to Mayo Clinic, competitive pricing review</td>
+                        <td class="threat-value">P0</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>SomaLogic</strong><br><small class="company-info">Boulder, CO • SOMAscan Platform</small></td>
+                        <td>Pricing Strategy</td>
+                        <td><span class="alert-updated">HIGH</span></td>
+                        <td>15% price increase across neurology panels effective Q2 2024. Premium positioning strategy</td>
+                        <td class="trend-positive">OPPORTUNITY - Price advantage</td>
+                        <td class="revenue-value">+$340K opportunity</td>
+                        <td>Neurology, Premium segments</td>
+                        <td>Customer Intelligence</td>
+                        <td class="activity-timestamp">2024-01-15 08:15:33 UTC</td>
+                        <td>MONITORING - Capitalize on price gap</td>
+                        <td>Aggressive marketing campaign highlighting cost advantage</td>
+                        <td class="metric-value">P1</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Quanterix (Simoa)</strong><br><small class="company-info">Billerica, MA • Simoa Platform</small></td>
+                        <td>Product Launch</td>
+                        <td><span class="alert-updated">MEDIUM</span></td>
+                        <td>Enhanced tau biomarker sensitivity platform upgrade. Targeting Alzheimer's research market</td>
+                        <td class="metric-value">MEDIUM - Technology gap</td>
+                        <td class="threat-value">$890K at risk</td>
+                        <td>Alzheimer's, Tau biomarkers, Academic</td>
+                        <td>Patent Monitoring</td>
+                        <td class="activity-timestamp">2024-01-14 19:42:11 UTC</td>
+                        <td>ANALYSIS - Assessing technology impact</td>
+                        <td>Accelerate Argo HT sensitivity improvements</td>
+                        <td class="metric-value">P2</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>Multiple Competitors</strong><br><small class="company-info">Industry-wide activity</small></td>
+                        <td>Customer Poaching</td>
+                        <td><span class="alert-new">HIGH</span></td>
+                        <td>3 major Argo HT labs (Precision Diagnostics, MedTech Analytics, Midwest Molecular) received competitive quotes 25% below current pricing</td>
+                        <td class="threat-value">HIGH - Customer retention risk</td>
+                        <td class="threat-value">$1.2M at risk</td>
+                        <td>Boston, Seattle, Chicago markets</td>
+                        <td>Lab Intelligence Network</td>
+                        <td class="activity-timestamp">2024-01-14 16:28:45 UTC</td>
+                        <td>ACTIVE - Account retention in progress</td>
+                        <td>Immediate customer meetings, retention incentives</td>
+                        <td class="threat-value">P0</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Meso Scale Discovery</strong><br><small class="company-info">Rockville, MD • MSD Platform</small></td>
+                        <td>Strategic Partnerships</td>
+                        <td><span class="alert-updated">MEDIUM</span></td>
+                        <td>5 new exclusive partnerships with major CROs for inflammation biomarker studies</td>
+                        <td class="metric-value">MEDIUM - Market share threat</td>
+                        <td class="threat-value">$650K potential loss</td>
+                        <td>Inflammation, CRO segment, Multi-site trials</td>
+                        <td>Industry Contacts</td>
+                        <td class="activity-timestamp">2024-01-13 14:17:28 UTC</td>
+                        <td>MONITORING - Tracking partnership impact</td>
+                        <td>Develop competitive CRO partnership program</td>
+                        <td class="metric-value">P2</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Olink Proteomics</strong><br><small class="company-info">Uppsala, Sweden • NPX Platform</small></td>
+                        <td>Market Entry</td>
+                        <td><span class="alert-new">MEDIUM</span></td>
+                        <td>Expanding US operations with focus on inflammation and immunology panels. 12 new US lab partnerships planned</td>
+                        <td class="metric-value">MEDIUM - New competitor entry</td>
+                        <td class="threat-value">$430K market share risk</td>
+                        <td>Inflammation, Immunology, European-style quality</td>
+                        <td>Market Research</td>
+                        <td class="activity-timestamp">2024-01-12 11:45:19 UTC</td>
+                        <td>ANALYSIS - Market positioning assessment</td>
+                        <td>Competitive analysis, differentiation strategy</td>
+                        <td class="metric-value">P2</td>
+                    </tr>
+                    <tr class="threat-low">
+                        <td><strong>Luminex Corporation</strong><br><small class="company-info">Austin, TX • xMAP Platform</small></td>
+                        <td>Technology Licensing</td>
+                        <td><span class="alert-updated">LOW</span></td>
+                        <td>New partnerships for legacy platform integration. Focusing on cost-competitive basic panels</td>
+                        <td class="trend-negative">LOW - Limited impact</td>
+                        <td class="metric-value">$125K minimal risk</td>
+                        <td>Basic panels, Cost-sensitive customers</td>
+                        <td>Patent Database</td>
+                        <td class="activity-timestamp">2024-01-11 09:22:33 UTC</td>
+                        <td>MONITORING - No immediate action needed</td>
+                        <td>Continue monitoring for any major changes</td>
+                        <td class="metric-value">P3</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>SomaLogic</strong><br><small class="company-info">Boulder, CO • SOMAscan Platform</small></td>
+                        <td>Talent Acquisition</td>
+                        <td><span class="alert-new">HIGH</span></td>
+                        <td>Hired 3 senior scientists from Alamar partners including former Precision Diagnostics CTO</td>
+                        <td class="threat-value">HIGH - IP and customer knowledge risk</td>
+                        <td class="threat-value">$340K knowledge transfer risk</td>
+                        <td>R&D pipeline, Customer relationships</td>
+                        <td>LinkedIn Intelligence</td>
+                        <td class="activity-timestamp">2024-01-10 15:33:42 UTC</td>
+                        <td>INVESTIGATION - Legal and strategic review</td>
+                        <td>Review non-compete agreements, customer contract security</td>
+                        <td class="threat-value">P1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">📊 Competitor Market Intelligence Database</h3>
+                <button class="export-btn">Export Competitor Analysis</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Competitor</th>
+                        <th>Market Share</th>
+                        <th>Revenue (Est.)</th>
+                        <th>Growth Rate</th>
+                        <th>Key Strengths</th>
+                        <th>Key Weaknesses</th>
+                        <th>Customer Segments</th>
+                        <th>Geographic Focus</th>
+                        <th>Platform Capabilities</th>
+                        <th>Pricing Strategy</th>
+                        <th>Partnership Status</th>
+                        <th>Threat Assessment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="threat-critical">
+                        <td><strong>SomaLogic</strong><br><small class="company-info">Public (NASDAQ: SLGC)<br>Founded: 2000</small></td>
+                        <td class="market-share">18.2%</td>
+                        <td class="revenue-value">$789M</td>
+                        <td class="trend-positive">+34.2%</td>
+                        <td>Broad protein coverage (7K+), Strong IP portfolio, Academic partnerships</td>
+                        <td>High cost, Complex workflow, Long turnaround</td>
+                        <td>Academic (60%), Pharma (25%), Biotech (15%)</td>
+                        <td>US (75%), Europe (20%), Asia (5%)</td>
+                        <td>SOMAscan (aptamer-based), High-plex capability</td>
+                        <td class="price-intelligence">Premium ($45-180/sample)</td>
+                        <td class="partnership-data">Mayo Clinic (exclusive), 15 new partnerships Q4</td>
+                        <td class="threat-value">CRITICAL THREAT</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>Quanterix (Simoa)</strong><br><small class="company-info">Public (NASDAQ: QTRX)<br>Founded: 2007</small></td>
+                        <td class="market-share">15.7%</td>
+                        <td class="revenue-value">$452M</td>
+                        <td class="trend-positive">+12.4%</td>
+                        <td>Ultra-sensitivity, FDA approvals, Strong neurology focus</td>
+                        <td>Limited multiplexing, High equipment cost, Single platform</td>
+                        <td>Academic (70%), Clinical (20%), Pharma (10%)</td>
+                        <td>US (65%), Europe (25%), Asia (10%)</td>
+                        <td>Simoa (digital ELISA), Ultra-low detection</td>
+                        <td class="price-intelligence">Premium ($38-145/sample)</td>
+                        <td class="partnership-data">Stable network, Focus on quality over quantity</td>
+                        <td class="threat-value">HIGH THREAT</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Meso Scale Discovery</strong><br><small class="company-info">Private<br>Founded: 1995</small></td>
+                        <td class="market-share">12.4%</td>
+                        <td class="revenue-value">$387M</td>
+                        <td class="trend-positive">+8.1%</td>
+                        <td>Established network, Multi-plex capability, Proven track record</td>
+                        <td>Aging technology, Limited innovation, Slow adaptation</td>
+                        <td>Pharma (55%), Clinical (30%), Academic (15%)</td>
+                        <td>US (80%), Europe (15%), Other (5%)</td>
+                        <td>MSD (electrochemiluminescence), Mid-plex focus</td>
+                        <td class="price-intelligence">Competitive ($28-95/sample)</td>
+                        <td class="partnership-data">5 new CRO partnerships, Defensive strategy</td>
+                        <td class="metric-value">MEDIUM THREAT</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Olink Proteomics</strong><br><small class="company-info">Public (NASDAQ: OLK)<br>Founded: 2016</small></td>
+                        <td class="market-share">4.8%</td>
+                        <td class="revenue-value">$156M</td>
+                        <td class="trend-positive">+67.3%</td>
+                        <td>European quality standards, Strong bioinformatics, Growing rapidly</td>
+                        <td>Limited US presence, Smaller network, Higher pricing</td>
+                        <td>Academic (50%), Pharma (40%), Biotech (10%)</td>
+                        <td>Europe (60%), US (25%), Asia (15%)</td>
+                        <td>NPX (proximity extension), High quality</td>
+                        <td class="price-intelligence">Premium ($52-168/sample)</td>
+                        <td class="partnership-data">12 US partnerships planned, Expansion mode</td>
+                        <td class="metric-value">EMERGING THREAT</td>
+                    </tr>
+                    <tr class="threat-low">
+                        <td><strong>Luminex Corporation</strong><br><small class="company-info">Public (NASDAQ: LMNX)<br>Founded: 1995</small></td>
+                        <td class="market-share">3.2%</td>
+                        <td class="revenue-value">$124M</td>
+                        <td class="trend-negative">-5.2%</td>
+                        <td>Low cost, Simple workflow, Established user base</td>
+                        <td>Limited innovation, Losing market share, Basic capabilities</td>
+                        <td>Academic (80%), Small labs (15%), Other (5%)</td>
+                        <td>US (90%), International (10%)</td>
+                        <td>xMAP (bead-based), Basic multiplexing</td>
+                        <td class="price-intelligence">Budget ($12-45/sample)</td>
+                        <td class="partnership-data">Minimal new partnerships, Focus on existing</td>
+                        <td class="trend-negative">LOW THREAT</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Bio-Rad Laboratories</strong><br><small class="company-info">Public (NYSE: BIO)<br>Founded: 1952</small></td>
+                        <td class="market-share">2.9%</td>
+                        <td class="revenue-value">$98M</td>
+                        <td class="trend-positive">+15.6%</td>
+                        <td>Broad life sciences portfolio, Strong distribution, Global presence</td>
+                        <td>Proteomics not core focus, Limited specialized capabilities</td>
+                        <td>Clinical (45%), Academic (35%), Industry (20%)</td>
+                        <td>Global presence, US (40%), Europe (35%), Asia (25%)</td>
+                        <td>Multiple platforms, Focus on clinical diagnostics</td>
+                        <td class="price-intelligence">Mid-range ($22-78/sample)</td>
+                        <td class="partnership-data">Leveraging existing clinical network</td>
+                        <td class="metric-value">MONITORING</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">💰 Competitive Pricing Intelligence</h3>
+                <button class="export-btn">Export Pricing Analysis</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Biomarker Panel</th>
+                        <th>Argo HT Price</th>
+                        <th>SomaLogic Price</th>
+                        <th>Simoa Price</th>
+                        <th>MSD Price</th>
+                        <th>Market Position</th>
+                        <th>Price Elasticity</th>
+                        <th>Competitive Advantage</th>
+                        <th>Recommended Action</th>
+                        <th>Last Updated</th>
+                        <th>Source Confidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Neurodegeneration 8-plex</strong><br><small>GFAP, NfL, p-tau181, CXCL13, etc.</small></td>
+                        <td class="price-intelligence">$42.30</td>
+                        <td class="price-intelligence">$67.80 (+60%)</td>
+                        <td class="price-intelligence">$54.20 (+28%)</td>
+                        <td class="price-intelligence">$38.90 (-8%)</td>
+                        <td class="trend-positive">COMPETITIVE ADVANTAGE</td>
+                        <td>High elasticity (-2.3% demand per 1% price increase)</td>
+                        <td>Best value proposition vs premium competitors</td>
+                        <td>Maintain pricing, emphasize value</td>
+                        <td class="activity-timestamp">2024-01-15 14:22:11</td>
+                        <td>95% confident</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>Alzheimer's Research Panel</strong><br><small>p-tau181, p-tau217, Aβ42, Aβ40, etc.</small></td>
+                        <td class="price-intelligence">$78.50</td>
+                        <td class="price-intelligence">$89.20 (+14%)</td>
+                        <td class="price-intelligence">$65.40 (-17%)</td>
+                        <td class="price-intelligence">$71.30 (-9%)</td>
+                        <td class="threat-value">UNDER PRESSURE</td>
+                        <td>Medium elasticity (-1.8% demand per 1% price increase)</td>
+                        <td>Technology gap vs Simoa ultra-sensitivity</td>
+                        <td>Price reduction or technology investment needed</td>
+                        <td class="activity-timestamp">2024-01-15 09:15:33</td>
+                        <td>88% confident</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inflammation 12-plex</strong><br><small>IL-6, TNF-α, IL-1β, CRP, etc.</small></td>
+                        <td class="price-intelligence">$24.00</td>
+                        <td class="price-intelligence">$45.60 (+90%)</td>
+                        <td class="price-intelligence">$31.20 (+30%)</td>
+                        <td class="price-intelligence">$22.80 (-5%)</td>
+                        <td class="trend-positive">MARKET LEADER</td>
+                        <td>Low elasticity (-0.9% demand per 1% price increase)</td>
+                        <td>Dominant position, established quality</td>
+                        <td>Potential for modest price increase</td>
+                        <td class="activity-timestamp">2024-01-14 16:45:22</td>
+                        <td>92% confident</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Oncology Biomarker Panel</strong><br><small>CEA, CA 19-9, PSA, VEGF-A, etc.</small></td>
+                        <td class="price-intelligence">$49.80</td>
+                        <td class="price-intelligence">$72.40 (+45%)</td>
+                        <td class="price-intelligence">$58.90 (+18%)</td>
+                        <td class="price-intelligence">$44.20 (-11%)</td>
+                        <td class="metric-value">COMPETITIVE</td>
+                        <td>Medium elasticity (-1.5% demand per 1% price increase)</td>
+                        <td>Good positioning between premium and budget</td>
+                        <td>Monitor competitor moves, maintain position</td>
+                        <td class="activity-timestamp">2024-01-13 11:28:17</td>
+                        <td>85% confident</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cardiovascular 6-plex</strong><br><small>VEGF-A, IL-6, TNF-α, CRP, etc.</small></td>
+                        <td class="price-intelligence">$55.00</td>
+                        <td class="price-intelligence">$78.30 (+42%)</td>
+                        <td class="price-intelligence">$62.10 (+13%)</td>
+                        <td class="price-intelligence">$48.90 (-11%)</td>
+                        <td class="trend-positive">STRONG POSITION</td>
+                        <td>High elasticity (-2.1% demand per 1% price increase)</td>
+                        <td>Well-positioned vs all competitors</td>
+                        <td>Maintain current pricing strategy</td>
+                        <td class="activity-timestamp">2024-01-12 14:33:44</td>
+                        <td>90% confident</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🤝 Partnership & Customer Migration Intelligence</h3>
+                <button class="export-btn">Export Partnership Analysis</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Customer/Lab</th>
+                        <th>Current Platform</th>
+                        <th>Migration Risk</th>
+                        <th>Competitor Interest</th>
+                        <th>Contract Status</th>
+                        <th>Revenue Value</th>
+                        <th>Risk Factors</th>
+                        <th>Competitive Offers Received</th>
+                        <th>Retention Actions Taken</th>
+                        <th>Last Contact</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="threat-critical">
+                        <td><strong>Precision Diagnostics</strong><br><small class="company-info">Boston, MA • $387K annual</small></td>
+                        <td>Argo HT (85%)</td>
+                        <td class="threat-value">CRITICAL</td>
+                        <td>SomaLogic (active pursuit)</td>
+                        <td>Contract expires Q2 2024</td>
+                        <td class="revenue-value">$387,420</td>
+                        <td>CTO departed to SomaLogic, pricing pressure, exclusive competitor offers</td>
+                        <td>SomaLogic: 25% price reduction + exclusive neurodegeneration access</td>
+                        <td>Emergency retention meeting scheduled, competitive counter-offer prepared</td>
+                        <td class="activity-timestamp">2024-01-14 16:30:00</td>
+                        <td class="threat-value">URGENT</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>MedTech Analytics</strong><br><small class="company-info">Seattle, WA • $189K annual</small></td>
+                        <td>Argo HT (45%), Mixed (55%)</td>
+                        <td class="threat-value">HIGH</td>
+                        <td>Multiple competitors</td>
+                        <td>Month-to-month agreement</td>
+                        <td class="revenue-value">$189,430</td>
+                        <td>Low success rate (73%), long conversion times, biotech funding constraints</td>
+                        <td>Simoa: Enhanced sensitivity offer; MSD: Volume discount proposal</td>
+                        <td>Performance improvement plan, success guarantee program</td>
+                        <td class="activity-timestamp">2024-01-12 10:15:22</td>
+                        <td class="threat-value">MONITOR</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Midwest Molecular</strong><br><small class="company-info">Chicago, IL • $146K annual</small></td>
+                        <td>Mixed platforms</td>
+                        <td class="metric-value">MEDIUM</td>
+                        <td>Simoa (tau specialization)</td>
+                        <td>Annual contract, 6 months remaining</td>
+                        <td class="revenue-value">$145,680</td>
+                        <td>Declining growth (-3.2%), heavy Alzheimer's focus, Simoa technology advantage</td>
+                        <td>Simoa: Exclusive tau panel access at competitive pricing</td>
+                        <td>Technology roadmap presentation, Alzheimer's panel enhancement offer</td>
+                        <td class="activity-timestamp">2024-01-10 14:22:11</td>
+                        <td class="metric-value">STABLE</td>
+                    </tr>
+                    <tr class="threat-low">
+                        <td><strong>West Coast Proteomics</strong><br><small class="company-info">Los Angeles, CA • $168K annual</small></td>
+                        <td>Argo HT (92%)</td>
+                        <td class="trend-positive">LOW</td>
+                        <td>Minimal competitor activity</td>
+                        <td>3-year contract, 18 months remaining</td>
+                        <td class="revenue-value">$167,820</td>
+                        <td>High satisfaction (96.2% success rate), strong growth (+41.8%)</td>
+                        <td>None detected in last 90 days</td>
+                        <td>Relationship strengthening, expanded service offerings</td>
+                        <td class="activity-timestamp">2024-01-13 09:45:33</td>
+                        <td class="trend-positive">SECURE</td>
+                    </tr>
+                    <tr class="threat-medium">
+                        <td><strong>Clinical Research Institute</strong><br><small class="company-info">San Francisco, CA • $277K annual</small></td>
+                        <td>Argo HT (78%)</td>
+                        <td class="metric-value">MEDIUM</td>
+                        <td>MSD (CRO partnerships)</td>
+                        <td>2-year contract, 8 months remaining</td>
+                        <td class="revenue-value">$276,900</td>
+                        <td>CRO segment pressure, MSD partnership announcements</td>
+                        <td>MSD: CRO network integration, streamlined multi-site capabilities</td>
+                        <td>Enhanced multi-site coordination, CRO-specific service packages</td>
+                        <td class="activity-timestamp">2024-01-11 15:20:44</td>
+                        <td class="metric-value">STABLE</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function exportIntelligenceData() {
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            alert(`Exporting comprehensive competitive intelligence dataset...\\n\\nClassified files being generated:\\n• threat-monitoring-${timestamp}.csv\\n• competitor-analysis-${timestamp}.xlsx\\n• pricing-intelligence-${timestamp}.json\\n• partnership-risks-${timestamp}.pdf\\n• executive-summary-${timestamp}.docx\\n\\nTotal records: 156 threats, 12 competitors, 89 partnership assessments\\n\\nCLASSIFIED - Secure delivery to authorized personnel only.`);
+        }
+
+        function exportFiltered() {
+            const filter = document.getElementById('competitorFilter').value;
+            const threatLevel = document.getElementById('threatLevel').value;
+            const timeRange = document.getElementById('timeRange').value;
+            
+            alert(`Exporting filtered competitive intelligence...\\n\\nFilters applied:\\n• Search: "${filter}"\\n• Threat level: ${threatLevel}\\n• Time range: ${timeRange}\\n\\nEstimated records: ${Math.floor(Math.random() * 100) + 25}\\n\\nClassified export will be available in secure folder.`);
+        }
+
+        function filterThreats() {
+            const filter = document.getElementById('competitorFilter').value.toLowerCase();
+            const threatLevel = document.getElementById('threatLevel').value;
+            const table = document.getElementById('threatTable');
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const rowThreatLevel = row.className.includes('threat-critical') ? 'critical' :
+                                    row.className.includes('threat-high') ? 'high' :
+                                    row.className.includes('threat-medium') ? 'medium' : 'low';
+                
+                const textMatch = filter === '' || text.includes(filter);
+                const threatMatch = threatLevel === 'all' || rowThreatLevel === threatLevel;
+                
+                if (textMatch && threatMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Real-time threat monitoring simulation
+        function simulateNewThreat() {
+            const threats = [
+                'New competitor partnership announcement detected',
+                'Pricing change alert from major competitor',
+                'Customer migration risk identified',
+                'Technology advancement by competitor detected',
+                'Market share shift identified'
+            ];
+            
+            const randomThreat = threats[Math.floor(Math.random() * threats.length)];
+            console.log(`NEW THREAT ALERT: ${randomThreat}`);
+            
+            // In real implementation, this would add a new row to the table
+            // and trigger alert notifications
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('competitorFilter').addEventListener('input', filterThreats);
+            document.getElementById('threatLevel').addEventListener('change', filterThreats);
+            
+            // Simulate real-time threat monitoring
+            setInterval(simulateNewThreat, 300000); // Every 5 minutes
+            
+            // Update threat assessments every 10 minutes
+            setInterval(function() {
+                console.log('Refreshing competitive intelligence data...');
+                // In real implementation, this would fetch updated data
+            }, 600000);
+        });
+    </script>
+</body>
+</html>

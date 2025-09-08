@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alamar Admin - Market Intelligence Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #2c4e8a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-branding {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alamar-logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .admin-badge {
+            background: #dc3545;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .admin-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .refresh-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-tab.active {
+            color: #2c4e8a;
+            border-bottom-color: #f5b800;
+        }
+
+        .nav-tab:hover {
+            color: #2c4e8a;
+            background: #f8f9fa;
+        }
+
+        .dashboard-content {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .data-table th {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1a3564;
+        }
+
+        .data-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+
+        .trend-positive {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .trend-negative {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .alert-high {
+            background: #f8d7da;
+            font-weight: 600;
+        }
+
+        .alert-medium {
+            background: #fff3cd;
+        }
+
+        .export-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .export-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .filter-input {
+            padding: 0.5rem;
+            border: 1px solid #e0e6ed;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .data-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin: 0;
+        }
+
+        .section-content {
+            padding: 0;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .trend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+
+        .trend-name {
+            font-weight: 500;
+        }
+
+        .trend-subtitle {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .trend-metric {
+            text-align: right;
+        }
+
+        .trend-number {
+            font-weight: bold;
+            color: #2c4e8a;
+        }
+
+        .trend-change {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .alert-item {
+            padding: 1rem;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert-item.critical {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-time {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin: 1rem 0;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            background: #e0e6ed;
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .heatmap-cell.low {
+            background: #c8e6c9;
+        }
+
+        .heatmap-cell.medium {
+            background: #81c784;
+        }
+
+        .heatmap-cell.high {
+            background: #4caf50;
+        }
+
+        .heatmap-cell.critical {
+            background: #2e7d32;
+        }
+
+        .quick-actions {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.75rem;
+            background: #2c4e8a;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #1a3564;
+        }
+
+        .action-btn.secondary {
+            background: #6c757d;
+        }
+
+        .action-btn.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .platform-insights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .platform-card {
+            padding: 1rem;
+            border: 1px solid #e0e6ed;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .platform-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .platform-usage {
+            font-size: 1.5rem;
+            color: #2c4e8a;
+            margin-bottom: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-branding">
+            <div class="alamar-logo">ALAMAR</div>
+            <div class="admin-badge">ADMIN</div>
+            <div>
+                <div style="font-weight: 600; font-size: 1.1rem;">Labatar Intelligence Portal</div>
+                <div style="font-size: 0.8rem; opacity: 0.8;">Real-time Market Intelligence</div>
+            </div>
+        </div>
+        <div class="admin-controls">
+            <button class="refresh-btn" onclick="refreshData()">🔄 Refresh Data</button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <button class="nav-tab" onclick="window.location.href='market-analytics.html'">Transaction Analytics</button>
+        <button class="nav-tab" onclick="window.location.href='biomarker-intelligence.html'">Biomarker Intelligence</button>
+        <button class="nav-tab active" onclick="showTab('overview')">Market Overview</button>
+    </nav>
+
+    <div class="dashboard-content">
+        <div class="export-controls">
+            <button class="export-btn" onclick="exportData('all')">📊 Export All Data</button>
+            <button class="export-btn" onclick="exportData('filtered')">🔍 Export Filtered</button>
+            <input type="text" class="filter-input" placeholder="Filter biomarkers, labs, transactions..." id="globalFilter">
+            <select class="filter-input">
+                <option>All Time Periods</option>
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+                <option>Custom Range</option>
+            </select>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🔬 Real-Time Biomarker Search Intelligence</h3>
+                <div class="export-controls">
+                    <button class="export-btn">Export CSV</button>
+                    <button class="export-btn">Export JSON</button>
+                </div>
+            </div>
+            <div class="section-content">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Biomarker</th>
+                            <th>Search Volume (7d)</th>
+                            <th>Growth Rate</th>
+                            <th>Labs Offering</th>
+                            <th>Avg Quote Value</th>
+                            <th>Top Search Regions</th>
+                            <th>Research Categories</th>
+                            <th>Platform Preference</th>
+                            <th>Alert Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GFAP</strong></td>
+                            <td class="metric-value">2,847</td>
+                            <td class="trend-positive">+245%</td>
+                            <td>31</td>
+                            <td class="metric-value">$67,240</td>
+                            <td>Boston, SF, NY</td>
+                            <td>Neurodegeneration, TBI</td>
+                            <td>Argo: 45%, Simoa: 35%</td>
+                            <td class="alert-high">HIGH OPPORTUNITY</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CXCL13</strong></td>
+                            <td class="metric-value">1,923</td>
+                            <td class="trend-positive">+189%</td>
+                            <td>18</td>
+                            <td class="metric-value">$43,580</td>
+                            <td>Cambridge, Seattle, SD</td>
+                            <td>Immunology, MS</td>
+                            <td>Argo: 61%, MSD: 28%</td>
+                            <td class="alert-high">EMERGING</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NfL</strong></td>
+                            <td class="metric-value">3,421</td>
+                            <td class="trend-positive">+89%</td>
+                            <td>47</td>
+                            <td class="metric-value">$89,340</td>
+                            <td>Boston, LA, Chicago</td>
+                            <td>Neurodegeneration, AD</td>
+                            <td>Argo: 72%, Simoa: 28%</td>
+                            <td class="alert-medium">GROWING</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phospho-tau 181</strong></td>
+                            <td class="metric-value">2,156</td>
+                            <td class="trend-positive">+67%</td>
+                            <td>23</td>
+                            <td class="metric-value">$156,780</td>
+                            <td>Boston, SF, Philadelphia</td>
+                            <td>Alzheimer's, Dementia</td>
+                            <td>Simoa: 52%, Argo: 35%</td>
+                            <td class="alert-medium">COMPETITIVE THREAT</td>
+                        </tr>
+                        <tr>
+                            <td><strong>VEGF-A</strong></td>
+                            <td class="metric-value">1,634</td>
+                            <td class="trend-positive">+43%</td>
+                            <td>52</td>
+                            <td class="metric-value">$34,270</td>
+                            <td>Houston, Atlanta, Denver</td>
+                            <td>Angiogenesis, Cancer</td>
+                            <td>Argo: 78%, MSD: 15%</td>
+                            <td class="alert-medium">STABLE</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IL-6</strong></td>
+                            <td class="metric-value">4,567</td>
+                            <td class="trend-negative">-12%</td>
+                            <td>89</td>
+                            <td class="metric-value">$28,940</td>
+                            <td>All major metros</td>
+                            <td>Inflammation, COVID</td>
+                            <td>Argo: 69%, MSD: 20%</td>
+                            <td>MATURE MARKET</td>
+                        </tr>
+                        <tr>
+                            <td><strong>YKL-40</strong></td>
+                            <td class="metric-value">892</td>
+                            <td class="trend-positive">+112%</td>
+                            <td>14</td>
+                            <td class="metric-value">$52,680</td>
+                            <td>Boston, SF, Baltimore</td>
+                            <td>Inflammation, Fibrosis</td>
+                            <td>Argo: 57%, MSD: 36%</td>
+                            <td class="alert-medium">GROWING</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clusterin</strong></td>
+                            <td class="metric-value">743</td>
+                            <td class="trend-positive">+156%</td>
+                            <td>8</td>
+                            <td class="metric-value">$78,500</td>
+                            <td>Boston, LA, Seattle</td>
+                            <td>Neurodegeneration</td>
+                            <td>Simoa: 63%, Argo: 25%</td>
+                            <td class="alert-high">EXPANSION NEEDED</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="data-grid">
+            <div class="data-section">
+                <div class="section-header">
+                    <h3 class="section-title">💰 High-Value Transaction Log</h3>
+                    <button class="export-btn">Export Transactions</button>
+                </div>
+                <div class="section-content">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Lab</th>
+                                <th>Biomarker Panel</th>
+                                <th>Sample Count</th>
+                                <th>Platform</th>
+                                <th>Quote Value</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-01-15 14:23:41</td>
+                                <td>Precision Diagnostics</td>
+                                <td>Neurodegeneration 8-plex</td>
+                                <td>2,500</td>
+                                <td>Argo HT</td>
+                                <td class="metric-value">$127,500</td>
+                                <td class="trend-positive">COMPLETED</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-15 09:45:12</td>
+                                <td>Boston Biomarker Labs</td>
+                                <td>Multi-platform Oncology</td>
+                                <td>1,800</td>
+                                <td>Mixed</td>
+                                <td class="metric-value">$89,640</td>
+                                <td class="trend-positive">COMPLETED</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-14 16:12:33</td>
+                                <td>Clinical Research Institute</td>
+                                <td>Inflammation 12-plex</td>
+                                <td>3,200</td>
+                                <td>Argo HT</td>
+                                <td class="metric-value">$76,800</td>
+                                <td class="trend-positive">COMPLETED</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-14 11:28:07</td>
+                                <td>MedTech Analytics</td>
+                                <td>Custom Biomarker Panel</td>
+                                <td>1,100</td>
+                                <td>Argo HT</td>
+                                <td class="metric-value">$67,320</td>
+                                <td class="trend-positive">COMPLETED</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-13 15:47:22</td>
+                                <td>West Coast Proteomics</td>
+                                <td>Cardiovascular 6-plex</td>
+                                <td>950</td>
+                                <td>Argo HT</td>
+                                <td class="metric-value">$52,250</td>
+                                <td class="trend-positive">COMPLETED</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="data-section">
+                <div class="section-header">
+                    <h3 class="section-title">🚨 Market Intelligence Alerts</h3>
+                    <button class="export-btn">Export Alerts</button>
+                </div>
+                <div class="section-content">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Alert Time</th>
+                                <th>Type</th>
+                                <th>Severity</th>
+                                <th>Description</th>
+                                <th>Impact</th>
+                                <th>Action Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="alert-high">
+                                <td>2024-01-15 12:34:22</td>
+                                <td>Competitor Activity</td>
+                                <td class="trend-negative">CRITICAL</td>
+                                <td>SomaLogic 15% price increase across neurology panels</td>
+                                <td>+$340K opportunity</td>
+                                <td>Review pricing strategy</td>
+                            </tr>
+                            <tr class="alert-medium">
+                                <td>2024-01-15 08:15:33</td>
+                                <td>Market Opportunity</td>
+                                <td class="trend-positive">HIGH</td>
+                                <td>87% increase in Long COVID biomarker searches</td>
+                                <td>$2.1M potential</td>
+                                <td>Develop panel offering</td>
+                            </tr>
+                            <tr class="alert-medium">
+                                <td>2024-01-14 19:42:11</td>
+                                <td>Customer Risk</td>
+                                <td class="trend-negative">MEDIUM</td>
+                                <td>Precision Diagnostics in talks with competitor</td>
+                                <td>$890K at risk</td>
+                                <td>Account retention call</td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-14 14:28:45</td>
+                                <td>Market Trend</td>
+                                <td class="trend-positive">MEDIUM</td>
+                                <td>Oncology immunotherapy panels up 156%</td>
+                                <td>$1.5M opportunity</td>
+                                <td>Expand panel offerings</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-section full-width">
+            <div class="section-header">
+                <h3 class="section-title">🏥 Laboratory Performance & Partnership Health</h3>
+                <div class="export-controls">
+                    <button class="export-btn">Export Lab Data</button>
+                    <button class="export-btn">Export Partnerships</button>
+                </div>
+            </div>
+            <div class="section-content">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Laboratory</th>
+                            <th>Location</th>
+                            <th>Certifications</th>
+                            <th>Platform Mix</th>
+                            <th>Monthly Revenue</th>
+                            <th>Sample Volume</th>
+                            <th>Quote Win Rate</th>
+                            <th>Avg Turnaround</th>
+                            <th>Customer Rating</th>
+                            <th>Growth Rate</th>
+                            <th>Risk Level</th>
+                            <th>Last Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Precision Diagnostics</strong></td>
+                            <td>Boston, MA</td>
+                            <td>CLIA, CAP, ISO</td>
+                            <td>Argo: 85%, Simoa: 15%</td>
+                            <td class="metric-value">$387,420</td>
+                            <td>7,890</td>
+                            <td class="trend-positive">73.5%</td>
+                            <td>2.3 days</td>
+                            <td>4.8⭐</td>
+                            <td class="trend-positive">+34.2%</td>
+                            <td class="alert-medium">MEDIUM</td>
+                            <td>2024-01-14</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Boston Biomarker Labs</strong></td>
+                            <td>Cambridge, MA</td>
+                            <td>CLIA, CAP, ISO, FDA</td>
+                            <td>Argo: 67%, MSD: 23%, Simoa: 10%</td>
+                            <td class="metric-value">$298,750</td>
+                            <td>6,123</td>
+                            <td class="trend-positive">81.2%</td>
+                            <td>1.8 days</td>
+                            <td>4.9⭐</td>
+                            <td class="trend-positive">+28.7%</td>
+                            <td class="alert-medium">LOW</td>
+                            <td>2024-01-15</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clinical Research Institute</strong></td>
+                            <td>San Francisco, CA</td>
+                            <td>CLIA, CAP</td>
+                            <td>Argo: 78%, Simoa: 22%</td>
+                            <td class="metric-value">$276,900</td>
+                            <td>5,234</td>
+                            <td class="trend-positive">67.8%</td>
+                            <td>3.1 days</td>
+                            <td>4.7⭐</td>
+                            <td class="trend-positive">+19.4%</td>
+                            <td class="alert-medium">LOW</td>
+                            <td>2024-01-12</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MedTech Analytics</strong></td>
+                            <td>Seattle, WA</td>
+                            <td>CLIA</td>
+                            <td>Argo: 45%, Simoa: 35%, MSD: 20%</td>
+                            <td class="metric-value">$189,430</td>
+                            <td>3,567</td>
+                            <td class="trend-negative">59.3%</td>
+                            <td>4.2 days</td>
+                            <td>4.6⭐</td>
+                            <td class="trend-positive">+12.1%</td>
+                            <td class="alert-high">HIGH</td>
+                            <td>2024-01-08</td>
+                        </tr>
+                        <tr>
+                            <td><strong>West Coast Proteomics</strong></td>
+                            <td>Los Angeles, CA</td>
+                            <td>CLIA, CAP</td>
+                            <td>Argo: 92%, MSD: 8%</td>
+                            <td class="metric-value">$167,820</td>
+                            <td>4,123</td>
+                            <td class="trend-positive">76.4%</td>
+                            <td>2.8 days</td>
+                            <td>4.8⭐</td>
+                            <td class="trend-positive">+41.8%</td>
+                            <td class="alert-medium">LOW</td>
+                            <td>2024-01-13</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Midwest Molecular</strong></td>
+                            <td>Chicago, IL</td>
+                            <td>CLIA, CAP</td>
+                            <td>Argo: 34%, Simoa: 45%, MSD: 21%</td>
+                            <td class="metric-value">$145,680</td>
+                            <td>2,890</td>
+                            <td class="trend-negative">52.7%</td>
+                            <td>5.1 days</td>
+                            <td>4.4⭐</td>
+                            <td class="trend-negative">-3.2%</td>
+                            <td class="alert-high">CRITICAL</td>
+                            <td>2024-01-05</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function exportData(type) {
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            alert(`Exporting ${type} data to CSV format...\n\nFile: labatar-intelligence-${type}-${timestamp}.csv\n\nData includes:\n• Biomarker search trends\n• Transaction logs\n• Laboratory performance metrics\n• Market intelligence alerts\n• Competitive analysis data\n\nExport will be available in Downloads folder.`);
+        }
+
+        function filterData() {
+            const filter = document.getElementById('globalFilter').value.toLowerCase();
+            const tables = document.querySelectorAll('.data-table tbody tr');
+            
+            tables.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function showTab(tabName) {
+            // Update active tab
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Tab switching logic would go here
+            console.log('Switching to tab:', tabName);
+        }
+
+        function refreshData() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.textContent = '🔄 Refreshing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.textContent = '🔄 Refresh Data';
+                btn.disabled = false;
+                // Simulate data update with slight changes to numbers
+                updateDashboardData();
+            }, 2000);
+        }
+
+        function updateDashboardData() {
+            // Simulate real-time data updates
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(el => {
+                const currentValue = parseFloat(el.textContent.replace(/[^0-9.]/g, ''));
+                const variation = (Math.random() - 0.5) * 0.02; // ±1% variation
+                const newValue = currentValue * (1 + variation);
+                
+                if (el.textContent.includes('M')) {
+                    el.textContent = '$' + newValue.toFixed(1) + 'M';
+                } else {
+                    el.textContent = Math.round(newValue).toString();
+                }
+            });
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout of the Admin Portal?')) {
+                window.location.href = 'alamar-admin-login.html';
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('globalFilter').addEventListener('input', filterData);
+            
+            // Simulate real-time updates every 30 seconds
+            setInterval(updateDashboardData, 30000);
+        });
+    </script>
+</body>
+</html>

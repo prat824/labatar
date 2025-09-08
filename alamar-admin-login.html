@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alamar Admin - Secure Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c4e8a 0%, #1a3564 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .logo-section {
+            margin-bottom: 2rem;
+        }
+
+        .alamar-logo {
+            width: 120px;
+            height: 40px;
+            background: #2c4e8a;
+            border-radius: 4px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .admin-badge {
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            color: #2c4e8a;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e0e6ed;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #2c4e8a;
+        }
+
+        .security-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+
+        .security-notice strong {
+            color: #dc3545;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #2c4e8a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #1a3564;
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .two-factor {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .two-factor.show {
+            display: block;
+        }
+
+        .verification-code {
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #e0e6ed;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .footer-text {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .restricted-access {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="alamar-logo">ALAMAR</div>
+            <div class="admin-badge">ADMIN ACCESS</div>
+            <h1>Labatar Intelligence Portal</h1>
+            <p class="subtitle">Market Intelligence & Platform Analytics</p>
+        </div>
+
+        <div class="restricted-access">
+            🔒 RESTRICTED - Authorized Alamar Personnel Only
+        </div>
+
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="username">Admin Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Secure Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="security-notice">
+                <strong>Security Notice:</strong> This system logs all access attempts. Unauthorized access is strictly prohibited and monitored 24/7.
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                Authenticate & Access Portal
+            </button>
+        </form>
+
+        <div class="two-factor" id="twoFactorSection">
+            <h3 style="margin-bottom: 1rem; color: #2c4e8a;">Two-Factor Authentication</h3>
+            <p style="margin-bottom: 1rem; font-size: 0.9rem;">Enter the 6-digit code from your authenticator app</p>
+            <input type="text" class="verification-code" id="verificationCode" maxlength="6" placeholder="000000">
+            <button type="button" class="login-btn" onclick="completeLogin()">
+                Complete Login
+            </button>
+        </div>
+
+        <div class="footer-text">
+            This portal provides comprehensive insights into Labatar marketplace activity including transaction patterns, emerging biomarker trends, competitive intelligence, and market dynamics. Access is restricted to authorized Alamar Biosciences personnel with proper clearance levels.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                // Simulate authentication process
+                document.getElementById('loginBtn').textContent = 'Authenticating...';
+                document.getElementById('loginBtn').disabled = true;
+                
+                setTimeout(() => {
+                    document.getElementById('adminLoginForm').style.display = 'none';
+                    document.getElementById('twoFactorSection').classList.add('show');
+                    document.getElementById('verificationCode').focus();
+                }, 2000);
+            }
+        });
+
+        document.getElementById('verificationCode').addEventListener('input', function(e) {
+            if (e.target.value.length === 6) {
+                completeLogin();
+            }
+        });
+
+        function completeLogin() {
+            const code = document.getElementById('verificationCode').value;
+            if (code.length === 6) {
+                // Simulate successful login
+                document.querySelector('.login-btn').textContent = 'Access Granted - Redirecting...';
+                document.querySelector('.login-btn').style.background = '#28a745';
+                
+                setTimeout(() => {
+                    window.location.href = 'alamar-admin-dashboard.html';
+                }, 1500);
+            }
+        }
+
+        // Auto-format verification code input
+        document.getElementById('verificationCode').addEventListener('keyup', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
+</body>
+</html>

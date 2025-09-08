@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alamar Admin - Biomarker Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .admin-header {
+            background: #2c4e8a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .admin-branding {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alamar-logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .admin-badge {
+            background: #dc3545;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-tab.active {
+            color: #2c4e8a;
+            border-bottom-color: #f5b800;
+        }
+
+        .content-container {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #2c4e8a;
+            font-weight: 600;
+        }
+
+        .data-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-input {
+            padding: 0.5rem;
+            border: 1px solid #e0e6ed;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .export-btn {
+            background: #f5b800;
+            color: #2c4e8a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .data-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e6ed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #2c4e8a;
+            margin: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #2c4e8a;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1a3564;
+        }
+
+        .data-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #2c4e8a;
+        }
+
+        .trend-positive {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .trend-negative {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .opportunity-high {
+            background: #d4edda;
+            font-weight: 600;
+        }
+
+        .opportunity-medium {
+            background: #fff3cd;
+        }
+
+        .threat-high {
+            background: #f8d7da;
+            font-weight: 600;
+        }
+
+        .threat-medium {
+            background: #e2e3e5;
+        }
+
+        .research-areas {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .platform-breakdown {
+            font-size: 0.8rem;
+        }
+
+        .price-data {
+            font-weight: 600;
+        }
+
+        .search-volume {
+            font-weight: bold;
+            color: #2c4e8a;
+        }
+
+        @media (max-width: 768px) {
+            .data-controls {
+                flex-wrap: wrap;
+            }
+            
+            .content-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-branding">
+            <div class="alamar-logo">ALAMAR</div>
+            <div class="admin-badge">ADMIN</div>
+            <div>
+                <div style="font-weight: 600; font-size: 1.1rem;">Biomarker Intelligence Portal</div>
+                <div style="font-size: 0.8rem; opacity: 0.8;">Real-time Market Analysis & Data Mining</div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="export-btn" onclick="exportAllData()">📊 Export All Intelligence Data</button>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav">
+        <a href="market-analytics.html" class="nav-tab">Transaction Analytics</a>
+        <a href="biomarker-intelligence.html" class="nav-tab active">Biomarker Intelligence</a>
+        <a href="alamar-admin-dashboard.html" class="nav-tab">Market Overview</a>
+    </nav>
+
+    <div class="content-container">
+        <div class="page-header">
+            <div class="data-controls">
+                <input type="text" class="filter-input" placeholder="Search biomarkers, regions, categories..." id="biomarkerFilter">
+                <select class="filter-input" id="timeRange">
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d" selected>Last 30 days</option>
+                    <option value="90d">Last 90 days</option>
+                    <option value="1y">Last year</option>
+                </select>
+                <select class="filter-input" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="neurodegeneration">Neurodegeneration</option>
+                    <option value="immunology">Immunology</option>
+                    <option value="oncology">Oncology</option>
+                    <option value="cardiovascular">Cardiovascular</option>
+                    <option value="inflammation">Inflammation</option>
+                </select>
+                <button class="export-btn" onclick="exportFiltered()">Export Filtered</button>
+            </div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🔬 Complete Biomarker Search Intelligence Database</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="export-btn">CSV</button>
+                    <button class="export-btn">JSON</button>
+                    <button class="export-btn">Excel</button>
+                </div>
+            </div>
+            <table class="data-table" id="biomarkerTable">
+                <thead>
+                    <tr>
+                        <th>Biomarker Name</th>
+                        <th>UniProt ID</th>
+                        <th>Search Volume (30d)</th>
+                        <th>Growth Rate</th>
+                        <th>Total Quotes Generated</th>
+                        <th>Avg Quote Value</th>
+                        <th>Labs Offering</th>
+                        <th>Platform Distribution</th>
+                        <th>Top Research Areas</th>
+                        <th>Geographic Hotspots</th>
+                        <th>Seasonality Pattern</th>
+                        <th>Market Opportunity</th>
+                        <th>Competitive Threat</th>
+                        <th>Price Range</th>
+                        <th>Sample Complexity</th>
+                        <th>Regulatory Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="opportunity-high">
+                        <td><strong>GFAP (Glial Fibrillary Acidic Protein)</strong></td>
+                        <td>P14136</td>
+                        <td class="search-volume">2,847</td>
+                        <td class="trend-positive">+245.3%</td>
+                        <td class="metric-value">1,247</td>
+                        <td class="price-data">$67,240</td>
+                        <td>31</td>
+                        <td class="platform-breakdown">Argo: 45%, Simoa: 35%, MSD: 20%</td>
+                        <td class="research-areas">Neurodegeneration, TBI, Stroke, Sports Med</td>
+                        <td>Boston, SF, NY, Seattle</td>
+                        <td>Q4 peak (+67%)</td>
+                        <td class="opportunity-high">HIGH - $2.1M potential</td>
+                        <td class="threat-medium">MEDIUM</td>
+                        <td>$18-89/sample</td>
+                        <td>Medium</td>
+                        <td>FDA cleared (some)</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td><strong>CXCL13 (B-cell Chemoattractant)</strong></td>
+                        <td>O43927</td>
+                        <td class="search-volume">1,923</td>
+                        <td class="trend-positive">+189.7%</td>
+                        <td class="metric-value">834</td>
+                        <td class="price-data">$43,580</td>
+                        <td>18</td>
+                        <td class="platform-breakdown">Argo: 61%, MSD: 28%, Simoa: 11%</td>
+                        <td class="research-areas">Multiple Sclerosis, CNS Inflammation, Autoimmune</td>
+                        <td>Cambridge, Seattle, San Diego</td>
+                        <td>Stable year-round</td>
+                        <td class="opportunity-high">HIGH - $1.7M potential</td>
+                        <td class="threat-medium">LOW</td>
+                        <td>$25-78/sample</td>
+                        <td>Low</td>
+                        <td>RUO</td>
+                    </tr>
+                    <tr class="opportunity-medium">
+                        <td><strong>Neurofilament Light (NfL)</strong></td>
+                        <td>P07196</td>
+                        <td class="search-volume">3,421</td>
+                        <td class="trend-positive">+89.4%</td>
+                        <td class="metric-value">1,567</td>
+                        <td class="price-data">$89,340</td>
+                        <td>47</td>
+                        <td class="platform-breakdown">Argo: 72%, Simoa: 28%</td>
+                        <td class="research-areas">Alzheimer's, MS, ALS, FTD</td>
+                        <td>Boston, LA, Chicago, Philadelphia</td>
+                        <td>Q1/Q4 peaks</td>
+                        <td class="opportunity-medium">MEDIUM - $3.4M established</td>
+                        <td class="threat-medium">MEDIUM</td>
+                        <td>$32-156/sample</td>
+                        <td>Medium</td>
+                        <td>CE-IVD available</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>Phospho-tau 181</strong></td>
+                        <td>P10636-181</td>
+                        <td class="search-volume">2,156</td>
+                        <td class="trend-positive">+67.2%</td>
+                        <td class="metric-value">923</td>
+                        <td class="price-data">$156,780</td>
+                        <td>23</td>
+                        <td class="platform-breakdown">Simoa: 52%, Argo: 35%, MSD: 13%</td>
+                        <td class="research-areas">Alzheimer's, Dementia, Tau pathology</td>
+                        <td>Boston, SF, Philadelphia, Baltimore</td>
+                        <td>Q4 research peak</td>
+                        <td class="opportunity-medium">MEDIUM - $2.8M</td>
+                        <td class="threat-high">HIGH - Simoa dominance</td>
+                        <td>$45-234/sample</td>
+                        <td>High</td>
+                        <td>FDA breakthrough designation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VEGF-A (Vascular Growth Factor)</strong></td>
+                        <td>P15692</td>
+                        <td class="search-volume">1,634</td>
+                        <td class="trend-positive">+43.1%</td>
+                        <td class="metric-value">721</td>
+                        <td class="price-data">$34,270</td>
+                        <td>52</td>
+                        <td class="platform-breakdown">Argo: 78%, MSD: 15%, Simoa: 7%</td>
+                        <td class="research-areas">Angiogenesis, Cancer, Retinal disease</td>
+                        <td>Houston, Atlanta, Denver, Phoenix</td>
+                        <td>Consistent demand</td>
+                        <td class="opportunity-medium">STABLE - $1.9M</td>
+                        <td class="threat-medium">LOW</td>
+                        <td>$12-67/sample</td>
+                        <td>Low</td>
+                        <td>Multiple FDA approvals</td>
+                    </tr>
+                    <tr>
+                        <td><strong>YKL-40 (Chitinase-3-like-1)</strong></td>
+                        <td>P36222</td>
+                        <td class="search-volume">892</td>
+                        <td class="trend-positive">+112.8%</td>
+                        <td class="metric-value">398</td>
+                        <td class="price-data">$52,680</td>
+                        <td>14</td>
+                        <td class="platform-breakdown">Argo: 57%, MSD: 36%, Simoa: 7%</td>
+                        <td class="research-areas">Inflammation, Fibrosis, Asthma</td>
+                        <td>Boston, SF, Baltimore, Minneapolis</td>
+                        <td>Allergy season spikes</td>
+                        <td class="opportunity-medium">GROWING - $1.3M</td>
+                        <td class="threat-medium">LOW</td>
+                        <td>$28-89/sample</td>
+                        <td>Medium</td>
+                        <td>RUO</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>Clusterin</strong></td>
+                        <td>P10909</td>
+                        <td class="search-volume">743</td>
+                        <td class="trend-positive">+156.2%</td>
+                        <td class="metric-value">287</td>
+                        <td class="price-data">$78,500</td>
+                        <td>8</td>
+                        <td class="platform-breakdown">Simoa: 63%, Argo: 25%, MSD: 12%</td>
+                        <td class="research-areas">Neurodegeneration, Alzheimer's</td>
+                        <td>Boston, LA, Seattle, Rochester</td>
+                        <td>Research grant cycles</td>
+                        <td class="opportunity-high">HIGH - Underserved</td>
+                        <td class="threat-high">HIGH - Limited Argo presence</td>
+                        <td>$67-187/sample</td>
+                        <td>High</td>
+                        <td>RUO</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IL-6 (Interleukin-6)</strong></td>
+                        <td>P05231</td>
+                        <td class="search-volume">4,567</td>
+                        <td class="trend-negative">-12.3%</td>
+                        <td class="metric-value">2,134</td>
+                        <td class="price-data">$28,940</td>
+                        <td>89</td>
+                        <td class="platform-breakdown">Argo: 69%, MSD: 20%, Simoa: 11%</td>
+                        <td class="research-areas">Inflammation, COVID-19, Cytokine storm</td>
+                        <td>All major metro areas</td>
+                        <td>COVID waves correlation</td>
+                        <td>MATURE - $2.2M</td>
+                        <td class="threat-medium">LOW</td>
+                        <td>$8-45/sample</td>
+                        <td>Low</td>
+                        <td>FDA approved diagnostics</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td><strong>S100B</strong></td>
+                        <td>P04271</td>
+                        <td class="search-volume">1,156</td>
+                        <td class="trend-positive">+178.4%</td>
+                        <td class="metric-value">512</td>
+                        <td class="price-data">$45,890</td>
+                        <td>19</td>
+                        <td class="platform-breakdown">Argo: 42%, Simoa: 37%, MSD: 21%</td>
+                        <td class="research-areas">TBI, Stroke, Brain injury</td>
+                        <td>Boston, Houston, Miami, Denver</td>
+                        <td>Sports season correlation</td>
+                        <td class="opportunity-high">HIGH - Sports medicine boom</td>
+                        <td class="threat-medium">MEDIUM</td>
+                        <td>$22-89/sample</td>
+                        <td>Medium</td>
+                        <td>FDA cleared</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td><strong>CCL2 (MCP-1)</strong></td>
+                        <td>P13500</td>
+                        <td class="search-volume">967</td>
+                        <td class="trend-positive">+134.7%</td>
+                        <td class="metric-value">445</td>
+                        <td class="price-data">$38,760</td>
+                        <td>27</td>
+                        <td class="platform-breakdown">Argo: 59%, MSD: 28%, Simoa: 13%</td>
+                        <td class="research-areas">Inflammation, Neuroinflammation, MS</td>
+                        <td>SF, Seattle, Boston, Nashville</td>
+                        <td>Academic calendar driven</td>
+                        <td class="opportunity-medium">GROWING - $1.1M</td>
+                        <td class="threat-medium">LOW</td>
+                        <td>$15-67/sample</td>
+                        <td>Low</td>
+                        <td>RUO</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🎯 Search Pattern Analysis & Market Opportunities</h3>
+                <button class="export-btn">Export Opportunities</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Market Opportunity</th>
+                        <th>Primary Biomarkers</th>
+                        <th>Search Growth</th>
+                        <th>Current Lab Coverage</th>
+                        <th>Argo HT Penetration</th>
+                        <th>Revenue Potential</th>
+                        <th>Competitive Risk</th>
+                        <th>Recommended Action</th>
+                        <th>Timeline</th>
+                        <th>Investment Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="opportunity-high">
+                        <td><strong>Long COVID Biomarkers</strong></td>
+                        <td>IL-6, TNF-α, D-dimer, CRP, Ferritin</td>
+                        <td class="trend-positive">+456%</td>
+                        <td>12 labs</td>
+                        <td>34%</td>
+                        <td class="price-data">$8.3M</td>
+                        <td class="threat-medium">MEDIUM</td>
+                        <td>Develop Long COVID panel</td>
+                        <td>Q2 2024</td>
+                        <td>$340K</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td><strong>Extracellular Vesicle Markers</strong></td>
+                        <td>CD9, CD63, CD81, TSG101</td>
+                        <td class="trend-positive">+300%</td>
+                        <td>0 Argo labs</td>
+                        <td>0%</td>
+                        <td class="price-data">$12.1M</td>
+                        <td class="threat-high">HIGH</td>
+                        <td>Platform capability development</td>
+                        <td>Q4 2024</td>
+                        <td>$2.1M</td>
+                    </tr>
+                    <tr class="opportunity-medium">
+                        <td><strong>Sports Medicine TBI Panel</strong></td>
+                        <td>GFAP, S100B, UCH-L1, NfL</td>
+                        <td class="trend-positive">+234%</td>
+                        <td>23 labs</td>
+                        <td>67%</td>
+                        <td class="price-data">$4.7M</td>
+                        <td class="threat-medium">LOW</td>
+                        <td>Marketing push + partnerships</td>
+                        <td>Q1 2024</td>
+                        <td>$125K</td>
+                    </tr>
+                    <tr class="opportunity-medium">
+                        <td><strong>Liquid Biopsy Oncology</strong></td>
+                        <td>ctDNA markers, CEA, CA 19-9, PSA</td>
+                        <td class="trend-positive">+178%</td>
+                        <td>34 labs</td>
+                        <td>45%</td>
+                        <td class="price-data">$6.9M</td>
+                        <td class="threat-high">HIGH</td>
+                        <td>Competitive response needed</td>
+                        <td>Q3 2024</td>
+                        <td>$890K</td>
+                    </tr>
+                    <tr class="threat-high">
+                        <td><strong>Ultra-Sensitive Tau Detection</strong></td>
+                        <td>p-tau181, p-tau217, p-tau231</td>
+                        <td class="trend-positive">+145%</td>
+                        <td>31 labs</td>
+                        <td>28%</td>
+                        <td class="price-data">$5.6M</td>
+                        <td class="threat-high">CRITICAL - Simoa dominance</td>
+                        <td>Platform enhancement urgent</td>
+                        <td>Q2 2024</td>
+                        <td>$1.8M</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-header">
+                <h3 class="section-title">🌍 Geographic Intelligence & Regional Trends</h3>
+                <button class="export-btn">Export Geographic Data</button>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Region</th>
+                        <th>Top Biomarkers by Search Volume</th>
+                        <th>Total Search Volume</th>
+                        <th>Growth Rate</th>
+                        <th>Lab Density</th>
+                        <th>Argo HT Market Share</th>
+                        <th>Avg Quote Value</th>
+                        <th>Seasonal Patterns</th>
+                        <th>Emerging Trends</th>
+                        <th>Expansion Opportunity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Greater Boston Area</strong></td>
+                        <td>NfL, GFAP, p-tau181, CXCL13</td>
+                        <td class="search-volume">8,947</td>
+                        <td class="trend-positive">+89%</td>
+                        <td>23 labs/100K pop</td>
+                        <td>72%</td>
+                        <td class="price-data">$67,240</td>
+                        <td>Q1/Q4 academic peaks</td>
+                        <td>Long COVID, Neuroinflammation</td>
+                        <td class="opportunity-medium">SATURATED</td>
+                    </tr>
+                    <tr>
+                        <td><strong>San Francisco Bay Area</strong></td>
+                        <td>VEGF-A, Clusterin, GFAP, IL-6</td>
+                        <td class="search-volume">6,834</td>
+                        <td class="trend-positive">+112%</td>
+                        <td>18 labs/100K pop</td>
+                        <td>58%</td>
+                        <td class="price-data">$72,180</td>
+                        <td>Tech funding cycles</td>
+                        <td>Digital health integration</td>
+                        <td class="opportunity-medium">MODERATE</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td><strong>Texas Triangle (Austin-Houston-Dallas)</strong></td>
+                        <td>S100B, VEGF-A, IL-6, TNF-α</td>
+                        <td class="search-volume">4,567</td>
+                        <td class="trend-positive">+156%</td>
+                        <td>8 labs/100K pop</td>
+                        <td>34%</td>
+                        <td class="price-data">$45,890</td>
+                        <td>Oil industry cycles</td>
+                        <td>Sports medicine, Energy sector occupational</td>
+                        <td class="opportunity-high">HIGH - Underserved</td>
+                    </tr>
+                    <tr class="opportunity-high">
+                        <td><strong>Research Triangle (NC)</strong></td>
+                        <td>CXCL13, YKL-40, CCL2, NfL</td>
+                        <td class="search-volume">3,221</td>
+                        <td class="trend-positive">+203%</td>
+                        <td>12 labs/100K pop</td>
+                        <td>41%</td>
+                        <td class="price-data">$56,730</td>
+                        <td>Pharma R&D cycles</td>
+                        <td>Biotech partnerships, CRO growth</td>
+                        <td class="opportunity-high">HIGH - Growth market</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chicago-Milwaukee Corridor</strong></td>
+                        <td>IL-6, NfL, VEGF-A, GFAP</td>
+                        <td class="search-volume">2,890</td>
+                        <td class="trend-positive">+67%</td>
+                        <td>14 labs/100K pop</td>
+                        <td>63%</td>
+                        <td class="price-data">$39,870</td>
+                        <td>Winter health spikes</td>
+                        <td>Aging population studies</td>
+                        <td class="opportunity-medium">STABLE</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function exportAllData() {
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            alert(`Exporting comprehensive biomarker intelligence dataset...\\n\\nFiles being generated:\\n• biomarker-search-intelligence-${timestamp}.csv\\n• market-opportunities-${timestamp}.json\\n• geographic-trends-${timestamp}.xlsx\\n• competitive-analysis-${timestamp}.csv\\n\\nTotal records: 2,847 biomarkers, 89,432 search queries, 12,567 transactions\\n\\nData will be available in secure download folder within 5 minutes.`);
+        }
+
+        function exportFiltered() {
+            const filter = document.getElementById('biomarkerFilter').value;
+            const timeRange = document.getElementById('timeRange').value;
+            const category = document.getElementById('categoryFilter').value;
+            
+            alert(`Exporting filtered biomarker data...\\n\\nFilters applied:\\n• Search term: "${filter}"\\n• Time range: ${timeRange}\\n• Category: ${category}\\n\\nEstimated records: ${Math.floor(Math.random() * 500) + 100}\\n\\nExport will be available shortly.`);
+        }
+
+        function filterBiomarkers() {
+            const filter = document.getElementById('biomarkerFilter').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const table = document.getElementById('biomarkerTable');
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const categoryMatch = category === 'all' || text.includes(category.toLowerCase());
+                const textMatch = filter === '' || text.includes(filter);
+                
+                if (categoryMatch && textMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('biomarkerFilter').addEventListener('input', filterBiomarkers);
+            document.getElementById('categoryFilter').addEventListener('change', filterBiomarkers);
+            
+            // Simulate real-time data updates
+            setInterval(function() {
+                const searchVolumes = document.querySelectorAll('.search-volume');
+                searchVolumes.forEach(el => {
+                    const currentValue = parseInt(el.textContent.replace(/,/g, ''));
+                    const variation = Math.floor((Math.random() - 0.5) * currentValue * 0.02);
+                    el.textContent = (currentValue + variation).toLocaleString();
+                });
+            }, 60000);
+        });
+    </script>
+</body>
+</html>
