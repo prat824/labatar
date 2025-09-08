@@ -106,6 +106,33 @@
             font-size: 0.85rem;
         }
 
+        .hidden-home-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(44, 78, 138, 0.1);
+            border-radius: 50%;
+            opacity: 0.3;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #2c4e8a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 2px solid rgba(44, 78, 138, 0.2);
+        }
+
+        .hidden-home-icon:hover {
+            opacity: 0.8;
+            background: rgba(44, 78, 138, 0.2);
+            transform: scale(1.1);
+        }
+
         .export-btn {
             background: #f5b800;
             color: #2c4e8a;
@@ -275,6 +302,31 @@
         .lab-contact {
             font-size: 0.85rem;
             color: #666;
+        }
+
+        .hidden-admin-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(44, 78, 138, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+        }
+
+        .hidden-admin-access:hover {
+            opacity: 1;
+            background: rgba(44, 78, 138, 1);
         }
 
         @media (max-width: 768px) {
@@ -885,5 +937,7 @@
             }, 600000);
         });
     </script>
+    
+    <a href="index.html" class="hidden-home-icon" title="Return to Labatar">🏠</a>
 </body>
 </html>

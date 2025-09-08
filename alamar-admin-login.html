@@ -135,28 +135,6 @@
             cursor: not-allowed;
         }
 
-        .two-factor {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 6px;
-            display: none;
-        }
-
-        .two-factor.show {
-            display: block;
-        }
-
-        .verification-code {
-            width: 100%;
-            text-align: center;
-            font-size: 1.2rem;
-            letter-spacing: 0.5rem;
-            padding: 0.75rem;
-            border: 2px solid #e0e6ed;
-            border-radius: 6px;
-            margin: 1rem 0;
-        }
 
         .footer-text {
             margin-top: 2rem;
@@ -209,14 +187,6 @@
             </button>
         </form>
 
-        <div class="two-factor" id="twoFactorSection">
-            <h3 style="margin-bottom: 1rem; color: #2c4e8a;">Two-Factor Authentication</h3>
-            <p style="margin-bottom: 1rem; font-size: 0.9rem;">Enter the 6-digit code from your authenticator app</p>
-            <input type="text" class="verification-code" id="verificationCode" maxlength="6" placeholder="000000">
-            <button type="button" class="login-btn" onclick="completeLogin()">
-                Complete Login
-            </button>
-        </div>
 
         <div class="footer-text">
             This portal provides comprehensive insights into Labatar marketplace activity including transaction patterns, emerging biomarker trends, competitive intelligence, and market dynamics. Access is restricted to authorized Alamar Biosciences personnel with proper clearance levels.
@@ -236,35 +206,15 @@
                 document.getElementById('loginBtn').disabled = true;
                 
                 setTimeout(() => {
-                    document.getElementById('adminLoginForm').style.display = 'none';
-                    document.getElementById('twoFactorSection').classList.add('show');
-                    document.getElementById('verificationCode').focus();
+                    // Direct login without two-factor
+                    document.getElementById('loginBtn').textContent = 'Access Granted - Redirecting...';
+                    document.getElementById('loginBtn').style.background = '#28a745';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'alamar-admin-dashboard.html';
+                    }, 1500);
                 }, 2000);
             }
-        });
-
-        document.getElementById('verificationCode').addEventListener('input', function(e) {
-            if (e.target.value.length === 6) {
-                completeLogin();
-            }
-        });
-
-        function completeLogin() {
-            const code = document.getElementById('verificationCode').value;
-            if (code.length === 6) {
-                // Simulate successful login
-                document.querySelector('.login-btn').textContent = 'Access Granted - Redirecting...';
-                document.querySelector('.login-btn').style.background = '#28a745';
-                
-                setTimeout(() => {
-                    window.location.href = 'alamar-admin-dashboard.html';
-                }, 1500);
-            }
-        }
-
-        // Auto-format verification code input
-        document.getElementById('verificationCode').addEventListener('keyup', function(e) {
-            this.value = this.value.replace(/\D/g, '');
         });
     </script>
 </body>

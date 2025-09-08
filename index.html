@@ -614,6 +614,36 @@
                 gap: 2rem;
             }
         }
+        
+        /* Hidden admin access icon */
+        .hidden-admin-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(44, 78, 138, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.2;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+            color: #2c4e8a;
+            font-size: 16px;
+            border: 2px solid transparent;
+        }
+
+        .hidden-admin-access:hover {
+            opacity: 1;
+            background: rgba(44, 78, 138, 0.8);
+            color: white;
+            transform: scale(1.1);
+            border-color: #f5b800;
+        }
     </style>
 </head>
 <body>
@@ -959,5 +989,10 @@
             });
         });
     </script>
+    <!-- Hidden admin access icon -->
+    <a href="alamar-admin-login.html" class="hidden-admin-access" title="Admin Access">
+        🔧
+    </a>
+    
 </body>
 </html>
